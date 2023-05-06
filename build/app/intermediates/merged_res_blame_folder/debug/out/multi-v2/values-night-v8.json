@@ -1,0 +1,28 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "from": {
+                        "startLines": "3,18",
+                        "startColumns": "4,4",
+                        "startOffsets": "175,1106",
+                        "endLines": "11,20",
+                        "endColumns": "12,12",
+                        "endOffsets": "757,1272"
+                    },
+                    "to": {
+                        "startLines": "2,11",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,634",
+                        "endLines": "10,13",
+                        "endColumns": "12,12",
+                        "endOffsets": "629,798"
+                    }
+                }
+            ]
+        }
+    ]
+}

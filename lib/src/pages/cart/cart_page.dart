@@ -1,0 +1,617 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:pharma_app/src/components/custom_app_bar.dart';
+import 'package:pharma_app/src/components/custom_check_box.dart';
+import 'package:pharma_app/src/dialogs/AggiungiNota.dart';
+import 'package:pharma_app/src/dialogs/order_success_dialog.dart';
+import 'package:pharma_app/src/helpers/extensions.dart';
+import 'package:pharma_app/src/pages/cart/check.dart';
+import 'package:pharma_app/src/pages/cart/widget/cart_item_tile.dart';
+import 'package:pharma_app/src/pages/cart/widget/empty_cart_widget.dart';
+import 'package:pharma_app/src/pages/cart/widget/footer_cart.dart';
+import 'package:pharma_app/src/pages/login/widgets/CustomTextFormField.dart';
+import 'package:pharma_app/src/providers/orders_provider.dart';
+import 'package:pharma_app/src/providers/user_addresses_provider.dart';
+
+import '../../app_assets.dart';
+import '../../components/bottomNavigation.dart';
+import '../../helpers/app_config.dart';
+import '../../models/cart.dart';
+import '../../models/order.dart';
+import '../../providers/cart_provider.dart';
+import '../../repository/paymentCards_repository.dart';
+import '../payment_methods/payment_methods.dart';
+
+class CartPage extends ConsumerStatefulWidget {
+  const CartPage({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends ConsumerState<CartPage> {
+  int _currentStep = 0;
+  bool _loaded = false;
+
+  final pageController = PageController();
+  bool isGift = false;
+
+  double deliveryFee = 0.0;
+
+  bool pickUp = true;
+  bool delivery = false;
+
+  // create methot to toggle pickUp and delivery
+  void toggleDelivery() {
+    if (pickUp) {
+      setState(() {
+        pickUp = false;
+        delivery = true;
+        deliveryFee =
+            ref.watch(cartProvider).carts.first.product!.farmacia!.deliveryFee!;
+      });
+    } else {
+      setState(() {
+        pickUp = true;
+        delivery = false;
+        deliveryFee = 0.0;
+      });
+    }
+  }
+
+  var prOrd = 0.0;
+  @override
+  void initState() {
+    super.initState();
+    _loadCards();
+  }
+
+  _loadCards() async {
+    _loaded = await getUserCreditCards();
+    setState(() {});
+  }
+
+  var quantity = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    final cartProv = ref.watch(cartProvider);
+    final orderProv = ref.watch(ordersProvider);
+    final orderNote = ref.watch(noteOrderProvider);
+    //final creditCard = ref.watch(creditCardsProvider).asData?.value.first;
+    //final creditCard = ref.watch(creditCardsProvider);
+    final address = ref.watch(userDefaultCartAddressProvider) ??
+        ref.watch(userDefaultAddressProvider).asData?.value;
+
+    if (address != null) {
+      cartProv.deliveryAddress = address;
+    }
+
+    final hasDelivery = (cartProv.carts.isNotEmpty)
+        ? (cartProv.carts.first.product?.farmacia?.availableForDelivery)
+        : false;
+
+    final paymentMethod = ref.watch(paymentMethodProvider);
+    return Scaffold(
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
+      bottomNavigationBar: BottomNavigation(),
+      //TODO stringhe
+      bottomSheet: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            OutlinedButton(
+              style: ElevatedButton.styleFrom(
+                  fixedSize: Size(165, 50),
+                  backgroundColor: AppColors.primary,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(18)))),
+              child: Text(
+                'Acquista',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Check(prOrd: prOrd)));
+              },
+            ),
+          ],
+        ),
+      ),
+      body: cartProv.carts.isEmpty
+          ? EmptyCartWidget()
+          : Padding(
+              padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_ios_new),
+                        onPressed: () => Navigator.of(context).pop(),
+                        color: const Color(0xFF333333),
+                      ),
+                      const Text(
+                        'Carrello',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacementNamed('Cart');
+                        },
+                        child: const Image(
+                            image: AssetImage(
+                                'assets/immagini_pharma/Icon_shop.png')),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          cartProv.carts.length.toString() +
+                              ' articoli nel carrello',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Color.fromARGB(115, 9, 15, 71)),
+                        ),
+                        TextButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.add),
+                          label: const Text('Aggiungi articoli'),
+                        ),
+                      ]),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    height: context.mqh * 0.78,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(0),
+                      shrinkWrap: true,
+                      clipBehavior: Clip.none,
+                      scrollDirection: Axis.vertical,
+                      itemCount: cartProv.carts.length,
+                      itemBuilder: (context, index) {
+                        Cart cart = cartProv.carts.elementAt(index);
+                        print(cart.toString());
+                        print(cart.product.toString());
+                        /*        var prezzoTot;
+                        var scontoTot;
+                        index == 0
+                            ? prezzoTot = cart.product!.price!
+                            : prezzoTot += cart.product!.price!;
+                        index == 0
+                            ? scontoTot = cart.product!.discountPrice
+                            : scontoTot += cart.product!.discountPrice;
+                         prOrd = prezzoTot - scontoTot;
+                  */
+                        return Container(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  /*  
+                                  ClipRRect(
+                                    borderRadius:
+                                        const BorderRadius.all(Radius.circular(10)),
+                                    child: Container(
+                                      color: Color.fromARGB(255, 242, 243, 243),
+                                      child:  Image(
+                                    width: 77,
+                                    height: 88,
+                                    image: NetworkImage(cart.product!.image!.url!),
+                                      ),
+                                    ),
+                                  ),
+                                  
+                        
+                                 */
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
+                                    child: Container(
+                                      color: Color.fromARGB(255, 242, 243, 243),
+                                      child: const Image(
+                                        width: 77,
+                                        height: 88,
+                                        image: AssetImage(
+                                            'assets/immagini_pharma/esempio.png'),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        /*   Text(cart.product!.name.toString(), style: TextStyle(
+                                                color:
+                                                    Color.fromARGB(255, 9, 15, 71),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w700),),
+                                                 SizedBox(
+                                                width: context.mqw * 0.35,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {},
+                                                child: Image(
+                                                    image: AssetImage(
+                                                        'assets/immagini_pharma/delOrd.png')),
+                                              ),
+                                          */
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Pizza Marinara',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 9, 15, 71),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            SizedBox(
+                                              width: context.mqw * 0.35,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Image(
+                                                  image: AssetImage(
+                                                      'assets/immagini_pharma/delOrd.png')),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          'Flacone da 30 pillole',
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  115, 9, 15, 71),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          children: [
+                                            /*   Text(cart.product!.price.toString() + '€', style: TextStyle(
+                                                color:
+                                                    Color.fromARGB(255, 9, 15, 71),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w700),),
+                                                SizedBox(
+                                                    width: context.mqw * 0.2,
+                                                  ),
+                                                  QuantitySetter(
+                                                    quantity: quantity,
+                                                    onAdd: () => setState(() {
+                                                      (quantity < 100)
+                                                          ? quantity++
+                                                          : ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  SnackBar(
+                                                              content: Text(
+                                                                  'Non puoi ordinare da più negozi contemporaneamente'),
+                                                            ));
+                                                    }),
+                                                    onRemove: () => setState(() {
+                                                      quantity > 1
+                                                          ? quantity--
+                                                          : null;
+                                                    }),
+                                                  )
+                                              */
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '14,99€',
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 9, 15, 71),
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                                SizedBox(
+                                                  width: context.mqw * 0.2,
+                                                ),
+                                                QuantitySetter(
+                                                  quantity: quantity,
+                                                  onAdd: () => setState(() {
+                                                    (quantity < 100)
+                                                        ? quantity++
+                                                        : ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                SnackBar(
+                                                            content: Text(
+                                                                'Non puoi ordinare da più negozi contemporaneamente'),
+                                                          ));
+                                                  }),
+                                                  onRemove: () => setState(() {
+                                                    quantity > 1
+                                                        ? quantity--
+                                                        : null;
+                                                  }),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              //    if (index == cartProv.carts.length)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    'Riepilogo del pagamento',
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 9, 15, 71),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              /*  
+                              if(index == cartProv.carts.length)
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Ordine Totale',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(115, 9, 15, 71),
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  Text(prezzoTot.toString()+'€', style:  TextStyle(
+                                      color: Color.fromARGB(255, 9, 15, 71),
+                                      fontSize: 20,
+                                    ),),
+                                ],
+                              ),*/
+
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Ordine Totale',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(115, 9, 15, 71),
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  Text(
+                                    '34,88€',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 9, 15, 71),
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+/*
+                              if(index == cartProv.carts.length)
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Text(
+                                    'Articoli scontati',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(115, 9, 15, 71),
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                    Text('- '+scontoTot.toString()+'€', style:  TextStyle(
+                                      color: Color.fromARGB(255, 9, 15, 71),
+                                      fontSize: 20,
+                                    ),),
+                                ],
+                              ),
+
+*/
+
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Text(
+                                    'Articoli scontati',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(115, 9, 15, 71),
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  Text(
+                                    '- 2,99€',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 9, 15, 71),
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              const Divider(
+                                thickness: 2,
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              /*
+                              if(index == cartProv.carts.length)
+                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Totale',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 9, 15, 71),
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Text(
+                                    prOrd.toString+'€',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 9, 15, 71),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ],
+                              )
+                              */
+
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Totale',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 9, 15, 71),
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Text(
+                                    '31,89€',
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 9, 15, 71),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+    );
+  }
+
+  finalizeOrder(CartProvider cartProv, OrdersProvider orderProv,
+      BuildContext context) async {
+    List<Order>? orders = await cartProv.proceedOrder(context);
+    if (orders != null && orders.isNotEmpty) {
+      orderProv.orders.insertAll(0, orders);
+      showDialog(
+          context: context,
+          builder: (context) =>
+              OrderSuccessDialog(currentOrder: orders.first.id ?? '#'));
+    }
+  }
+}
+
+class QuantitySetter extends StatefulWidget {
+  final int quantity;
+  final Function onAdd;
+  final Function onRemove;
+
+  const QuantitySetter({
+    Key? key,
+    required this.quantity,
+    required this.onAdd,
+    required this.onRemove,
+  }) : super(key: key);
+
+  @override
+  State<QuantitySetter> createState() => _QuantitySetterState();
+}
+
+class _QuantitySetterState extends State<QuantitySetter> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: 139,
+        height: 38,
+        decoration: ShapeDecoration(
+          // TODO colore
+          color: AppColors.primary.withOpacity(0.3),
+          shape: const StadiumBorder(),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Positioned(
+              left: 0,
+              child: OutlinedButton(
+                  //TODO riutilizzare
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(Size.square(35)),
+                    shape: MaterialStateProperty.all(const CircleBorder()),
+                    backgroundColor: MaterialStateProperty.all(
+                        AppColors.primary.withOpacity(0.5)),
+                  ),
+                  onPressed: () => widget.onRemove(),
+                  child: const Icon(
+                    Icons.remove,
+                    color: AppColors.primary,
+                    size: 20,
+                  )),
+            ),
+            Text(
+              widget.quantity.toStringAsFixed(0),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            OutlinedButton(
+                //TODO riutilizzare
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(Size.square(35)),
+                  shape: MaterialStateProperty.all(const CircleBorder()),
+                  backgroundColor: MaterialStateProperty.all(AppColors.primary),
+                ),
+                onPressed: () => widget.onAdd(),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 20,
+                ))
+          ],
+        ));
+  }
+}

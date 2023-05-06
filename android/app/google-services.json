@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "742346627788",
+    "project_id": "tac-dev-24fa7",
+    "storage_bucket": "tac-dev-24fa7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742346627788:android:e36210af1652e6a438c069",
+        "android_client_info": {
+          "package_name": "com.ctechdev.pharma_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742346627788-lj5nqr1drleo153bitfjdvldulf5uci1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIFpEx__vLH4hmfBW20axI9lQ0WbaW2ZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742346627788-lj5nqr1drleo153bitfjdvldulf5uci1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "742346627788-ittp5lj3pvnsuiml0m6nt7u6pkikgia5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ctechdev.customShapes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742346627788:android:2517c544eba9549e38c069",
+        "android_client_info": {
+          "package_name": "it.resmedia.tac"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742346627788-lj5nqr1drleo153bitfjdvldulf5uci1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIFpEx__vLH4hmfBW20axI9lQ0WbaW2ZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742346627788-lj5nqr1drleo153bitfjdvldulf5uci1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "742346627788-ittp5lj3pvnsuiml0m6nt7u6pkikgia5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ctechdev.customShapes"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

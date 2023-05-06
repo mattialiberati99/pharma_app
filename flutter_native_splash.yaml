@@ -1,0 +1,9 @@
+flutter_native_splash:
+  background_image: "assets/immagini_pharma/splash_light.png"
+  background_image_dark: "assets/immagini_pharma/splash_dark.png"
+
+  android_12:
+    image: assets/immagini_pharma/logo_splash.png
+    image_dark: assets/immagini_pharma/logo_splash.png
+
+  web: false
