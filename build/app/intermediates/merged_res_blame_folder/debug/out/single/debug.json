@@ -1,107 +1,63 @@
 [
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable_ic_launcher.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_adaptive_fore.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_adaptive_fore.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_background.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_background.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-hdpi_android12splash.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-hdpi\\android12splash.png"
     },
     {
         "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xxxhdpi_ic_launcher_background.png.flat",
         "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_launcher_background.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-v21_background.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-v21\\background.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_monochrome.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_monochrome.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-mdpi_android12splash.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-mdpi\\android12splash.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xxhdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xxhdpi\\ic_launcher_foreground.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xxxhdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_launcher_foreground.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_adaptive_back.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_adaptive_back.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_foreground.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_adaptive_fore.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_adaptive_fore.png"
     },
     {
         "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-v21_background.png.flat",
         "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-v21\\background.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-hdpi_android12splash.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-hdpi\\android12splash.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xhdpi_ic_launcher_background.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.png"
     },
     {
         "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_background.png.flat",
         "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_background.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-mdpi_android12splash.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-mdpi\\android12splash.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xxhdpi\\ic_launcher_foreground.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_adaptive_fore.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_adaptive_fore.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-mdpi_android12splash.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-mdpi\\android12splash.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_foreground.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-xhdpi_android12splash.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-xhdpi\\android12splash.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher_adaptive_fore.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_adaptive_fore.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xxhdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xxhdpi\\ic_launcher_background.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-v21_launch_background.xml.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-v21\\launch_background.xml"
     },
     {
         "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_adaptive_back.png.flat",
         "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_adaptive_back.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xhdpi_android12splash.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xhdpi\\android12splash.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher_adaptive_fore.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_adaptive_fore.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_monochrome.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_monochrome.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-xxhdpi_android12splash.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-xxhdpi\\android12splash.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_adaptive_back.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_adaptive_back.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-xxxhdpi_android12splash.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-xxxhdpi\\android12splash.png"
     },
     {
         "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xxxhdpi_android12splash.png.flat",
@@ -112,72 +68,72 @@
         "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_foreground.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_adaptive_back.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_adaptive_back.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_adaptive_back.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_adaptive_back.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xxhdpi_android12splash.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xxhdpi\\android12splash.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_foreground.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_background.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_foreground.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xhdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xhdpi\\ic_launcher_foreground.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xhdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xhdpi\\ic_launcher_background.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-hdpi_android12splash.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-hdpi\\android12splash.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-v21_launch_background.xml.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-v21\\launch_background.xml"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_adaptive_fore.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_adaptive_fore.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_background.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_background.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_launcher_foreground.png"
     },
     {
         "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher_monochrome.png.flat",
         "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_monochrome.png"
     },
     {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xhdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-v21_background.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-v21\\background.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xxhdpi_android12splash.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xxhdpi\\android12splash.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_adaptive_fore.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_adaptive_fore.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_background.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xhdpi_android12splash.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xhdpi\\android12splash.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable_ic_launcher.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_adaptive_fore.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_adaptive_fore.png"
+    },
+    {
         "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_monochrome.png.flat",
         "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_monochrome.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-xxxhdpi_android12splash.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-xxxhdpi\\android12splash.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_foreground.png"
-    },
-    {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_foreground.png"
     },
     {
         "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_monochrome.png.flat",
@@ -188,23 +144,67 @@
         "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_monochrome.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-mdpi_android12splash.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-mdpi\\android12splash.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_adaptive_fore.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_adaptive_fore.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-xhdpi_android12splash.png.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-xhdpi\\android12splash.png"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-hdpi_android12splash.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-hdpi\\android12splash.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher_background.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_adaptive_fore.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_adaptive_fore.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_adaptive_back.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_adaptive_back.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-xxhdpi_android12splash.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-xxhdpi\\android12splash.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-xxhdpi_ic_launcher_background.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-xxhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-night-v21_launch_background.xml.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-night-v21\\launch_background.xml"
     },
     {
         "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-hdpi_ic_launcher_adaptive_back.png.flat",
         "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_adaptive_back.png"
     },
     {
-        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\drawable-v21_launch_background.xml.flat",
-        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\drawable-v21\\launch_background.xml"
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_adaptive_back.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_adaptive_back.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxxhdpi_ic_launcher_background.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xhdpi_ic_launcher_background.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-mdpi_ic_launcher_foreground.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\merged_res\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     }
 ]

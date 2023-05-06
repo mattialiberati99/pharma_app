@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -113,45 +115,48 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       countShowBottomSheet++;
                       if (countShowBottomSheet % 2 == 0) {
                         showBottomSheet(
-                          elevation: 12,
-                          backgroundColor: Colors.transparent,
                           context: context,
                           builder: (context) {
-                            return ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(40),
-                                topRight: Radius.circular(40),
-                              ),
-                              child: Container(
-                                color: Colors.white,
-                                height: 200,
-                                child: Center(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      DrawerItem(
-                                        pageName: 'Terapie',
-                                        iconPath:
-                                            'assets/ico/Jar Of Pills 2.svg',
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pushReplacementNamed(
-                                                  'Le Mie Medicine');
-                                        },
-                                      ),
-                                      DrawerItem(
-                                        pageName: 'Armadietto',
-                                        iconPath: 'assets/ico/Medical Kit.svg',
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pushReplacementNamed(
-                                                  'Le Mie Medicine');
-                                        },
-                                      ),
-                                    ],
+                            return BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(40),
+                                  topRight: Radius.circular(40),
+                                ),
+                                child: Container(
+                                  color: Colors.white,
+                                  height: 200,
+                                  child: Center(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        DrawerItem(
+                                          pageName: 'Terapie',
+                                          iconPath:
+                                              'assets/ico/Jar Of Pills 2.svg',
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pushReplacementNamed(
+                                                    'Le Mie Medicine');
+                                          },
+                                        ),
+                                        DrawerItem(
+                                          pageName: 'Armadietto',
+                                          iconPath:
+                                              'assets/ico/Medical Kit.svg',
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pushReplacementNamed(
+                                                    'Le Mie Medicine');
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

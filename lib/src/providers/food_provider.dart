@@ -65,3 +65,8 @@ class FarmacoProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+
+final farmaOfCategoryProvider =
+    FutureProvider.family<List<Farmaco>, String>((ref, categoryId) async {
+  return await getFarmacosByCategory(categoryId);
+});

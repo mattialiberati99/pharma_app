@@ -11,6 +11,7 @@ import 'package:pharma_app/src/pages/login/otp_screen.dart';
 import 'package:pharma_app/src/pages/login/preSignUp.dart';
 import 'package:pharma_app/src/pages/login/success_verification_page.dart';
 import 'package:pharma_app/src/pages/login/verify_otp.dart';
+import 'package:pharma_app/src/pages/medicine/reminder_screen.dart';
 import 'package:pharma_app/src/pages/medicine/tabs_screen.dart';
 import 'package:pharma_app/src/pages/medicine/terapie_screen.dart';
 import 'package:pharma_app/src/pages/notifications/notifications.dart';
@@ -85,6 +86,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const Filters());
       case 'Reviews':
         return MaterialPageRoute(builder: (_) => const Reviews());
+      case 'Reminder':
+        return MaterialPageRoute(
+            builder: (_) => ReminderScreen(product: args as Farmaco));
       case 'Profilo':
         return MaterialPageRoute(builder: (_) => const ProfilePh());
       case 'Ordini':

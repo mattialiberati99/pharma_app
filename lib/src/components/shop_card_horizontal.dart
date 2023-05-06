@@ -10,18 +10,15 @@ import '../helpers/helper.dart';
 import '../models/shop.dart';
 import '../providers/shops_provider.dart';
 
-class ShopCardHorizontal extends ConsumerWidget {
-  final Shop shop;
-  const ShopCardHorizontal({Key? key, required this.shop}) : super(key: key);
+class FarmacoCardHorizontal extends ConsumerWidget {
+  final Farmaco farmaco;
+  const FarmacoCardHorizontal({Key? key, required this.farmaco}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        ref.read(currentShopIDProvider.notifier).state = shop.id!;
-        print('Current SHOP ID: ${ref.read(currentShopIDProvider)}');
-
-        Navigator.of(context).pushNamed('Store', arguments: shop);
+        Navigator.of(context).pushNamed('Product', arguments: farmaco);
       },
       child: ShadowBox(
           hMargin: 8,
@@ -42,7 +39,7 @@ class ShopCardHorizontal extends ConsumerWidget {
                           Radius.circular(10.0),
                         ),
                         child: Image.network(
-                          shop.image!.url!,
+                          farmaco.image!.url!,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -61,7 +58,7 @@ class ShopCardHorizontal extends ConsumerWidget {
                           left: 10,
                           bottom: 55,
                           child: Text(
-                            shop.name ?? '',
+                            farmaco.name ?? '',
                             style: context.textTheme.subtitle1?.copyWith(
                                 color: Color.fromARGB(255, 9, 15, 71),
                                 fontSize: 13),
@@ -69,7 +66,7 @@ class ShopCardHorizontal extends ConsumerWidget {
                       Positioned(
                           left: 10,
                           bottom: 40,
-                          child: Text(Helper.skipHtml(shop.description ?? ''),
+                          child: Text(Helper.skipHtml(farmaco.description ?? ''),
                               style: context.textTheme.subtitle2?.copyWith(
                                   color: Color.fromARGB(255, 9, 15, 71),
                                   fontSize: 13))),
@@ -80,17 +77,17 @@ class ShopCardHorizontal extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
+                            /* Padding(
                               padding: const EdgeInsets.only(left: 4.0),
                               child: Text(
-                                  shop.deliveryFee != 0.0
+                                  farmaco.deliveryFee != 0.0
                                       ? shop.deliveryFee!.toEUR()
                                       : 'Gratis',
                                   style: context.textTheme.subtitle2?.copyWith(
                                       color: Color.fromARGB(255, 9, 15, 71),
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),
-                            ),
+                            ), */
                             ClipRRect(
                               borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20),

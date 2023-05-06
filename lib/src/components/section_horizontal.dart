@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/components/section_header.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
+import 'package:pharma_app/src/providers/categories_provider.dart';
 import 'package:pharma_app/src/providers/food_provider.dart';
 
 import '../providers/shops_provider.dart';
@@ -19,7 +20,7 @@ class SectionHorizontal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chosen = ref.watch(nearestShopsProvider);
+    final chosen = ref.watch(farmaOfCategoryProvider('11'));
 
     return Column(
       children: [
@@ -54,23 +55,23 @@ class SectionHorizontal extends ConsumerWidget {
                 value: chosen,
                 loading: const CircularProgressIndicator(),
                 data: (chosenShops) {
-                  final filtered =
-                      ref.watch(shopsFilteredByDeliveryProvider(chosenShops));
-                  return ListView.builder(
-                    clipBehavior: Clip.none,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: filtered.length,
-                    itemBuilder: (_, index) {
-                      //if (index == 0) return const SizedBox(width: 25.0);
-                      //final label = CategoryRestaurant.values[index - 1].label;
-                      return SizedBox(
-                        height: 250,
-                        width: 180,
-                        child: ShopCardHorizontal(
-                          shop: filtered[index],
-                        ),
-                      );
-                    },
+                  /* final filtered =
+                      ref.watch(shopsFilteredByDeliveryProvider(chosenShops)); */
+                  return SizedBox(
+                    height: 250,
+                    width: 300,
+                    child: Expanded(
+                      child: ListView.builder(
+                        clipBehavior: Clip.none,
+                        scrollDirection: Axis.horizontal,
+                        //itemCount: filtered.length,
+                        itemBuilder: (_, index) {
+                          return FarmacoCardHorizontal(
+                            farmaco: chosenShops[index],
+                          );
+                        },
+                      ),
+                    ),
                   );
                 })),
         //) //overflow

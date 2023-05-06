@@ -138,7 +138,7 @@ class _SearchBarShopState extends ConsumerState<SearchBarShop> {
         onSuggestionSelected: (suggestion) {
           print("food");
           Navigator.of(context).pushNamed(
-            'Product',
+            'Reminder',
             arguments: suggestion.data as Farmaco,
           );
         },

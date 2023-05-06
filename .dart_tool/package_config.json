@@ -212,6 +212,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "email_auth",
+      "rootUri": "file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/email_auth-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "emoji_picker_flutter",
       "rootUri": "file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/emoji_picker_flutter-1.5.4",
       "packageUri": "lib/",
@@ -1340,7 +1346,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-05-06T10:15:35.832815Z",
+  "generated": "2023-05-06T10:48:15.178414Z",
   "generator": "pub",
   "generatorVersion": "2.19.5"
 }

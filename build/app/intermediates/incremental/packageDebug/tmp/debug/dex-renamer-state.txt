@@ -1,4 +1,4 @@
-#Sat May 06 11:42:54 CEST 2023
+#Sat May 06 16:56:22 CEST 2023
 base.0=C\:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
 base.2=C\:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex

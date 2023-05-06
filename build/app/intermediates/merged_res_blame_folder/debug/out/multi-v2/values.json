@@ -112,22 +112,20 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
                     "from": {
-                        "startLines": "3,18",
-                        "startColumns": "4,4",
-                        "startOffsets": "176,1107",
-                        "endLines": "11,20",
-                        "endColumns": "12,12",
-                        "endOffsets": "758,1273"
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,199,281,385,494,614,711",
+                        "endColumns": "143,81,103,108,119,96,73",
+                        "endOffsets": "194,276,380,489,609,706,780"
                     },
                     "to": {
-                        "startLines": "142,151",
-                        "startColumns": "4,4",
-                        "startOffsets": "10278,10857",
-                        "endLines": "150,153",
-                        "endColumns": "12,12",
-                        "endOffsets": "10852,11021"
+                        "startLines": "130,135,136,137,138,139,140",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "9180,9621,9703,9807,9916,10036,10133",
+                        "endColumns": "143,81,103,108,119,96,73",
+                        "endOffsets": "9319,9698,9802,9911,10031,10128,10202"
                     }
                 },
                 {
@@ -201,20 +199,22 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
+                    "source": "C:\\Users\\samue\\Desktop\\Pharma\\pharma_app\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,199,281,385,494,614,711",
-                        "endColumns": "143,81,103,108,119,96,73",
-                        "endOffsets": "194,276,380,489,609,706,780"
+                        "startLines": "3,18",
+                        "startColumns": "4,4",
+                        "startOffsets": "176,1107",
+                        "endLines": "11,20",
+                        "endColumns": "12,12",
+                        "endOffsets": "758,1273"
                     },
                     "to": {
-                        "startLines": "130,135,136,137,138,139,140",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "9180,9621,9703,9807,9916,10036,10133",
-                        "endColumns": "143,81,103,108,119,96,73",
-                        "endOffsets": "9319,9698,9802,9911,10031,10128,10202"
+                        "startLines": "142,151",
+                        "startColumns": "4,4",
+                        "startOffsets": "10278,10857",
+                        "endLines": "150,153",
+                        "endColumns": "12,12",
+                        "endOffsets": "10852,11021"
                     }
                 },
                 {
