@@ -57,36 +57,37 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
       backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          child: Form(
-            key: _formKey,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 50,
+        child: Form(
+          key: _formKey,
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: ListView(
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                Container(
+                  child: const Image(
+                    width: 33,
+                    height: 32,
+                    image: AssetImage('assets/immagini_pharma/logo_small.png'),
                   ),
-                  Container(
-                    child: const Image(
-                      width: 33,
-                      height: 32,
-                      image:
-                          AssetImage('assets/immagini_pharma/logo_small.png'),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  const Text(
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Center(
+                  child: const Text(
                     "Parliamo un po' di te",
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  Column(
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
@@ -103,8 +104,7 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                           const SizedBox(
                             width: 5,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 8, 5, 8),
+                          Expanded(
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -179,8 +179,10 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 8, 5, 8),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Expanded(
                             child: Container(
                                 margin: const EdgeInsets.only(left: 5),
                                 padding: const EdgeInsets.only(left: 10),
@@ -190,14 +192,14 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                                       const Color.fromARGB(255, 239, 242, 241),
                                 ),
                                 height: 99,
-                                width: 173,
                                 child: Row(
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         color: userSex == 1
-                                            ? Color.fromARGB(255, 47, 161, 148)
+                                            ? const Color.fromARGB(
+                                                255, 47, 161, 148)
                                             : Colors.white,
                                       ),
                                       width: 63,
@@ -207,7 +209,7 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                                               'assets/immagini_pharma/icon_female.png')),
                                     ),
                                     const SizedBox(
-                                      width: 5,
+                                      width: 2,
                                     ),
                                     if (userSex == 1)
                                       TextButton(
@@ -250,604 +252,349 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                       ),
                     ],
                   ),
-                  Container(
-                      width: 380,
-                      height: 250,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 20,
+                ),
+                Container(
+                    height: MediaQuery.of(context).size.width * 0.64,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 22),
+                          child: const Text(
+                            'Il tuo compleanno',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w900),
+                            textAlign: TextAlign.start,
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 11),
-                            child: const Text(
-                              'Il tuo compleanno',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w900),
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            width: 200,
-                            child: TextFormField(
-                              controller: dateinput,
-                              cursorColor: AppColors.gray5,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.all(0),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: AppColors.gray5),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: AppColors.gray5,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: AppColors.gray5),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                hintText: '__ /__ /__',
-                                //hintStyle: TextStyles.mediumGrey,
-                                filled: true,
-                                fillColor: AppColors.gray6,
-                                prefix: SizedBox(
-                                  width: 16,
-                                ),
-                                prefixIcon: Padding(
-                                  padding: EdgeInsets.only(left: 16.0),
-                                  child: Icon(Icons.alarm),
-                                ),
-                                prefixIconConstraints: BoxConstraints(
-                                  maxWidth: 40,
-                                  maxHeight: 40,
-                                ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          width: 200,
+                          child: TextFormField(
+                            controller: dateinput,
+                            cursorColor: AppColors.gray5,
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(0),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: AppColors.gray5),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
                               ),
-                              readOnly: true,
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now()
-                                        .add(const Duration(days: 2)),
-                                    firstDate: DateTime.now(),
-                                    //DateTime.now() - not to allow to choose before today.
-                                    lastDate: DateTime(2101));
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppColors.gray5,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: AppColors.gray5),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              hintText: '__ /__ /__',
+                              //hintStyle: TextStyles.mediumGrey,
+                              filled: true,
+                              fillColor: AppColors.gray6,
+                              prefix: SizedBox(
+                                width: 16,
+                              ),
+                              prefixIcon: Padding(
+                                padding: EdgeInsets.only(left: 16.0),
+                                child: Icon(Icons.alarm),
+                              ),
+                              prefixIconConstraints: BoxConstraints(
+                                maxWidth: 40,
+                                maxHeight: 40,
+                              ),
+                            ),
+                            readOnly: true,
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now()
+                                      .add(const Duration(days: 2)),
+                                  firstDate: DateTime.now(),
+                                  //DateTime.now() - not to allow to choose before today.
+                                  lastDate: DateTime(2101));
 
-                                if (pickedDate != null) {
-                                  setState(() {
-                                    data = pickedDate;
-                                    dateinput.text =
-                                        DateFormat('dd/MM/yy').format(data);
-                                  });
-                                } else {
-                                  print("Date is not selected");
-                                }
-                              },
-                            ),
+                              if (pickedDate != null) {
+                                setState(() {
+                                  data = pickedDate;
+                                  dateinput.text =
+                                      DateFormat('dd/MM/yy').format(data);
+                                });
+                              } else {
+                                print("Date is not selected");
+                              }
+                            },
                           ),
-                          /* SizedBox(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin:
-                                      const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                  height: 79,
-                                  width: 63,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                            0, 0, 5, 3),
-                                        child: const Text(
-                                          'Giorno: ',
-                                          style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 167, 166, 165)),
-                                        ),
-                                      ),
-                                      Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                          ),
-                                          width: 79,
-                                          height: getD ? 40 : 60,
-                                          child: TextFormField(
-                                            key: const ValueKey('Giorno'),
-                                            keyboardType: TextInputType.number,
-                                            validator: (value) {
-                                              if (value!.isEmpty ||
-                                                  value.length < 1 ||
-                                                  int.parse(value) > 31) {
-                                                setState(() {
-                                                  getD = true;
-                                                });
-                                                return "Inserire un giorno corretto";
-                                              } else {
-                                                setState(() {
-                                                  getD = false;
-                                                });
-                                                return null;
-                                              }
-                                            },
-                                            onSaved: ((newValue) {
-                                              print(newValue);
-                                              _userDay = newValue!;
-                                            }),
-                                            style: const TextStyle(
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 239, 242, 241),
-                                            ),
-                                            decoration: const InputDecoration(
-                                                hintText: '20',
-                                                focusColor: Colors.black,
-                                                filled: true,
-                                                fillColor: Color.fromARGB(
-                                                    255, 239, 242, 241),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            width: 0,
-                                                            color: Colors
-                                                                .transparent)),
-                                                border: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft:
-                                                            Radius.circular(10),
-                                                        bottomRight:
-                                                            Radius.circular(10),
-                                                        bottomLeft:
-                                                            Radius.circular(10),
-                                                        topRight:
-                                                            Radius.circular(
-                                                                10)))),
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                  height: 79,
-                                  width: 68,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                          margin:
-                                              EdgeInsets.fromLTRB(0, 0, 5, 3),
-                                          child: const Text(
-                                            'Mese: ',
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 167, 166, 165)),
-                                          )),
-                                      Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          width: 79,
-                                          height: getM ? 40 : 60,
-                                          child: TextFormField(
-                                            keyboardType: TextInputType.number,
-                                            onSaved: ((newValue) {
-                                              print(newValue);
-                                              _userMonth = newValue!;
-                                            }),
-                                            key: const ValueKey('Mese'),
-                                            //keyboardType: TextInputType.number,
-                                            validator: (value) {
-                                              if (value!.isEmpty ||
-                                                  value.length < 1 ||
-                                                  int.parse(value) > 12) {
-                                                setState(() {
-                                                  getM = true;
-                                                });
-                                                return "Inserire un mese corretto";
-                                              } else {
-                                                setState(() {
-                                                  getM = false;
-                                                });
-                                                return null;
-                                              }
-                                            },
-                                            style: const TextStyle(
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 239, 242, 241),
-                                            ),
-                                            decoration: const InputDecoration(
-                                                hintText: '5',
-                                                focusColor: Colors.black,
-                                                disabledBorder:
-                                                    InputBorder.none,
-                                                filled: true,
-                                                fillColor: Color.fromARGB(
-                                                    255, 239, 242, 241),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            width: 0,
-                                                            color: Colors
-                                                                .transparent)),
-                                                border: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft:
-                                                            Radius.circular(10),
-                                                        bottomRight:
-                                                            Radius.circular(10),
-                                                        bottomLeft:
-                                                            Radius.circular(10),
-                                                        topRight:
-                                                            Radius.circular(
-                                                                10)))),
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                  height: 79,
-                                  width: 68,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                          margin:
-                                              EdgeInsets.fromLTRB(0, 0, 6, 3),
-                                          child: const Text(
-                                            'Anno: ',
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 167, 166, 165)),
-                                          )),
-                                      Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          width: 79,
-                                          height: getY ? 40 : 60,
-                                          child: TextFormField(
-                                            keyboardType: TextInputType.number,
-                                            onSaved: ((newValue) {
-                                              print(newValue);
-                                              _userYear = newValue!;
-                                            }),
-                                            key: const ValueKey('Anno'),
-                                            validator: (value) {
-                                              if (value!.isEmpty ||
-                                                  value.length < 4 ||
-                                                  int.parse(value) > 2005) {
-                                                setState(() {
-                                                  getY = true;
-                                                });
-                                                return "Inserire un anno corretto";
-                                              } else {
-                                                setState(() {
-                                                  getY = false;
-                                                });
-                                                return null;
-                                              }
-                                            },
-                                            style: const TextStyle(
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 239, 242, 241),
-                                            ),
-                                            decoration: const InputDecoration(
-                                                focusColor: Colors.black,
-                                                suffixIconColor: Colors.black,
-                                                hintText: '2000',
-                                                disabledBorder:
-                                                    InputBorder.none,
-                                                filled: true,
-                                                fillColor: Color.fromARGB(
-                                                    255, 239, 242, 241),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            width: 0,
-                                                            color: Colors
-                                                                .transparent)),
-                                                border: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft:
-                                                            Radius.circular(10),
-                                                        bottomRight:
-                                                            Radius.circular(10),
-                                                        bottomLeft:
-                                                            Radius.circular(10),
-                                                        topRight:
-                                                            Radius.circular(
-                                                                10)))),
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                          width: 20,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(left: 5),
+                              child: const Text(
+                                'La tua posizione',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w900),
+                                textAlign: TextAlign.start,
+                              ),
                             ),
-                          ), */
-                          const SizedBox(
-                            height: 5,
-                            width: 20,
-                          ),
-                          Container(
-                            height: 100,
-                            width: 372,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(left: 5),
-                                  child: const Text(
-                                    'La tua posizione',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w900),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                SizedBox(
-                                  width: 300,
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    title: TextFormField(
-                                      controller: posizione,
-                                      textInputAction: TextInputAction.next,
-                                      onTap: () {
-                                        posProv.suggestion = null;
-                                      },
-                                      onEditingComplete: () {},
-                                      onChanged: (val) async {
-                                        if (val.length > 3) {
-                                          posProv.searchAddress(
-                                              address: posizione.text);
-                                        }
-                                      },
-                                      cursorColor: AppColors.gray5,
-                                      decoration: const InputDecoration(
-                                        contentPadding: EdgeInsets.all(0),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: AppColors.gray5),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: AppColors.gray5,
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: AppColors.gray5),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        hintText: 'Luogo di partenza',
-                                        //hintStyle: TextStyles.mediumGrey,
-                                        filled: true,
-                                        fillColor: AppColors.gray6,
-                                        prefix: SizedBox(
-                                          width: 16,
-                                        ),
-                                        prefixIcon: Padding(
-                                          padding: EdgeInsets.only(left: 16.0),
-                                          child: Icon(Icons.accessibility),
-                                        ),
-                                        prefixIconConstraints: BoxConstraints(
-                                          maxWidth: 40,
-                                          maxHeight: 40,
-                                        ),
-                                      ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              width: 300,
+                              child: ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: TextFormField(
+                                  controller: posizione,
+                                  textInputAction: TextInputAction.next,
+                                  onTap: () {
+                                    posProv.suggestion = null;
+                                  },
+                                  onEditingComplete: () {},
+                                  onChanged: (val) async {
+                                    if (val.length > 3) {
+                                      posProv.searchAddress(
+                                          address: posizione.text);
+                                    }
+                                  },
+                                  cursorColor: AppColors.gray5,
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.all(0),
+                                    border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: AppColors.gray5),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
                                     ),
-                                    subtitle: (posProv.suggestion != null)
-                                        ? Container(
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                posizione.text =
-                                                    posProv.suggestion!;
-                                                Address newAddress =
-                                                    Address.fromJSON({});
-                                                newAddress.address =
-                                                    posProv.suggestion!;
-                                                var position =
-                                                    await GeocodingPlatform
-                                                        .instance
-                                                        .locationFromAddress(
-                                                            newAddress
-                                                                .address!);
-                                                newAddress.latitude =
-                                                    position.first.latitude;
-                                                newAddress.longitude =
-                                                    position.first.longitude;
-                                                //shipping.from = newAddress;
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: AppColors.gray5,
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: AppColors.gray5),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                    hintText: 'Luogo di partenza',
+                                    //hintStyle: TextStyles.mediumGrey,
+                                    filled: true,
+                                    fillColor: AppColors.gray6,
+                                    prefix: SizedBox(
+                                      width: 16,
+                                    ),
+                                    prefixIcon: Padding(
+                                      padding: EdgeInsets.only(left: 16.0),
+                                      child: Icon(Icons.accessibility),
+                                    ),
+                                    prefixIconConstraints: BoxConstraints(
+                                      maxWidth: 40,
+                                      maxHeight: 40,
+                                    ),
+                                  ),
+                                ),
+                                subtitle: (posProv.suggestion != null)
+                                    ? Container(
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            posizione.text =
+                                                posProv.suggestion!;
+                                            Address newAddress =
+                                                Address.fromJSON({});
+                                            newAddress.address =
+                                                posProv.suggestion!;
+                                            var position =
+                                                await GeocodingPlatform.instance
+                                                    .locationFromAddress(
+                                                        newAddress.address!);
+                                            newAddress.latitude =
+                                                position.first.latitude;
+                                            newAddress.longitude =
+                                                position.first.longitude;
+                                            //shipping.from = newAddress;
 
-                                                setState(() {
-                                                  posProv.suggestion = null;
-                                                });
-                                                FocusScope.of(context)
-                                                    .nextFocus();
-                                              },
-                                              child: Card(
-                                                color: AppColors.primary,
-                                                elevation: 6,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Flex(
-                                                    direction: Axis.horizontal,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        child: AutoSizeText(
-                                                            "${posProv.suggestion}",
-                                                            maxLines: 1,
-                                                            //overflow: TextOverflow.fade,
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500)),
-                                                      ),
-                                                      const Icon(
-                                                          Icons
-                                                              .arrow_forward_ios,
-                                                          color: Colors.white)
-                                                    ],
+                                            setState(() {
+                                              posProv.suggestion = null;
+                                            });
+                                            FocusScope.of(context).nextFocus();
+                                          },
+                                          child: Card(
+                                            color: AppColors.primary,
+                                            elevation: 6,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Flex(
+                                                direction: Axis.horizontal,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    child: AutoSizeText(
+                                                        "${posProv.suggestion}",
+                                                        maxLines: 1,
+                                                        //overflow: TextOverflow.fade,
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500)),
                                                   ),
-                                                ),
+                                                  const Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      color: Colors.white)
+                                                ],
                                               ),
                                             ),
-                                          )
-                                        : null,
-                                  ),
-                                ),
-                                /* SizedBox(
-                                  height: getP ? 44 : 64,
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          margin:
-                                              const EdgeInsets.only(left: 4),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
                                           ),
-                                          width: 360,
-                                          child: TextFormField(
-                                            onSaved: ((newValue) {
-                                              print(newValue);
-                                              _userPosition = newValue!;
-                                            }),
-                                            key: const ValueKey('Posizione'),
-                                            validator: (value) {
-                                              if (value!.isEmpty ||
-                                                  value.length < 10) {
-                                                setState(() {
-                                                  getP = true;
-                                                });
-                                                return "Inserire una posizione corretta";
-                                              } else {
-                                                setState(() {
-                                                  getP = false;
-                                                });
-                                                return null;
-                                              }
-                                            },
-                                            style: const TextStyle(
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 239, 242, 241),
-                                            ),
-                                            decoration: const InputDecoration(
-                                                focusColor: Colors.black,
-                                                suffixIconColor: Colors.black,
-                                                hintText: 'La tua posizione',
-                                                suffixIcon: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .only(end: 12.0),
-                                                  child: Image(
-                                                      image: AssetImage(
-                                                          'assets/immagini_pharma/arrow_down.png')),
-                                                ),
-                                                disabledBorder:
-                                                    InputBorder.none,
-                                                filled: true,
-                                                fillColor: Color.fromARGB(
-                                                    255, 239, 242, 241),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            width: 0,
-                                                            color: Colors
-                                                                .transparent)),
-                                                border: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft:
-                                                            Radius.circular(10),
-                                                        bottomRight:
-                                                            Radius.circular(10),
-                                                        bottomLeft:
-                                                            Radius.circular(10),
-                                                        topRight:
-                                                            Radius.circular(
-                                                                10)))),
-                                          )),
-                                    ],
-                                  ),
-                                ), */
-                              ],
+                                        ),
+                                      )
+                                    : null,
+                              ),
                             ),
-                          ),
-                        ],
-                      )),
-                  ElevatedButton(
-                    onPressed: () => _trySubmit(context),
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(212, 50),
-                      backgroundColor: Color.fromARGB(255, 47, 161, 148),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18)),
+                            /* SizedBox(
+                              height: getP ? 44 : 64,
+                              child: Row(
+                                children: [
+                                  Container(
+                                      margin:
+                                          const EdgeInsets.only(left: 4),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10),
+                                      ),
+                                      width: 360,
+                                      child: TextFormField(
+                                        onSaved: ((newValue) {
+                                          print(newValue);
+                                          _userPosition = newValue!;
+                                        }),
+                                        key: const ValueKey('Posizione'),
+                                        validator: (value) {
+                                          if (value!.isEmpty ||
+                                              value.length < 10) {
+                                            setState(() {
+                                              getP = true;
+                                            });
+                                            return "Inserire una posizione corretta";
+                                          } else {
+                                            setState(() {
+                                              getP = false;
+                                            });
+                                            return null;
+                                          }
+                                        },
+                                        style: const TextStyle(
+                                          backgroundColor: Color.fromARGB(
+                                              255, 239, 242, 241),
+                                        ),
+                                        decoration: const InputDecoration(
+                                            focusColor: Colors.black,
+                                            suffixIconColor: Colors.black,
+                                            hintText: 'La tua posizione',
+                                            suffixIcon: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .only(end: 12.0),
+                                              child: Image(
+                                                  image: AssetImage(
+                                                      'assets/immagini_pharma/arrow_down.png')),
+                                            ),
+                                            disabledBorder:
+                                                InputBorder.none,
+                                            filled: true,
+                                            fillColor: Color.fromARGB(
+                                                255, 239, 242, 241),
+                                            enabledBorder:
+                                                OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        width: 0,
+                                                        color: Colors
+                                                            .transparent)),
+                                            border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    bottomRight:
+                                                        Radius.circular(10),
+                                                    bottomLeft:
+                                                        Radius.circular(10),
+                                                    topRight:
+                                                        Radius.circular(
+                                                            10)))),
+                                      )),
+                                ],
+                              ),
+                            ), */
+                          ],
+                        ),
+                      ],
+                    )),
+                ElevatedButton(
+                  onPressed: () => _trySubmit(context),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(212, 50),
+                    backgroundColor: Color.fromARGB(255, 47, 161, 148),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18)),
+                  ),
+                  child: const Text('Continua'),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Image(image: AssetImage('assets/immagini_pharma/Line.png')),
+                    SizedBox(
+                      width: 20,
                     ),
-                    child: const Text('Continua'),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Image(
-                          image: AssetImage('assets/immagini_pharma/Line.png')),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        'Oppure',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 202, 202, 202),
-                            fontSize: 14),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Image(
-                          image: AssetImage('assets/immagini_pharma/Line.png')),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset('assets/ico/google.svg'),
-                      const SizedBox(
-                        width: 80,
-                      ),
-                      SvgPicture.asset('assets/ico/fb.svg'),
-                    ],
-                  ),
-                ],
-              ),
+                    Text(
+                      'Oppure',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 202, 202, 202),
+                          fontSize: 14),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Image(image: AssetImage('assets/immagini_pharma/Line.png')),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset('assets/ico/google.svg'),
+                    const SizedBox(
+                      width: 80,
+                    ),
+                    SvgPicture.asset('assets/ico/fb.svg'),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

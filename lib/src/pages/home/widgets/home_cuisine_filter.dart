@@ -41,13 +41,6 @@ class _HomeCategoryFilterState extends ConsumerState<HomeCuisineFilter> {
                     color: Color.fromARGB(255, 28, 31, 30),
                     fontWeight: FontWeight.w600),
               ),
-              Text(
-                'Vedi tutti',
-                style: TextStyle(
-                    fontSize: 12,
-                    color: Color.fromARGB(255, 28, 31, 30),
-                    fontWeight: FontWeight.w600),
-              ),
             ],
           ),
         ),

@@ -150,14 +150,14 @@ class RouteGenerator {
                 SearchAddressPage(isOrder: (args as bool?) ?? false));
       case 'Tracking':
         return MaterialPageRoute(builder: (_) => TrackingWidget());
-      case 'Recipe':
-        return MaterialPageRoute(builder: (_) {
-          final args = settings.arguments as Map<String, dynamic>;
-          return EditRecipePage(
-            product: args['product'],
-            quantity: args['quantity'],
-          );
-        });
+      // case 'Recipe':
+      //   return MaterialPageRoute(builder: (_) {
+      //     final args = settings.arguments as Map<String, dynamic>;
+      //     return EditRecipePage(
+      //       product: args['product'],
+      //       quantity: args['quantity'],
+      //     );
+      //   });
       default:
         return MaterialPageRoute(
           builder: (_) => SomethingWrong(

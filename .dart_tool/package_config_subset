@@ -26,6 +26,10 @@ auto_size_text
 2.12
 file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/auto_size_text-3.0.0/
 file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/auto_size_text-3.0.0/lib/
+awesome_dialog
+2.12
+file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/awesome_dialog-3.0.2/
+file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/awesome_dialog-3.0.2/lib/
 boolean_selector
 2.17
 file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/boolean_selector-2.1.1/
@@ -138,10 +142,6 @@ dropdown_search
 2.17
 file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/dropdown_search-5.0.6/
 file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/dropdown_search-5.0.6/lib/
-email_auth
-2.12
-file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/email_auth-1.0.0/
-file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/email_auth-1.0.0/lib/
 emoji_picker_flutter
 2.17
 file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/emoji_picker_flutter-1.5.4/
@@ -662,6 +662,10 @@ retry
 2.12
 file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/retry-3.1.1/
 file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/retry-3.1.1/lib/
+rive
+2.12
+file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/rive-0.9.1/
+file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/rive-0.9.1/lib/
 riverpod
 2.17
 file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/riverpod-2.2.0/

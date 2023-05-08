@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:pharma_app/src/components/search_bar/filter_search_bar.dart';
 import 'package:pharma_app/src/components/search_bar/home_search_bar.dart';
 import 'package:pharma_app/src/components/search_bar/shop_search_bar.dart';
 import 'package:pharma_app/src/helpers/app_config.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
+
+import '../../components/search_bar/pre_home_search_bar.dart';
 
 class SearchProduct extends StatefulWidget {
   const SearchProduct({super.key});
@@ -55,7 +58,7 @@ class _SearchProductState extends State<SearchProduct> {
                     Container(
                       padding: const EdgeInsets.only(top: 40.0, left: 16),
                       width: 354,
-                      child: const SearchBarShop(),
+                      child: const SearchBarFilter(),
                     )
                   ]),
             ),

@@ -118,13 +118,6 @@ class _HomeState extends ConsumerState<Home> {
                               color: Color.fromARGB(255, 28, 31, 30),
                               fontWeight: FontWeight.w600),
                         ),
-                        Text(
-                          'Vedi tutti',
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Color.fromARGB(255, 28, 31, 30),
-                              fontWeight: FontWeight.w600),
-                        ),
                       ],
                     ),
                   ),
@@ -143,7 +136,7 @@ class _HomeState extends ConsumerState<Home> {
               const SizedBox(
                 height: 40,
               ),
-              Consumer(builder: (context, ref, _) {
+              /* Consumer(builder: (context, ref, _) {
                 return HomeCuisineFilter(
                     cuisineSelected: cuisineSelected,
                     onCuisineSelected: (Cuisine cuisine) {
@@ -154,7 +147,7 @@ class _HomeState extends ConsumerState<Home> {
                       ref.read(homeSelectedCuisineProvider.notifier).state =
                           cuisineSelected!;
                     });
-              }),
+              }), */
               const SizedBox(
                 height: 35,
               ),
@@ -163,8 +156,8 @@ class _HomeState extends ConsumerState<Home> {
                   horizontal: context.mqw * 0.08,
                 ),
                 child: const SectionHorizontal(
-                  title: "Acquistati di recente",
-                  subTitle: "Vedi tutto",
+                  title: "Prodotti",
+                  subTitle: "filtrati per categoria",
                 ),
               ),
               const SizedBox(

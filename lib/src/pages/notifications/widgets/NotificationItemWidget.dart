@@ -53,7 +53,7 @@ class NotificationItemWidget extends StatelessWidget {
                           fit: BoxFit.fitHeight,
                           placeholder: (context, i) => ClipRRect(
                             child: Image.asset(
-                              'assets/img/loading.gif',
+                              'assets/immagini/loading.gif',
                               fit: BoxFit.cover,
                             ),
                           ),

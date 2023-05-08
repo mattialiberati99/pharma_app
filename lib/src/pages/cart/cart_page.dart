@@ -254,8 +254,8 @@ class _CartPageState extends ConsumerState<CartPage> {
                                           */
                                         Row(
                                           children: [
-                                            Text(
-                                              'Pizza Marinara',
+                                            const Text(
+                                              'ZzzQuil',
                                               style: TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 9, 15, 71),
@@ -267,16 +267,16 @@ class _CartPageState extends ConsumerState<CartPage> {
                                             ),
                                             GestureDetector(
                                               onTap: () {},
-                                              child: Image(
+                                              child: const Image(
                                                   image: AssetImage(
                                                       'assets/immagini_pharma/delOrd.png')),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 5,
                                         ),
-                                        Text(
+                                        const Text(
                                           'Flacone da 30 pillole',
                                           style: TextStyle(
                                               color: Color.fromARGB(
@@ -284,7 +284,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                               fontSize: 14,
                                               fontWeight: FontWeight.w700),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         Row(
@@ -319,8 +319,8 @@ class _CartPageState extends ConsumerState<CartPage> {
                                               */
                                             Row(
                                               children: [
-                                                Text(
-                                                  '14,99€',
+                                                const Text(
+                                                  '12,00€',
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 9, 15, 71),
@@ -339,7 +339,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                         : ScaffoldMessenger.of(
                                                                 context)
                                                             .showSnackBar(
-                                                                SnackBar(
+                                                                const SnackBar(
                                                             content: Text(
                                                                 'Non puoi ordinare da più negozi contemporaneamente'),
                                                           ));
@@ -402,7 +402,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: [
+                                children: const [
                                   Text(
                                     'Ordine Totale',
                                     style: TextStyle(
@@ -411,7 +411,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                     ),
                                   ),
                                   Text(
-                                    '34,88€',
+                                    '12,00€',
                                     style: TextStyle(
                                       color: Color.fromARGB(255, 9, 15, 71),
                                       fontSize: 20,
@@ -457,7 +457,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                     ),
                                   ),
                                   Text(
-                                    '- 2,99€',
+                                    '- 2,00€',
                                     style: TextStyle(
                                       color: Color.fromARGB(255, 9, 15, 71),
                                       fontSize: 20,
@@ -505,7 +505,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: [
+                                children: const [
                                   Text(
                                     'Totale',
                                     style: TextStyle(
@@ -514,7 +514,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                     ),
                                   ),
                                   Text(
-                                    '31,89€',
+                                    '10,00€',
                                     style: TextStyle(
                                         color: Color.fromARGB(255, 9, 15, 71),
                                         fontSize: 20,

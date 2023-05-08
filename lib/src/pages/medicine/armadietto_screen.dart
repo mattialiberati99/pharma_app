@@ -4,6 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 
 import '../../components/main_app_bar.dart';
+import '../../components/search_bar/filter_search_bar.dart';
 import '../../components/search_bar/shop_search_bar.dart';
 import '../../models/farmaco.dart';
 
@@ -76,7 +77,7 @@ class _ArmadiettoScreenState extends State<ArmadiettoScreen> {
                                   const SizedBox(height: 50),
                                   const Text('Aggiungi il farmaco'),
                                   const SizedBox(height: 20),
-                                  const SearchBarShop(),
+                                  const SearchBarFilter(),
                                   const SizedBox(height: 20),
                                   Row(
                                     mainAxisAlignment:

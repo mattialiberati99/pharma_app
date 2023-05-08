@@ -14,6 +14,7 @@ import '../../helpers/app_config.dart';
 import '../../helpers/validators.dart';
 
 import '../../providers/selected_page_name_provider.dart';
+import '../../repository/user_repository.dart';
 
 class Signup extends ConsumerStatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -175,7 +176,10 @@ class _SignupState extends ConsumerState<Signup> {
                             width: 210,
                             child: ElevatedButton(
                               onPressed: agree
-                                  ? () => userProv.register(context)
+                                  ? () {
+                                      userProv.register(context);
+                                     // sendVerificationMail();
+                                    }
                                   : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:

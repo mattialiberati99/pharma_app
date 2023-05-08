@@ -44,6 +44,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "awesome_dialog",
+      "rootUri": "file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/awesome_dialog-3.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/boolean_selector-2.1.1",
       "packageUri": "lib/",
@@ -210,12 +216,6 @@
       "rootUri": "file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/dropdown_search-5.0.6",
       "packageUri": "lib/",
       "languageVersion": "2.17"
-    },
-    {
-      "name": "email_auth",
-      "rootUri": "file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/email_auth-1.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
     },
     {
       "name": "emoji_picker_flutter",
@@ -1022,6 +1022,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "rive",
+      "rootUri": "file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/rive-0.9.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "riverpod",
       "rootUri": "file:///C:/Users/samue/AppData/Local/Pub/Cache/hosted/pub.dev/riverpod-2.2.0",
       "packageUri": "lib/",
@@ -1346,7 +1352,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-05-06T10:48:15.178414Z",
+  "generated": "2023-05-08T09:12:12.581342Z",
   "generator": "pub",
   "generatorVersion": "2.19.5"
 }

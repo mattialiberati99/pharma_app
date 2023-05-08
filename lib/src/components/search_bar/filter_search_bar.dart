@@ -59,7 +59,7 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
                 borderRadius: BorderRadius.all(Radius.circular(30))),
             hintText: widget.isExpanded ? 'Cosa vorresti cercare?' : 'Cerca',
           ),
-          autofocus: false,
+          autofocus: true,
         ),
         suggestionsBoxVerticalOffset: 20,
         suggestionsBoxDecoration: SuggestionsBoxDecoration(
@@ -108,7 +108,7 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
                       ? (suggestion.data as Farmaco).image?.url ?? ""
                       : (suggestion.data as Shop).image?.url ?? "",
                   placeholder: (context, url) => Image.asset(
-                    'assets/img/loading.gif',
+                    'assets/immagini/loading.gif',
                     fit: BoxFit.cover,
                     height: 40,
                     width: 40,
@@ -143,8 +143,9 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
   Future<List<SearchResult>> searchElements(String value) async {
     List<SearchResult> elements = [];
     if (value.length >= 3) {
-      var products = await searchFarmacos(value,
-          filter: ref.read(filterProvider).toQuery());
+      var products =
+          await searchFoods(value, filter: ref.read(filterProvider).toQuery());
+      //filter: ref.read(filterProvider).toQuery());
       for (Farmaco product in products) {
         SearchResult search = SearchResult(
             text: product.name!,

@@ -116,7 +116,7 @@ class _SearchBarPreHomeState extends ConsumerState<SearchBarHome> {
                       ? (suggestion.data as Farmaco).image?.url ?? ""
                       : (suggestion.data as Shop).image?.url ?? "",
                   placeholder: (context, url) => Image.asset(
-                    'assets/img/loading.gif',
+                    'assets/immagini/loading.gif',
                     fit: BoxFit.cover,
                     height: 40,
                     width: 40,

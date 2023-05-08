@@ -123,6 +123,7 @@ Future<User> loginAsUserToken(String token) async {
 
 Future<bool> sendVerificationMail() async {
   User _user = currentUser.value;
+  print(_user);
   final String _apiToken = 'api_token=${_user.apiToken}';
   //address.userId = _user.id;
   final String url =

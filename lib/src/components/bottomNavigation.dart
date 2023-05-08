@@ -135,6 +135,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                           MainAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        Positioned(
+                                          top: -10,
+                                          child: Container(
+                                            height: 4.45,
+                                            width: 88.94,
+                                            color: Color(0xFFE1E1E1),
+                                            alignment: Alignment.center,
+                                          ),
+                                        ),
                                         DrawerItem(
                                           pageName: 'Terapie',
                                           iconPath:

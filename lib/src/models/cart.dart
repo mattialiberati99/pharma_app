@@ -29,23 +29,23 @@ class Cart {
                   var extras = product?.types.where((foodExtra) =>
                       foodExtra.id.toString() == extra['id'].toString());
                   return extras!.first;
-                case 3:
-                  var extras = product?.sizes.where((foodExtra) {
-                    return foodExtra.id.toString() == extra['id'].toString();
-                  });
-                  return extras!.first;
-                case 4:
-                  var extras = product?.colors.where((foodExtra) =>
-                      foodExtra.id.toString() == extra['id'].toString());
-                  return extras!.first;
-                case 5:
-                  var extras = product?.mixtures.where((foodExtra) =>
-                      foodExtra.id.toString() == extra['id'].toString());
-                  return extras!.first;
-                case 6:
-                  var extras = product?.additions.where((foodExtra) =>
-                      foodExtra.id.toString() == extra['id'].toString());
-                  return extras!.first;
+                // case 3:
+                //   var extras = product?.sizes.where((foodExtra) {
+                //     return foodExtra.id.toString() == extra['id'].toString();
+                //   });
+                //   return extras!.first;
+                // case 4:
+                //   var extras = product?.colors.where((foodExtra) =>
+                //       foodExtra.id.toString() == extra['id'].toString());
+                //   return extras!.first;
+                // case 5:
+                //   var extras = product?.mixtures.where((foodExtra) =>
+                //       foodExtra.id.toString() == extra['id'].toString());
+                //   return extras!.first;
+                // case 6:
+                //   var extras = product?.additions.where((foodExtra) =>
+                //       foodExtra.id.toString() == extra['id'].toString());
+                //   return extras!.first;
                 default:
                   var extras = product?.extras.where((foodExtra) =>
                       foodExtra.id.toString() == extra['id'].toString());

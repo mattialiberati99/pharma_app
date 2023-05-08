@@ -26,10 +26,10 @@ class Farmaco {
   Shop? farmacia;
   AppCategory? category;
   List<Extra> types = []; // exta per i filtri nella pagina di ricerca
-  List<Extra> sizes = []; // extra per le taglie
+/*   List<Extra> sizes = []; // extra per le taglie
   List<Extra> colors = []; // extra per i colori
   List<Extra> mixtures = []; // extra per le miscele, impasti, ecc
-  List<Extra> additions = []; // extra per le aggiunte
+  List<Extra> additions = [];  */ // extra per le aggiunte
   List<Extra> extras = []; // per gli ingredienti
   List<ExtraGroup>? extraGroups;
   List<Review> foodReviews = [];
@@ -92,7 +92,7 @@ class Farmaco {
             case 2:
               types.add(Extra.fromJSON(element));
               break;
-            case 3:
+            /*    case 3:
               sizes.add(Extra.fromJSON(element));
               break;
             case 4:
@@ -103,7 +103,7 @@ class Farmaco {
               break;
             case 6:
               additions.add(Extra.fromJSON(element));
-              break;
+              break; */
             default:
               extras.add(Extra.fromJSON(element));
               break;

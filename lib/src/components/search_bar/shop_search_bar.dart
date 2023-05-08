@@ -21,6 +21,7 @@ class SearchBarShop extends ConsumerStatefulWidget {
   final bool isExpanded;
   final Function? onSubmitted;
   final Function? onStartSearch;
+  final String? routePage;
 
   const SearchBarShop({
     Key? key,
@@ -31,6 +32,7 @@ class SearchBarShop extends ConsumerStatefulWidget {
     this.isExpanded = false,
     this.onSubmitted,
     this.onStartSearch,
+    this.routePage,
   }) : super(key: key);
 
   @override
@@ -65,7 +67,7 @@ class _SearchBarShopState extends ConsumerState<SearchBarShop> {
               hintStyle: TextStyle(color: Color.fromARGB(255, 205, 207, 206)),
               prefixIcon: Icon(Icons.search),
               prefixIconColor: Color.fromARGB(255, 167, 166, 165)),
-          autofocus: false,
+          autofocus: true,
         ),
         suggestionsBoxVerticalOffset: 20,
         suggestionsBoxDecoration: SuggestionsBoxDecoration(
@@ -114,7 +116,7 @@ class _SearchBarShopState extends ConsumerState<SearchBarShop> {
                       ? (suggestion.data as Farmaco).image?.url ?? ""
                       : (suggestion.data as Shop).image?.url ?? "",
                   placeholder: (context, url) => Image.asset(
-                    'assets/img/loading.gif',
+                    'assets/immagini/loading.gif',
                     fit: BoxFit.cover,
                     height: 40,
                     width: 40,
@@ -138,7 +140,7 @@ class _SearchBarShopState extends ConsumerState<SearchBarShop> {
         onSuggestionSelected: (suggestion) {
           print("food");
           Navigator.of(context).pushNamed(
-            'Reminder',
+            widget.routePage!,
             arguments: suggestion.data as Farmaco,
           );
         },
@@ -152,6 +154,7 @@ class _SearchBarShopState extends ConsumerState<SearchBarShop> {
       var products =
           await searchFarmacos(value, restaurant_id: widget.restaurant_id);
       for (Farmaco product in products) {
+        print(product);
         SearchResult search = SearchResult(
             text: product.name!,
             id: product.id!,

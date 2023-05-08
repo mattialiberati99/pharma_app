@@ -57,7 +57,7 @@ class SectionHorizontal extends ConsumerWidget {
                 data: (chosenShops) {
                   /* final filtered =
                       ref.watch(shopsFilteredByDeliveryProvider(chosenShops)); */
-                  return SizedBox(
+                  return Container(
                     height: 250,
                     width: 300,
                     child: Expanded(

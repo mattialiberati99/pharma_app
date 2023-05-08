@@ -101,7 +101,7 @@ class App extends ConsumerWidget {
       theme: themeData,
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
-      initialRoute: 'Home',
+      initialRoute: 'Splash',
       locale: const Locale.fromSubtags(languageCode: "it"),
       localizationsDelegates: const [
         S.delegate,
