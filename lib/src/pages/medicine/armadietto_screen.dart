@@ -19,9 +19,9 @@ class ArmadiettoScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     FlutterNativeSplash.remove();
 
-    final leMieMedicine = ref.read(armadiettoProvider);
+    final leMieMedicine = ref.watch(armadiettoProvider).armadietto;
 
-    if (leMieMedicine.isEmpty()) {
+    if (leMieMedicine.isEmpty) {
       return Scaffold(
         body: Container(
           padding: new EdgeInsets.all(26),
@@ -79,24 +79,28 @@ class ArmadiettoScreen extends ConsumerWidget {
                                     route: 'Reminder',
                                   ),
                                   const SizedBox(height: 20),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Ricerce recenti',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          text: 'Reset',
-                                          style: TextStyle(color: Colors.red),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () => print('ciao'),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 30, right: 30),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text(
+                                          'Ricerce recenti',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      ),
-                                    ],
+                                        RichText(
+                                          text: TextSpan(
+                                            text: 'Reset',
+                                            style: TextStyle(color: Colors.red),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () => print('ciao'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   )
                                   // ElevatedButton(
                                   //   child: const Text('Close BottomSheet'),
@@ -134,10 +138,13 @@ class ArmadiettoScreen extends ConsumerWidget {
               'Farmaci validi',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            // ListView.builder(
-            //   itemCount: leMieMedicine.length,
-            //   itemBuilder: (ctx, i) => MedicinaArmadietto(leMieMedicine[i].),
-            // ),
+            ListView.builder(
+              itemCount: leMieMedicine.length,
+              itemBuilder: (ctx, i) {
+                MedicinaArmadietto(
+                    leMieMedicine[i].farmaco, leMieMedicine[i].scadenza);
+              },
+            ),
           ],
         ),
       );

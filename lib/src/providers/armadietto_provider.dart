@@ -18,6 +18,8 @@ class ArmadiettoProvider with ChangeNotifier {
     return _armadietto.length;
   }
 
+  //List<MedicinaArmadietto> get armadietto => _armadietto;
+
   bool exist(MedicinaArmadietto medicina) {
     for (var medicinaInArmadio in _armadietto) {
       if (medicinaInArmadio.farmaco.id == medicina.farmaco.id) return true;
