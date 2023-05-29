@@ -45,7 +45,7 @@ class _PreReg1State extends ConsumerState<PreReg1> {
                       height: 10,
                     ),
                     Text(
-                      'Visualizzare e\n acquistare i foods\n online con o\n senza ricetta',
+                      'Visualizzare e\n acquistare farmaci\n online con o\n senza ricetta',
                       style: TextStyle(
                           fontSize: 24,
                           color: Color.fromARGB(255, 9, 15, 71),

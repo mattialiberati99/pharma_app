@@ -88,7 +88,7 @@ class _PermissionDeniedWidgetState extends State<PermissionDeniedWidget> {
               Navigator.of(context).pushNamed('/Login');
             },
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 70),
-            color: Theme.of(context).accentColor.withOpacity(1),
+            color: Theme.of(context).colorScheme.secondary,
             shape: StadiumBorder(),
             child: Text(
               S.of(context).login,

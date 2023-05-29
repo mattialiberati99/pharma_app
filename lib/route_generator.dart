@@ -33,6 +33,7 @@ import 'package:pharma_app/src/pages/shops_by_address/shops_address.dart';
 import 'package:pharma_app/src/pages/tracking/tracking.dart';
 import 'package:pharma_app/src/pages/work_with_us/work_whit_us.dart';
 import 'package:pharma_app/src/repository/paymentCards_repository.dart';
+import 'src/components/search_bar/search_bar_terapie.dart';
 import 'src/pages/error.dart';
 import 'src/pages/filters/filters.dart';
 import 'src/pages/home/home.dart';

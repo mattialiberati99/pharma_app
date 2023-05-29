@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDIFpEx__vLH4hmfBW20axI9lQ0WbaW2ZM',
-    appId: '1:742346627788:android:2517c544eba9549e38c069',
-    messagingSenderId: '742346627788',
-    projectId: 'tac-dev-24fa7',
-    storageBucket: 'tac-dev-24fa7.appspot.com',
+    apiKey: 'AIzaSyBuWWhnTESkazqKHmE31UbcrsnT7w-sCVg',
+    appId: '1:809740045092:android:8243a62b43bb69879281b1',
+    messagingSenderId: '809740045092',
+    projectId: 'pharma-app-4b56f',
+    storageBucket: 'pharma-app-4b56f.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBzZw9Aaw8jeCawM5qlUbIsMaSt17VOPEI',
-    appId: '1:742346627788:ios:15bed9fc226ccd7038c069',
-    messagingSenderId: '742346627788',
-    projectId: 'tac-dev-24fa7',
-    storageBucket: 'tac-dev-24fa7.appspot.com',
-    iosClientId: '742346627788-omjcmpnj9rdnhrsbl84kdtt4e00b7lsj.apps.googleusercontent.com',
-    iosBundleId: 'it.resmedia.tac',
+    apiKey: 'AIzaSyBTSK33iL2bLh3rBHx5GjZROBgcYqR2fEU',
+    appId: '1:809740045092:ios:9e5df499ff356af89281b1',
+    messagingSenderId: '809740045092',
+    projectId: 'pharma-app-4b56f',
+    storageBucket: 'pharma-app-4b56f.appspot.com',
+    iosClientId: '809740045092-6dc0iuac2lu52os33nt72831rit6t7o9.apps.googleusercontent.com',
+    iosBundleId: 'it.resmedia.pharma',
   );
 }

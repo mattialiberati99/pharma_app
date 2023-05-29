@@ -58,7 +58,9 @@ class _SearchProductState extends State<SearchProduct> {
                     Container(
                       padding: const EdgeInsets.only(top: 40.0, left: 16),
                       width: 354,
-                      child: const SearchBarFilter(),
+                      child: SearchBarFilter(
+                        route: 'Product',
+                      ),
                     )
                   ]),
             ),

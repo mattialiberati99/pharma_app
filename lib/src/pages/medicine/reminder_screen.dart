@@ -1,6 +1,10 @@
+import 'package:pharma_app/src/providers/armadietto_provider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:pharma_app/src/pages/medicine/widgets/medicina_armadietto.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../../helpers/app_config.dart';
 import '../../models/farmaco.dart';
@@ -16,10 +20,13 @@ class ReminderScreen extends ConsumerStatefulWidget {
 
 class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   TextEditingController dateinput = TextEditingController();
-  late DateTime data;
+
+  late DateTime dataReminder;
 
   @override
   Widget build(BuildContext context) {
+    final leMieMedicine = ref.read(armadiettoProvider);
+
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
@@ -145,8 +152,9 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
 
                     if (pickedDate != null) {
                       setState(() {
-                        data = pickedDate;
-                        dateinput.text = DateFormat('dd/MM/yy').format(data);
+                        dataReminder = pickedDate;
+                        dateinput.text =
+                            DateFormat('dd/MM/yy').format(dataReminder);
                       });
                     } else {
                       print("Date is not selected");
@@ -186,7 +194,33 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                     height: 50,
                     width: 210,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        MedicinaArmadietto medicina =
+                            MedicinaArmadietto(widget.product, dataReminder);
+                        if (!leMieMedicine.exist(medicina)) {
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.error,
+                            animType: AnimType.bottomSlide,
+                            title: "Errore",
+                            desc: "La medicina è già presente nell'armadio!",
+                            btnOkOnPress: Navigator.of(context).pop,
+                          ).show();
+                        }
+                        leMieMedicine.add(medicina);
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.success,
+                          animType: AnimType.topSlide,
+                          title: "Medicina Aggiunta",
+                          desc:
+                              "Medicina aggiunta correttamente all'armadietto!",
+                          btnOkOnPress: () {
+                            Navigator.of(context)
+                                .pushReplacementNamed('Le Mie Medicine');
+                          },
+                        ).show();
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                             const Color.fromARGB(255, 47, 171, 148),

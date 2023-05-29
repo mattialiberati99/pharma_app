@@ -9,12 +9,12 @@ import 'package:pharma_app/src/models/shop.dart';
 import '../../../generated/l10n.dart';
 import '../../helpers/app_config.dart';
 import '../../models/search_result.dart';
-import '../../providers/filter_provider.dart';
+import '../../pages/medicine/terapie_screen.dart';
 import '../../providers/shops_provider.dart';
 import '../../repository/food_repository.dart';
 import '../../repository/restaurant_repository.dart';
 
-class SearchBarFilter extends ConsumerStatefulWidget {
+class SearchBarTerapie extends ConsumerStatefulWidget {
   final ValueChanged? onClickFilter;
   final Function? onSuggestionSelected;
   final String? restaurant_id;
@@ -22,9 +22,10 @@ class SearchBarFilter extends ConsumerStatefulWidget {
   final bool isExpanded;
   final Function? onSubmitted;
   final Function? onStartSearch;
-  String? route;
+  final String? routePage;
+  final Function(Farmaco) callback;
 
-  SearchBarFilter({
+  const SearchBarTerapie({
     Key? key,
     this.onClickFilter,
     this.onSuggestionSelected,
@@ -33,14 +34,16 @@ class SearchBarFilter extends ConsumerStatefulWidget {
     this.isExpanded = false,
     this.onSubmitted,
     this.onStartSearch,
-    this.route,
+    this.routePage,
+    required this.callback,
   }) : super(key: key);
 
   @override
-  ConsumerState<SearchBarFilter> createState() => _SearchBarFilterState();
+  ConsumerState<SearchBarTerapie> createState() => _SearchBarTerapieState();
 }
 
-class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
+class _SearchBarTerapieState extends ConsumerState<SearchBarTerapie> {
+  Farmaco? selectedProduct;
   @override
   Widget build(BuildContext context) {
     final isPortrait =
@@ -49,18 +52,25 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
       child: TypeAheadField(
-        textFieldConfiguration: TextFieldConfiguration(
+        textFieldConfiguration: const TextFieldConfiguration(
           decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.gray4),
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-            enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.gray4),
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-            hintText: widget.isExpanded ? 'Cosa vorresti cercare?' : 'Cerca',
-          ),
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.gray4),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.gray4),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              hintText: 'Cerca prodotto',
+              suffixIcon: SizedBox(
+                  child: Image(
+                image: AssetImage('assets/immagini_pharma/barcode.png'),
+              )),
+              hintStyle: TextStyle(color: Color.fromARGB(255, 205, 207, 206)),
+              prefixIcon: Icon(Icons.search),
+              prefixIconColor: Color.fromARGB(255, 167, 166, 165)),
           autofocus: true,
         ),
         suggestionsBoxVerticalOffset: 20,
@@ -69,7 +79,7 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
-          color: AppColors.primary.withOpacity(0.95),
+          color: AppColors.secondColor.withOpacity(0.95),
           constraints: BoxConstraints(minWidth: context.mqw * 0.65),
           offsetX: -15,
         ),
@@ -132,11 +142,10 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
           ),
         ),
         onSuggestionSelected: (suggestion) {
-          print("food");
-          Navigator.of(context).pushNamed(
-            widget.route!,
-            arguments: suggestion.data as Farmaco,
-          );
+          setState(() {
+            selectedProduct = suggestion.data as Farmaco;
+          });
+          widget.callback(selectedProduct!);
         },
       ),
     );
@@ -146,13 +155,13 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
     List<SearchResult> elements = [];
     if (value.length >= 3) {
       var products =
-          await searchFoods(value, filter: ref.read(filterProvider).toQuery());
-      //filter: ref.read(filterProvider).toQuery());
+          await searchFarmacos(value, restaurant_id: widget.restaurant_id);
       for (Farmaco product in products) {
+        print(product);
         SearchResult search = SearchResult(
             text: product.name!,
             id: product.id!,
-            route: 'Farmaco',
+            route: 'SearchBarTerapie',
             type: SearchResult.food,
             data: product);
         elements.add(search);

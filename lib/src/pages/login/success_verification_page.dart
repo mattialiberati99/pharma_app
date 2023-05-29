@@ -47,7 +47,7 @@ class SuccessVerificationPage extends StatelessWidget {
                   ),
                   Text(
                     textAlign: TextAlign.center,
-                    'Numero di telefono verificato',
+                    'Email verificata!',
                     style: context.textTheme.titleMedium,
                   ),
                   const SizedBox(
@@ -55,28 +55,29 @@ class SuccessVerificationPage extends StatelessWidget {
                   ),
                   Text(
                     textAlign: TextAlign.center,
-                    'Congratulazioni, il vostro numero di telefono è stato verificato. Potete iniziare a utilizzare l\'applicazione',
+                    'Congratulazioni, la vostra email è stata verificata con successo. Potete iniziare a utilizzare l\'applicazione',
                     style: context.textTheme.titleSmall,
                   ),
                   const SizedBox(height: 200),
                   SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () => {
-                          Navigator.of(context).pushReplacementNamed('Login'),
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 47, 171, 148),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => {
+                        Navigator.of(context).pushReplacementNamed('Login'),
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 47, 171, 148),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
                         ),
-                        child: const Text(
-                          'Continua',
-                        ),
-                      )),
+                      ),
+                      child: const Text(
+                        'Continua',
+                      ),
+                    ),
+                  ),
                 ],
               )),
         ));

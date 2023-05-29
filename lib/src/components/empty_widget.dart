@@ -12,7 +12,15 @@ class EmptyWidget extends StatefulWidget {
   final IconData? errorIcon;
   final TextStyle? textStyle;
 
-  EmptyWidget({Key? key, required this.text, required this.action, required this.icon, this.errorIcon, this.after, this.textStyle}) : super(key: key);
+  EmptyWidget(
+      {Key? key,
+      required this.text,
+      required this.action,
+      required this.icon,
+      this.errorIcon,
+      this.after,
+      this.textStyle})
+      : super(key: key);
 
   @override
   _EmptyWidgetState createState() => _EmptyWidgetState();
@@ -59,7 +67,9 @@ class _EmptyWidgetState extends State<EmptyWidget> {
                                   Theme.of(context).errorColor.withOpacity(0.6),
                                 ])),
                   child: Icon(
-                    loading || widget.errorIcon == null ? widget.icon : widget.errorIcon,
+                    loading || widget.errorIcon == null
+                        ? widget.icon
+                        : widget.errorIcon,
                     color: AppColors.primary,
                     size: 60,
                   ),
@@ -69,9 +79,14 @@ class _EmptyWidgetState extends State<EmptyWidget> {
               Opacity(
                 opacity: 0.7,
                 child: Text(
-                  (loading || widget.after == null ? widget.text : widget.after) ?? "",
+                  (loading || widget.after == null
+                          ? widget.text
+                          : widget.after) ??
+                      "",
                   textAlign: TextAlign.center,
-                  style: widget.textStyle != null ? widget.textStyle : ExtraTextStyles.mediumSmallBlackBold,
+                  style: widget.textStyle != null
+                      ? widget.textStyle
+                      : ExtraTextStyles.mediumSmallBlackBold,
                 ),
               ),
               SizedBox(
@@ -80,8 +95,9 @@ class _EmptyWidgetState extends State<EmptyWidget> {
               !loading
                   ? widget.action
                   : CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-                      backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(Colors.white),
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
                     ),
             ],
           ),

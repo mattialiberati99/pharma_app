@@ -36,20 +36,21 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.5
-  google_fonts: ^3.0.1
-  intl: ^0.17.0
+  google_fonts: ^4.0.4
+  intl: ^0.18.0
   intl_utils: ^2.7.0
   flutter_riverpod: ^2.1.1
+  provider: ^6.0.5
   riverpod_generator: ^1.0.6
-  firebase_core: ^2.4.1
+  firebase_core: ^2.13.0
   flutter_native_splash: ^2.2.19
   #flutter_native_splash: ^2.2.11
   freezed_annotation: ^2.2.0
   global_configuration: ^2.0.0-nullsafety.1
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.1.1
   dio: ^4.0.6
   retry: ^3.1.0
-  uuid: ^3.0.6
+  uuid: ^3.0.7
   flutter_credit_card: ^3.0.4
   vector_math: ^2.1.2
   auto_size_text: ^3.0.0
@@ -59,7 +60,7 @@ dependencies:
   csc_picker: ^0.2.7
 
   firebase_auth: ^4.1.1
-  firebase_messaging: ^14.0.4
+  firebase_messaging: ^14.6.1
   firebase_dynamic_links: ^5.0.4
   firebase_analytics: ^10.2.0
   google_sign_in: ^5.4.2

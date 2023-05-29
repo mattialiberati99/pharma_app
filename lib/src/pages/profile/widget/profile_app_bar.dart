@@ -9,7 +9,7 @@ import 'package:pharma_app/src/providers/cart_provider.dart';
 import '../../../helpers/app_config.dart';
 import '../../../providers/user_provider.dart';
 
-class ProfileAppBar extends StatelessWidget with PreferredSizeWidget {
+class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Size? myPreferredSize;
   final String title;
 

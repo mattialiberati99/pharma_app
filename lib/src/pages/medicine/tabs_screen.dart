@@ -74,8 +74,8 @@ class _TabsScreenState extends State<TabsScreen>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  TerapieScreen(widget.leMieTerapie),
-                  ArmadiettoScreen(widget.leMieMedicine),
+                  TerapieScreen(),
+                  ArmadiettoScreen(),
                 ],
               ),
             ),

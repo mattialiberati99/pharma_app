@@ -274,66 +274,70 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                         const SizedBox(
                           height: 10,
                         ),
-                        SizedBox(
-                          width: 200,
-                          child: TextFormField(
-                            controller: dateinput,
-                            cursorColor: AppColors.gray5,
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(0),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: AppColors.gray5),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: AppColors.gray5,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: SizedBox(
+                            width: 200,
+                            child: TextFormField(
+                              controller: dateinput,
+                              cursorColor: AppColors.gray5,
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.all(0),
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.gray5),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
                                 ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppColors.gray5,
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.gray5),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                hintText: '__ /__ /__',
+                                //hintStyle: TextStyles.mediumGrey,
+                                filled: true,
+                                fillColor: AppColors.gray6,
+                                prefix: SizedBox(
+                                  width: 16,
+                                ),
+                                prefixIcon: Padding(
+                                  padding: EdgeInsets.only(left: 16.0),
+                                  child: Icon(Icons.alarm),
+                                ),
+                                prefixIconConstraints: BoxConstraints(
+                                  maxWidth: 40,
+                                  maxHeight: 40,
+                                ),
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: AppColors.gray5),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                              ),
-                              hintText: '__ /__ /__',
-                              //hintStyle: TextStyles.mediumGrey,
-                              filled: true,
-                              fillColor: AppColors.gray6,
-                              prefix: SizedBox(
-                                width: 16,
-                              ),
-                              prefixIcon: Padding(
-                                padding: EdgeInsets.only(left: 16.0),
-                                child: Icon(Icons.alarm),
-                              ),
-                              prefixIconConstraints: BoxConstraints(
-                                maxWidth: 40,
-                                maxHeight: 40,
-                              ),
-                            ),
-                            readOnly: true,
-                            onTap: () async {
-                              DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now()
-                                      .add(const Duration(days: 2)),
-                                  firstDate: DateTime.now(),
-                                  //DateTime.now() - not to allow to choose before today.
-                                  lastDate: DateTime(2101));
+                              readOnly: true,
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: new DateTime.now(),
+                                    firstDate: new DateTime(1900),
+                                    //DateTime.now() - not to allow to choose before today.
+                                    lastDate: DateTime(2101));
 
-                              if (pickedDate != null) {
-                                setState(() {
-                                  data = pickedDate;
-                                  dateinput.text =
-                                      DateFormat('dd/MM/yy').format(data);
-                                });
-                              } else {
-                                print("Date is not selected");
-                              }
-                            },
+                                if (pickedDate != null) {
+                                  setState(() {
+                                    data = pickedDate;
+                                    dateinput.text =
+                                        DateFormat('dd/MM/yy').format(data);
+                                  });
+                                } else {
+                                  print("Date is not selected");
+                                }
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -345,7 +349,7 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(left: 5),
+                              margin: EdgeInsets.only(left: 20),
                               child: const Text(
                                 'La tua posizione',
                                 style: TextStyle(
@@ -356,120 +360,126 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                             const SizedBox(
                               height: 10,
                             ),
-                            SizedBox(
-                              width: 300,
-                              child: ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                title: TextFormField(
-                                  controller: posizione,
-                                  textInputAction: TextInputAction.next,
-                                  onTap: () {
-                                    posProv.suggestion = null;
-                                  },
-                                  onEditingComplete: () {},
-                                  onChanged: (val) async {
-                                    if (val.length > 3) {
-                                      posProv.searchAddress(
-                                          address: posizione.text);
-                                    }
-                                  },
-                                  cursorColor: AppColors.gray5,
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.all(0),
-                                    border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.gray5),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: AppColors.gray5,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: SizedBox(
+                                width: 300,
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  title: TextFormField(
+                                    controller: posizione,
+                                    textInputAction: TextInputAction.next,
+                                    onTap: () {
+                                      posProv.suggestion = null;
+                                    },
+                                    onEditingComplete: () {},
+                                    onChanged: (val) async {
+                                      if (val.length > 3) {
+                                        posProv.searchAddress(
+                                            address: posizione.text);
+                                      }
+                                    },
+                                    cursorColor: AppColors.gray5,
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.all(0),
+                                      border: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: AppColors.gray5),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
                                       ),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.gray5),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    hintText: 'Luogo di partenza',
-                                    //hintStyle: TextStyles.mediumGrey,
-                                    filled: true,
-                                    fillColor: AppColors.gray6,
-                                    prefix: SizedBox(
-                                      width: 16,
-                                    ),
-                                    prefixIcon: Padding(
-                                      padding: EdgeInsets.only(left: 16.0),
-                                      child: Icon(Icons.accessibility),
-                                    ),
-                                    prefixIconConstraints: BoxConstraints(
-                                      maxWidth: 40,
-                                      maxHeight: 40,
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: AppColors.gray5,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: AppColors.gray5),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      hintText: 'Luogo di partenza',
+                                      //hintStyle: TextStyles.mediumGrey,
+                                      filled: true,
+                                      fillColor: AppColors.gray6,
+                                      prefix: SizedBox(
+                                        width: 16,
+                                      ),
+                                      prefixIcon: Padding(
+                                        padding: EdgeInsets.only(left: 16.0),
+                                        child: Icon(Icons.accessibility),
+                                      ),
+                                      prefixIconConstraints: BoxConstraints(
+                                        maxWidth: 40,
+                                        maxHeight: 40,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                subtitle: (posProv.suggestion != null)
-                                    ? Container(
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            posizione.text =
-                                                posProv.suggestion!;
-                                            Address newAddress =
-                                                Address.fromJSON({});
-                                            newAddress.address =
-                                                posProv.suggestion!;
-                                            var position =
-                                                await GeocodingPlatform.instance
-                                                    .locationFromAddress(
-                                                        newAddress.address!);
-                                            newAddress.latitude =
-                                                position.first.latitude;
-                                            newAddress.longitude =
-                                                position.first.longitude;
-                                            //shipping.from = newAddress;
+                                  subtitle: (posProv.suggestion != null)
+                                      ? Container(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              posizione.text =
+                                                  posProv.suggestion!;
+                                              Address newAddress =
+                                                  Address.fromJSON({});
+                                              newAddress.address =
+                                                  posProv.suggestion!;
+                                              var position =
+                                                  await GeocodingPlatform
+                                                      .instance
+                                                      .locationFromAddress(
+                                                          newAddress.address!);
+                                              newAddress.latitude =
+                                                  position.first.latitude;
+                                              newAddress.longitude =
+                                                  position.first.longitude;
+                                              //shipping.from = newAddress;
 
-                                            setState(() {
-                                              posProv.suggestion = null;
-                                            });
-                                            FocusScope.of(context).nextFocus();
-                                          },
-                                          child: Card(
-                                            color: AppColors.primary,
-                                            elevation: 6,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Flex(
-                                                direction: Axis.horizontal,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Expanded(
-                                                    child: AutoSizeText(
-                                                        "${posProv.suggestion}",
-                                                        maxLines: 1,
-                                                        //overflow: TextOverflow.fade,
-                                                        style: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500)),
-                                                  ),
-                                                  const Icon(
-                                                      Icons.arrow_forward_ios,
-                                                      color: Colors.white)
-                                                ],
+                                              setState(() {
+                                                posProv.suggestion = null;
+                                              });
+                                              FocusScope.of(context)
+                                                  .nextFocus();
+                                            },
+                                            child: Card(
+                                              color: AppColors.primary,
+                                              elevation: 6,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Flex(
+                                                  direction: Axis.horizontal,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: AutoSizeText(
+                                                          "${posProv.suggestion}",
+                                                          maxLines: 1,
+                                                          //overflow: TextOverflow.fade,
+                                                          style: const TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500)),
+                                                    ),
+                                                    const Icon(
+                                                        Icons.arrow_forward_ios,
+                                                        color: Colors.white)
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      )
-                                    : null,
+                                        )
+                                      : null,
+                                ),
                               ),
                             ),
                             /* SizedBox(

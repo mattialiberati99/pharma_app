@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +31,9 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, badge: true, sound: true);
@@ -101,7 +104,7 @@ class App extends ConsumerWidget {
       theme: themeData,
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
-      initialRoute: 'Splash',
+      initialRoute: 'Home',
       locale: const Locale.fromSubtags(languageCode: "it"),
       localizationsDelegates: const [
         S.delegate,

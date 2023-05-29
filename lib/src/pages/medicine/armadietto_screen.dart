@@ -1,29 +1,27 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
+import 'package:pharma_app/src/pages/medicine/reminder_screen.dart';
+import 'package:pharma_app/src/pages/medicine/widgets/medicina_armadietto.dart';
+import 'package:pharma_app/src/providers/armadietto_provider.dart';
 
 import '../../components/main_app_bar.dart';
 import '../../components/search_bar/filter_search_bar.dart';
 import '../../components/search_bar/shop_search_bar.dart';
 import '../../models/farmaco.dart';
 
-class ArmadiettoScreen extends StatefulWidget {
-  final List<Farmaco> leMieMedicine;
-
-  ArmadiettoScreen(this.leMieMedicine);
-
-  @override
-  State<ArmadiettoScreen> createState() => _ArmadiettoScreenState();
-}
-
-class _ArmadiettoScreenState extends State<ArmadiettoScreen> {
+class ArmadiettoScreen extends ConsumerWidget {
   final _searchController = TextEditingController(text: '');
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     FlutterNativeSplash.remove();
-    if (widget.leMieMedicine.isEmpty) {
+
+    final leMieMedicine = ref.read(armadiettoProvider);
+
+    if (leMieMedicine.isEmpty()) {
       return Scaffold(
         body: Container(
           padding: new EdgeInsets.all(26),
@@ -77,7 +75,9 @@ class _ArmadiettoScreenState extends State<ArmadiettoScreen> {
                                   const SizedBox(height: 50),
                                   const Text('Aggiungi il farmaco'),
                                   const SizedBox(height: 20),
-                                  const SearchBarFilter(),
+                                  SearchBarFilter(
+                                    route: 'Reminder',
+                                  ),
                                   const SizedBox(height: 20),
                                   Row(
                                     mainAxisAlignment:
@@ -127,9 +127,20 @@ class _ArmadiettoScreenState extends State<ArmadiettoScreen> {
         ),
       );
     } else {
-      return ListView.builder(
-          itemCount: widget.leMieMedicine.length,
-          itemBuilder: (context, index) {});
+      return Expanded(
+        child: Column(
+          children: [
+            const Text(
+              'Farmaci validi',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            // ListView.builder(
+            //   itemCount: leMieMedicine.length,
+            //   itemBuilder: (ctx, i) => MedicinaArmadietto(leMieMedicine[i].),
+            // ),
+          ],
+        ),
+      );
     }
   }
 }

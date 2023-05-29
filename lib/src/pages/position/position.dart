@@ -77,7 +77,8 @@ class _PositionPageState extends ConsumerState<PositionPage> {
             builder: (BuildContext context, BoxConstraints constraints) {
               return SizedBox(
                 height: constraints.maxHeight * 0.75,
-                child: CustomMapLocationPicker(
+                // TODO: Togliere blocco commento
+                /* child: CustomMapLocationPicker(
                   language: 'it',
                   apiKey: 'AIzaSyDqE_SdM4oS7sbE9ALyuc8vJzDmSVocLVM',
                   mapType: MapType.normal,
@@ -90,7 +91,7 @@ class _PositionPageState extends ConsumerState<PositionPage> {
                       });
                     }
                   },
-                ),
+                ), */
               );
             },
           ),

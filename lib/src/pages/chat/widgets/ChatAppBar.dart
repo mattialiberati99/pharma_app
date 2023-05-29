@@ -114,8 +114,8 @@ class _ChatAppBarState extends State<ChatAppBar> {
               widget.title ?? 'Chat',
               style: TextStyle(color: AppColors.primary),
             ),
-      brightness:
-          widget.backgroundColor != null ? Brightness.dark : Brightness.light,
+      /* brightness:
+          widget.backgroundColor != null ? Brightness.dark : Brightness.light, */
     );
   }
 }
