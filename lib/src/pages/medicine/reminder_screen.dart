@@ -25,7 +25,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final leMieMedicine = ref.read(armadiettoProvider);
+    final leMieMedicine = ref.watch(armadiettoProvider);
 
     return Scaffold(
       extendBody: true,
@@ -197,29 +197,32 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                       onPressed: () {
                         MedicinaArmadietto medicina =
                             MedicinaArmadietto(widget.product, dataReminder);
-                        if (!leMieMedicine.exist(medicina)) {
+                        if (leMieMedicine.exist(medicina)) {
                           AwesomeDialog(
                             context: context,
                             dialogType: DialogType.error,
                             animType: AnimType.bottomSlide,
                             title: "Errore",
                             desc: "La medicina è già presente nell'armadio!",
+                            btnOkColor: Colors.red,
                             btnOkOnPress: Navigator.of(context).pop,
                           ).show();
+                        } else {
+                          leMieMedicine.aggiungi(medicina);
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.success,
+                            animType: AnimType.topSlide,
+                            title: "Medicina Aggiunta",
+                            desc:
+                                "Medicina aggiunta correttamente all'armadietto!",
+                            btnOkOnPress: () {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('Le Mie Medicine');
+                            },
+                          ).show();
+                          ;
                         }
-                        leMieMedicine.add(medicina);
-                        AwesomeDialog(
-                          context: context,
-                          dialogType: DialogType.success,
-                          animType: AnimType.topSlide,
-                          title: "Medicina Aggiunta",
-                          desc:
-                              "Medicina aggiunta correttamente all'armadietto!",
-                          btnOkOnPress: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed('Le Mie Medicine');
-                          },
-                        ).show();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
