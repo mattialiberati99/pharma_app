@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:intl/intl.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/medicina_armadietto.dart';
 import 'package:pharma_app/src/providers/armadietto_provider.dart';
 
@@ -128,22 +129,32 @@ class ArmadiettoScreen extends ConsumerWidget {
         ),
       );
     } else {
-      return Expanded(
+      return SingleChildScrollView(
+        physics: const ScrollPhysics(),
         child: Column(
           children: [
-            const Text(
-              'Farmaci validi',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            const SizedBox(height: 20),
+            const Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: Text(
+                  'Farmaci validi',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+              ),
             ),
-            for (int i = 0; i < leMieMedicine.length; i++) stampaArray(i),
-            // ListView.builder(
-            //   itemCount: leMieMedicine.length,
-            //   itemBuilder: (ctx, i) {
-            //     print(leMieMedicine[i].farmaco.name);
-            //     return MedicinaArmadietto(
-            //         leMieMedicine[i].farmaco, leMieMedicine[i].scadenza);
-            //   },
-            // ),
+            const SizedBox(height: 20),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: leMieMedicine.length,
+              itemBuilder: (ctx, i) {
+                return MedicinaArmadietto(
+                    leMieMedicine[i].farmaco, leMieMedicine[i].scadenza);
+              },
+            ),
+            const SizedBox(height: 20),
             SizedBox(
               height: 50,
               width: 210,

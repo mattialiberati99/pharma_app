@@ -196,7 +196,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         MedicinaArmadietto medicina =
-                            MedicinaArmadietto(widget.product, dataReminder);
+                            MedicinaArmadietto(widget.product, dateinput.text);
                         if (leMieMedicine.exist(medicina)) {
                           AwesomeDialog(
                             context: context,
