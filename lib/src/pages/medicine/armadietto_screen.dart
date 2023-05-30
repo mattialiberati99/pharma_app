@@ -2,18 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:pharma_app/src/helpers/extensions.dart';
-import 'package:pharma_app/src/pages/medicine/reminder_screen.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/medicina_armadietto.dart';
 import 'package:pharma_app/src/providers/armadietto_provider.dart';
 
-import '../../components/main_app_bar.dart';
 import '../../components/search_bar/filter_search_bar.dart';
-import '../../components/search_bar/shop_search_bar.dart';
-import '../../models/farmaco.dart';
 
 class ArmadiettoScreen extends ConsumerWidget {
-  final _searchController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -141,7 +135,8 @@ class ArmadiettoScreen extends ConsumerWidget {
             ListView.builder(
               itemCount: leMieMedicine.length,
               itemBuilder: (ctx, i) {
-                MedicinaArmadietto(
+                print(leMieMedicine[i].farmaco.name);
+                return MedicinaArmadietto(
                     leMieMedicine[i].farmaco, leMieMedicine[i].scadenza);
               },
             ),

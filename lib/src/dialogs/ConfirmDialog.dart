@@ -30,7 +30,7 @@ class ConfirmDialog extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(30)),
         image: DecorationImage(
-          image: const AssetImage('assets/app_icon/512.png'),
+          image: const AssetImage('assets/app_icon/logo2_400.png'),
           fit: BoxFit.fitWidth,
           colorFilter: new ColorFilter.mode(
               Colors.grey[300]!.withOpacity(0.9), BlendMode.srcATop),
@@ -52,18 +52,20 @@ class ConfirmDialog extends StatelessWidget {
           height: 20.0,
         ),
         if (description != null)
-          Text(description!, ),
+          Text(
+            description!,
+          ),
         if (description != null)
           SizedBox(
             height: 20.0,
           ),
         if (icon != null)
-        Icon(
-          icon,
-          size: 80,
-          color: Theme.of(context).primaryColor,
-        ),
-        action??Container(),
+          Icon(
+            icon,
+            size: 80,
+            color: Theme.of(context).primaryColor,
+          ),
+        action ?? Container(),
       ]),
     );
   }

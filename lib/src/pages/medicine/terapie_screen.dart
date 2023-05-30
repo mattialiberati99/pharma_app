@@ -1,14 +1,8 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pharma_app/src/components/search_bar/search_bar_terapie.dart';
 
-import '../../components/drawer/app_drawer.dart';
 import '../../components/flat_button.dart';
-import '../../components/meds_app_bar.dart';
-import '../../components/bottomNavigation.dart';
-import '../../components/search_bar/shop_search_bar.dart';
 import '../../models/farmaco.dart';
 
 class TerapieScreen extends StatefulWidget {
@@ -96,7 +90,7 @@ class _TerapieScreenState extends State<TerapieScreen> {
                                       ),
                                       Image.asset(
                                           'assets/immagini_pharma/Rectangle.png'),
-                                      SizedBox(height: 30),
+                                      const SizedBox(height: 30),
                                       const Text(
                                         'Aggiungi un nome alla terapia:',
                                         style: TextStyle(

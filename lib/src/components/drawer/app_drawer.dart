@@ -5,11 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pharma_app/src/components/custom_toggle.dart';
 import 'package:pharma_app/src/components/drawer/widgets/drawer_item.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
+import 'package:pharma_app/src/models/route_argument.dart';
+import 'package:pharma_app/src/providers/chat_provider.dart';
 import 'package:pharma_app/src/providers/user_provider.dart';
 
 import '../../app_assets.dart';
 import '../../helpers/app_config.dart';
 
+import '../../models/chat.dart';
 import '../../providers/selected_page_name_provider.dart';
 
 final _drawerItems = <String>[
@@ -101,7 +104,7 @@ class AppDrawer extends ConsumerWidget {
                                                   null
                                               ? AssetImage(
                                                   currentUser.value.imagePath!)
-                                              : AssetImage(
+                                              : const AssetImage(
                                                   'assets/immagini_pharma/logo_small.png'),
                                         )),
                                       ),
@@ -109,8 +112,8 @@ class AppDrawer extends ConsumerWidget {
                                         width: 5,
                                       ),
                                       Text(
-                                        currentUser.value.name ?? 'Tac User',
-                                        style: context.textTheme.subtitle1
+                                        currentUser.value.name ?? 'Pharma User',
+                                        style: context.textTheme.titleMedium
                                             ?.copyWith(fontSize: 16),
                                       ),
                                     ],
@@ -127,28 +130,31 @@ class AppDrawer extends ConsumerWidget {
                     height: 48,
                   ),
                   for (var pageName in _drawerItems)
-                    Container(
-                      child: Stack(
-                        children: [
-                          DrawerItem(
-                              selectedPageName: selectedPageName,
-                              pageName: pageName,
-                              iconPath: _drawerIcons[pageName]!,
-                              onPressed: () => {
-                                    //        advancedDrawerController.toggleDrawer(),
-                                    Navigator.of(context).pushNamed(pageName)
-                                  }),
-                          Positioned(
-                              left: 270,
-                              bottom: 15,
-                              child: Image(
-                                width: 23,
-                                height: 23,
-                                image: AssetImage(
-                                    'assets/immagini_pharma/right-arrow.png'),
-                              )),
-                        ],
-                      ),
+                    Stack(
+                      children: [
+                        DrawerItem(
+                            selectedPageName: selectedPageName,
+                            pageName: pageName,
+                            iconPath: _drawerIcons[pageName]!,
+                            onPressed: () async {
+                              final chatProv = ref.watch(chatProvider);
+                              Chat? chat =
+                                  await chatProv.getChat(currentUser.value.id);
+                              pageName == 'Chat'
+                                  ? Navigator.of(context).pushNamed('Chat',
+                                      arguments: RouteArgument(id: chat?.id))
+                                  : Navigator.of(context).pushNamed(pageName);
+                            }),
+                        const Positioned(
+                            left: 270,
+                            bottom: 15,
+                            child: Image(
+                              width: 23,
+                              height: 23,
+                              image: AssetImage(
+                                  'assets/immagini_pharma/right-arrow.png'),
+                            )),
+                      ],
                     ),
                   const Spacer(),
                   DrawerItem(

@@ -30,10 +30,7 @@ void main() async {
   //await GlobalConfiguration().loadFromAsset("configurations");
 
   WidgetsFlutterBinding.ensureInitialized();
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, badge: true, sound: true);
@@ -104,7 +101,7 @@ class App extends ConsumerWidget {
       theme: themeData,
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
-      initialRoute: 'Home',
+      initialRoute: 'Splash',
       locale: const Locale.fromSubtags(languageCode: "it"),
       localizationsDelegates: const [
         S.delegate,

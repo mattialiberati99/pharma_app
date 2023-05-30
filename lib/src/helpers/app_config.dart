@@ -156,6 +156,7 @@ class AppColors {
   static const Color secondDarkColor = Color(0xff909090);
   static const Color accentColor = Color(0xfff5f5f5);
   static const Color backgroundColor = Color(0xffffffff);
+  static const Color error = Color(0xFFFF6160);
 }
 
 class ExtraTextStyles {

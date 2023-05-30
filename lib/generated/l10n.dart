@@ -890,6 +890,66 @@ class S {
     );
   }
 
+  /// `Vuoi eliminare la chat?`
+  String get delete_chat {
+    return Intl.message(
+      'Vuoi eliminare la chat?',
+      name: 'delete_chat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verrà eliminata per entrambi i partecipanti e non potrà più essere recuperata.`
+  String get eliminated_for_both {
+    return Intl.message(
+      'Verrà eliminata per entrambi i partecipanti e non potrà più essere recuperata.',
+      name: 'eliminated_for_both',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Segnala Utente`
+  String get report_user {
+    return Intl.message(
+      'Segnala Utente',
+      name: 'report_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Blocca Utente`
+  String get block_user {
+    return Intl.message(
+      'Blocca Utente',
+      name: 'block_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invia il primo messaggio a \n{user}`
+  String send_first_message(Object user) {
+    return Intl.message(
+      'Invia il primo messaggio a \n$user',
+      name: 'send_first_message',
+      desc: '',
+      args: [user],
+    );
+  }
+
+  /// `Scrivi un messaggio`
+  String get typeToStartChat {
+    return Intl.message(
+      'Scrivi un messaggio',
+      name: 'typeToStartChat',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Non hai un account?`
   String get i_dont_have_an_account {
     return Intl.message(

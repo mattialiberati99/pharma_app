@@ -8,17 +8,24 @@ import 'package:pharma_app/src/components/custom_toggle.dart';
 import 'package:pharma_app/src/components/drawer/widgets/drawer_item.dart';
 import 'package:pharma_app/src/helpers/app_config.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BottomNavigation extends StatefulWidget implements PreferredSizeWidget {
+import '../models/chat.dart';
+import '../models/route_argument.dart';
+import '../providers/chat_provider.dart';
+import '../providers/user_provider.dart';
+
+class BottomNavigation extends ConsumerStatefulWidget
+    implements PreferredSizeWidget {
   const BottomNavigation({super.key});
   @override
   Size get preferredSize => const Size.fromHeight(89);
 
   @override
-  State<BottomNavigation> createState() => _BottomNavigationState();
+  BottomNavigationState createState() => BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> {
+class BottomNavigationState extends ConsumerState<BottomNavigation> {
   int countShowBottomSheet = 1;
   bool toggle = false;
 
@@ -127,45 +134,38 @@ class _BottomNavigationState extends State<BottomNavigation> {
                                 child: Container(
                                   color: Colors.white,
                                   height: 200,
-                                  child: Center(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Positioned(
-                                          top: -10,
-                                          child: Container(
-                                            height: 4.45,
-                                            width: 88.94,
-                                            color: Color(0xFFE1E1E1),
-                                            alignment: Alignment.center,
-                                          ),
-                                        ),
-                                        DrawerItem(
-                                          pageName: 'Terapie',
-                                          iconPath:
-                                              'assets/ico/Jar Of Pills 2.svg',
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .pushReplacementNamed(
-                                                    'Le Mie Medicine');
-                                          },
-                                        ),
-                                        DrawerItem(
-                                          pageName: 'Armadietto',
-                                          iconPath:
-                                              'assets/ico/Medical Kit.svg',
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .pushReplacementNamed(
-                                                    'Le Mie Medicine');
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Image.asset(
+                                          'assets/immagini_pharma/Rectangle.png'),
+                                      const SizedBox(height: 30),
+                                      DrawerItem(
+                                        pageName: 'Terapie',
+                                        iconPath:
+                                            'assets/ico/Jar Of Pills 2.svg',
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushReplacementNamed(
+                                                  'Le Mie Medicine');
+                                        },
+                                      ),
+                                      DrawerItem(
+                                        pageName: 'Armadietto',
+                                        iconPath: 'assets/ico/Medical Kit.svg',
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushReplacementNamed(
+                                                  'Le Mie Medicine');
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -188,7 +188,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         : Icon(Icons.add, weight: 11),
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (selectedH || selectedC || selectedP || selectedL) {
                         setState(() {
                           selectedC = true;
@@ -196,6 +196,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           selectedH = false;
                           selectedP = false;
                         });
+                        final chatProv = ref.watch(chatProvider);
+                        Chat? chat =
+                            await chatProv.getChat(currentUser.value.id);
+                        Navigator.of(context).pushReplacementNamed('Chat',
+                            arguments: RouteArgument(id: chat?.id));
                       }
                     },
                     child: Image(
