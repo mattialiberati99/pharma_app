@@ -486,7 +486,6 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                       showCloseIcon: true,
                       title: "Aggiunto",
                       desc: "Prodotto aggiunto correttamente al carrello",
-                      btnCancelOnPress: () {},
                       btnOkOnPress: () {
                         Navigator.of(context).pushReplacementNamed('Cart');
                       }).show(),

@@ -112,26 +112,19 @@ class _CheckState extends ConsumerState<Check> {
   late DateTime data;
   late TimeOfDay time;
 
-  Future<void> _getImage(ImageSource source) async {
+  _getImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source);
     setState(() {
       if (pickedFile != null) {
-        _ricetta = File(pickedFile.path);
+        setState(() {
+          _ricetta = File(pickedFile.path);
+        });
       }
     });
-    // try {
-    //   final XFile? pickedFile =
-    //       await _picker.pickImage(source: ImageSource.gallery);
-    //   setState(() {
-    //     _ricetta = File(pickedFile!.path);
-    //   });
-    // } on PlatformException catch (e) {
-    //   print("Error: $e");
-    // }
   }
 
-  void _getDocument() async {
+  _getDocument() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: [
@@ -235,7 +228,10 @@ class _CheckState extends ConsumerState<Check> {
                                                       .width /
                                                   2,
                                               child: ElevatedButton(
-                                                onPressed: _getDocument,
+                                                onPressed: () async {
+                                                  await _getDocument();
+                                                  setState(() {});
+                                                },
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor:
                                                       const Color.fromARGB(
@@ -266,6 +262,7 @@ class _CheckState extends ConsumerState<Check> {
                                                       ImageSource.camera);
                                                   Navigator.pop(
                                                       context, _ricetta);
+                                                  setState(() {});
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor: Colors.white,
@@ -300,7 +297,8 @@ class _CheckState extends ConsumerState<Check> {
                             ),
                           );
                         })
-                    : Navigator.of(context).pushReplacementNamed('');
+                    : Navigator.of(context)
+                        .pushReplacementNamed('MappaFarmacie');
               },
             ),
           ],
@@ -535,30 +533,31 @@ class _CheckState extends ConsumerState<Check> {
                 height: 5,
               ),
 
-              if (_ricetta != null)
-                ClipRRect(
-                  child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          border:
-                              Border.all(color: Color.fromARGB(26, 7, 15, 71))),
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Image.asset(
-                              'assets/immagini_pharma/file_ricetta.png'),
-                          const Padding(
-                            padding: EdgeInsets.all(5),
-                          ),
-                          Text(p.basename(_ricetta!.path)),
-                        ],
-                      )),
-                ),
+              _ricetta != null
+                  ? ClipRRect(
+                      child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(
+                                  color: const Color.fromARGB(26, 7, 15, 71))),
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(10),
+                              ),
+                              Image.asset(
+                                  'assets/immagini_pharma/file_ricetta.png'),
+                              const Padding(
+                                padding: EdgeInsets.all(5),
+                              ),
+                              Text(p.basename(_ricetta!.path)),
+                            ],
+                          )),
+                    )
+                  : const Text(''),
               const SizedBox(
                 height: 15,
               ),

@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,9 @@ void main() async {
     provisional: false,
     sound: true,
   );
+  //Stripe.publishableKey =
+  //"pk_test_51NDs6qFvHRNXODVcSwP6uFRE7hdajXcCwVzwN70aExyxYbviPmjfVgWDGbCedtCg7iGgj3Rsg3RTyNmeNOh5Kd2R00yk3IZGzY";
+  //await Stripe.instance.applySettings();
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     if (message.notification != null && navigatorKey.currentContext != null) {

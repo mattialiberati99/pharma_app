@@ -5,6 +5,7 @@ import 'package:pharma_app/src/models/order.dart';
 import 'package:pharma_app/src/models/route_argument.dart';
 import 'package:pharma_app/src/models/shop.dart';
 import 'package:pharma_app/src/pages/cart/checkout.dart';
+import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
 import 'package:pharma_app/src/pages/chat/chat_page.dart';
 import 'package:pharma_app/src/pages/contact_us/contact_us.dart';
 import 'package:pharma_app/src/pages/favourites/favorite.dart';
@@ -145,6 +146,8 @@ class RouteGenerator {
         });
       case 'Cart':
         return MaterialPageRoute(builder: (_) => const CartPage());
+      case 'MappaFarmacie':
+        return MaterialPageRoute(builder: (_) => const MappaFarmacie());
       case 'PaymentMethods':
         return MaterialPageRoute(builder: (_) => const PaymentMethods());
       case 'Position':

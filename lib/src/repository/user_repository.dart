@@ -58,7 +58,6 @@ Future<User> loginSocial(User user, String token) async {
 Future<User> register(User user) async {
   final String url =
       '${GlobalConfiguration().getValue('api_base_url')}register';
-  ////   'http://10.0.2.2:8000/api/register'; //url per android emulator
   final client = new http.Client();
   final response = await client.post(
     Uri.parse(url),
