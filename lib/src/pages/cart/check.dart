@@ -1,9 +1,18 @@
+import 'package:csc_picker/dropdown_with_search.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:pharma_app/src/providers/user_addresses_provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart' as p;
 
+import '../../dialogs/CustomDialog.dart';
 import '../../helpers/app_config.dart';
 import '../../providers/cart_provider.dart';
 
@@ -16,6 +25,8 @@ class Check extends ConsumerStatefulWidget {
 }
 
 class _CheckState extends ConsumerState<Check> {
+  File? _ricetta;
+
   var selectedOne = 0;
   bool first = false;
   bool scd = false;
@@ -100,9 +111,52 @@ class _CheckState extends ConsumerState<Check> {
   TextEditingController timeinput = TextEditingController();
   late DateTime data;
   late TimeOfDay time;
+
+  Future<void> _getImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: source);
+    setState(() {
+      if (pickedFile != null) {
+        _ricetta = File(pickedFile.path);
+      }
+    });
+    // try {
+    //   final XFile? pickedFile =
+    //       await _picker.pickImage(source: ImageSource.gallery);
+    //   setState(() {
+    //     _ricetta = File(pickedFile!.path);
+    //   });
+    // } on PlatformException catch (e) {
+    //   print("Error: $e");
+    // }
+  }
+
+  void _getDocument() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'pdf',
+        'doc',
+        'docx',
+        'jpeg',
+        'jpg',
+        'png',
+      ],
+    );
+    if (result != null && result.files.single.path != null) {
+      _ricetta = File(result.files.single.path!);
+    } else {
+      Navigator.of(context).pop();
+      print('FILE NULL');
+    }
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+    print(_ricetta!.path);
+  }
+
   @override
   Widget build(BuildContext context) {
     final cartProv = ref.watch(cartProvider);
+    final userAddrProv = ref.watch(userAddressesProvider);
     return Scaffold(
       bottomSheet: Container(
         color: Colors.transparent,
@@ -120,7 +174,134 @@ class _CheckState extends ConsumerState<Check> {
                 'Paga',
                 style: TextStyle(color: Colors.white),
               ),
-              onPressed: () {},
+              onPressed: () {
+                _ricetta == null
+                    ? showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            title: const Center(child: Text("Importa ricetta")),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: 300,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Divider(
+                                        color: Colors.grey[300],
+                                        thickness: 1.0,
+                                      ),
+                                      Stack(
+                                        alignment: Alignment.center,
+                                        clipBehavior: Clip.none,
+                                        children: [
+                                          Image.asset(
+                                            'assets/immagini_pharma/ricetta_dialog.png',
+                                            height: 250,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          const Positioned(
+                                            top: 40,
+                                            child: Center(
+                                              child: SizedBox(
+                                                width: 220,
+                                                child: Text(
+                                                  'Per validare la tua prenotazione allega la ricetta',
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          // TODO FINIRE IMPORTAZIONE RICETTE
+                                          Positioned(
+                                            top: 160,
+                                            child: SizedBox(
+                                              height: 50,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2,
+                                              child: ElevatedButton(
+                                                onPressed: _getDocument,
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      const Color.fromARGB(
+                                                          255, 47, 171, 148),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            18),
+                                                  ),
+                                                ),
+                                                child: const Text(
+                                                  'Allega documento',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 225,
+                                            child: SizedBox(
+                                              height: 50,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2,
+                                              child: ElevatedButton(
+                                                onPressed: () async {
+                                                  await _getImage(
+                                                      ImageSource.camera);
+                                                  Navigator.pop(
+                                                      context, _ricetta);
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    side: const BorderSide(
+                                                        width: 1,
+                                                        color: Color.fromARGB(
+                                                            255,
+                                                            107,
+                                                            107,
+                                                            107)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            18),
+                                                  ),
+                                                ),
+                                                child: const Text(
+                                                  'Scatta una foto',
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 107, 107, 107)),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        })
+                    : Navigator.of(context).pushReplacementNamed('');
+              },
             ),
           ],
         ),
@@ -171,7 +352,7 @@ class _CheckState extends ConsumerState<Check> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    widget.prOrd.toString() + '€',
+                    '${widget.prOrd}€',
                     style: const TextStyle(
                         color: Color.fromARGB(255, 9, 15, 71),
                         fontSize: 20,
@@ -245,21 +426,15 @@ class _CheckState extends ConsumerState<Check> {
                         ),
                         const Padding(
                           padding: EdgeInsets.only(left: 45.0),
-                          child: Text(
-                            '1223234234',
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Color.fromARGB(115, 9, 15, 71)),
-                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 3,
                         ),
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(left: 45.0),
                           child: Text(
                             'Via Roma, Verona, Italia',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 14,
                                 color: Color.fromARGB(115, 9, 15, 71)),
                           ),
@@ -328,7 +503,7 @@ class _CheckState extends ConsumerState<Check> {
                                 color: Color.fromARGB(115, 9, 15, 71)),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 3,
                         ),
                         Padding(
@@ -357,7 +532,35 @@ class _CheckState extends ConsumerState<Check> {
                 ],
               ),
               const SizedBox(
-                height: 20,
+                height: 5,
+              ),
+
+              if (_ricetta != null)
+                ClipRRect(
+                  child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border:
+                              Border.all(color: Color.fromARGB(26, 7, 15, 71))),
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(10),
+                          ),
+                          Image.asset(
+                              'assets/immagini_pharma/file_ricetta.png'),
+                          const Padding(
+                            padding: EdgeInsets.all(5),
+                          ),
+                          Text(p.basename(_ricetta!.path)),
+                        ],
+                      )),
+                ),
+              const SizedBox(
+                height: 15,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,

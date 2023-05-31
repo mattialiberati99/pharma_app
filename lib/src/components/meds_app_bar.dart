@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../helpers/app_config.dart';
 
 class MedsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  bool noty = true;
+  bool noty = false;
 
   @override
   Size get preferredSize => const Size.fromHeight(237);
@@ -39,7 +39,7 @@ class MedsAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Container(
                     margin: const EdgeInsets.only(right: 40),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () => Navigator.of(context).pushNamed('Notifiche'),
                       child: noty
                           ? const Image(
                               width: 24,

@@ -205,8 +205,8 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                     },
                     child: Image(
                         color: selectedC ? AppColors.primary : AppColors.gray4,
-                        image:
-                            AssetImage('assets/immagini_pharma/icon_chat.png')),
+                        image: const AssetImage(
+                            'assets/immagini_pharma/icon_chat.png')),
                   ),
                   GestureDetector(
                     onTap: () {

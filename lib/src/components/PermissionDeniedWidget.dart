@@ -24,7 +24,7 @@ class _PermissionDeniedWidgetState extends State<PermissionDeniedWidget> {
   Widget build(BuildContext context) {
     return Container(
       alignment: AlignmentDirectional.center,
-      padding: EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       height: config.App(context).appHeight(70),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

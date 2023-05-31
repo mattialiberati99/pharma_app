@@ -29,7 +29,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(237);
 
-  bool noty = true;
+  bool noty = false;
   final String nome;
 
 //TODO migliorare
@@ -79,7 +79,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Container(
                     margin: const EdgeInsets.only(right: 40),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () => Navigator.of(context).pushNamed('Notifiche'),
                       child: noty
                           ? const Image(
                               width: 24,
