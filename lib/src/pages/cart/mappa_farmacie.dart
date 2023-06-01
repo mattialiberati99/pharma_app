@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 
+import '../../components/flat_button.dart';
 import '../../helpers/app_config.dart';
 
 class MappaFarmacie extends ConsumerStatefulWidget {
@@ -26,8 +27,8 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
   late StreamSubscription<Position> streamSubscription;
   Set<Marker> markers = Set();
 
-  late double lat;
-  late double long;
+  double lat = 0.0;
+  double long = 0.0;
 
   BitmapDescriptor defaultIcon = BitmapDescriptor.defaultMarkerWithHue(
       BitmapDescriptor.hueBlue); //default marker
@@ -50,8 +51,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
 
   @override
   void initState() {
-    getPosition();
-
+    getPosition;
     getBytesFromAsset('assets/ico/marker_selected.png', 64).then((onValue) {
       selectedIcon = BitmapDescriptor.fromBytes(onValue);
     });
@@ -93,10 +93,6 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
       long = position.longitude;
       getAddressFromLatLang(position);
     });
-    // Position position = await Geolocator.getCurrentPosition(
-    //     desiredAccuracy: LocationAccuracy.low);
-    // print(position.latitude);
-    // print(position.longitude);
   }
 
   Future<String?> getAddressFromLatLang(Position position) async {
@@ -123,8 +119,154 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
             height: s.height,
             width: s.width,
             child: GoogleMap(
-              initialCameraPosition:
-                  CameraPosition(target: LatLng(41.902782, 12.496365)),
+                mapToolbarEnabled: true,
+                mapType: MapType.terrain,
+                scrollGesturesEnabled: true,
+                initialCameraPosition:
+                    CameraPosition(target: baseLatLng, zoom: 11),
+                onMapCreated: _onMapCreated,
+                myLocationEnabled: true,
+                // markers: data!
+                //     .map((e) => Marker(
+                //         markerId: MarkerId(randomString(5)),
+                //         onTap: () {
+                //           setState(() {
+                //             _currentIndex = e;
+                //           });
+                //         },
+                //         icon: _currentIndex == e ? selectedIcon : defaultIcon,
+                //         consumeTapEvents: true,
+                //         anchor: const Offset(0.5, 0.5),
+                //         position:
+                //             LatLng(e.from!.latitude!, e.from!.longitude!)))
+                //     .toSet(),
+                circles: {
+                  Circle(
+                    circleId: const CircleId("-1"),
+                    center: baseLatLng,
+                    radius: 400,
+                    fillColor: Colors.blue.shade100.withOpacity(0.5),
+                    strokeColor: Colors.blue.shade100.withOpacity(0.1),
+                  )
+                }),
+          ),
+          Positioned(
+            height: 285,
+            left: 0,
+            right: 0,
+            child: Card(
+              elevation: 1,
+              color: Colors.white,
+              margin: EdgeInsets.zero,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40))),
+              borderOnForeground: false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Image.asset('assets/immagini_pharma/Rectangle.png'),
+                  const SizedBox(height: 30),
+                  const Text(
+                    'Scegli la tua farmacia preferita',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    alignment: Alignment.center,
+                    height: 50,
+                    width: MediaQuery.of(context).size.width - 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.gray8,
+                    ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.location_on, color: Colors.red),
+                              const SizedBox(width: 10),
+                              Column(
+                                children: [
+                                  Text(
+                                    'Farmacia Bresciani',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'Via Roma 340, 12345 Verona, VR, Italia',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  topLeft: Radius.circular(20)),
+                            ),
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.95,
+                              );
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 47, 171, 148),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                        ),
+                        child: const Text(
+                          'Conferma',
+                        ),
+                      ),
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "Annulla",
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

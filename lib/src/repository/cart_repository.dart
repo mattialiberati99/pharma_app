@@ -22,7 +22,7 @@ Future<List<Cart>> getCart() async {
   final client = new http.Client();
   print(Uri.parse(url));
   final streamedRest = await client.get(Uri.parse(url));
-  final data=jsonDecode(streamedRest.body)['data'];
+  final data = jsonDecode(streamedRest.body)['data'];
   return (data as List).map((data) {
     return Cart.fromJSON(data);
   }).toList();
@@ -36,7 +36,8 @@ Future<Cart> addCart(Cart cart, bool reset) async {
   Map<String, dynamic> decodedJSON = {};
   final String _apiToken = 'api_token=${_user.apiToken}';
   final String _resetParam = 'reset=${reset ? 1 : 0}';
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}carts?$_apiToken&$_resetParam';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}carts?$_apiToken&$_resetParam&with=food;food.restaurant;extras;food.extras.extraGroup;food.extras';
   final client = new http.Client();
   print(Uri.parse(url));
   print(json.encode(cart.toMap()));
@@ -59,7 +60,8 @@ Future<Cart> updateCart(Cart cart) async {
     return new Cart();
   }
   final String _apiToken = 'api_token=${_user.apiToken}';
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}carts/update/${cart.id}?$_apiToken';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}carts/update/${cart.id}?$_apiToken';
   final client = new http.Client();
 
   final response = await client.post(
@@ -77,7 +79,8 @@ Future<bool> removeCart(Cart cart) async {
     return false;
   }
   final String _apiToken = 'api_token=${_user.apiToken}';
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}carts/${cart.id}?$_apiToken';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}carts/${cart.id}?$_apiToken';
   final client = new http.Client();
   final response = await client.delete(
     Uri.parse(url),

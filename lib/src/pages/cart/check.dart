@@ -168,137 +168,164 @@ class _CheckState extends ConsumerState<Check> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                _ricetta == null
-                    ? showDialog(
-                        context: context,
-                        builder: (_) {
-                          return AlertDialog(
-                            title: const Center(child: Text("Importa ricetta")),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  height: 300,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(20),
+                if ((c1 || c2 || c3) && (first || scd)) {
+                  first
+                      ? _ricetta == null
+                          ? showDialog(
+                              context: context,
+                              builder: (_) {
+                                return AlertDialog(
+                                  title: const Center(
+                                      child: Text("Importa ricetta")),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                  child: Column(
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Divider(
-                                        color: Colors.grey[300],
-                                        thickness: 1.0,
+                                      Container(
+                                        width: double.infinity,
+                                        height: 300,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Divider(
+                                              color: Colors.grey[300],
+                                              thickness: 1.0,
+                                            ),
+                                            Stack(
+                                              alignment: Alignment.center,
+                                              clipBehavior: Clip.none,
+                                              children: [
+                                                Image.asset(
+                                                  'assets/immagini_pharma/ricetta_dialog.png',
+                                                  height: 250,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                const Positioned(
+                                                  top: 40,
+                                                  child: Center(
+                                                    child: SizedBox(
+                                                      width: 220,
+                                                      child: Text(
+                                                        'Per validare la tua prenotazione allega la ricetta',
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                // TODO FINIRE IMPORTAZIONE RICETTE
+                                                Positioned(
+                                                  top: 160,
+                                                  child: SizedBox(
+                                                    height: 50,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            2,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        await _getDocument();
+                                                        setState(() {});
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                47,
+                                                                171,
+                                                                148),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(18),
+                                                        ),
+                                                      ),
+                                                      child: const Text(
+                                                        'Allega documento',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  top: 225,
+                                                  child: SizedBox(
+                                                    height: 50,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            2,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        await _getImage(
+                                                            ImageSource.camera);
+                                                        Navigator.pop(
+                                                            context, _ricetta);
+                                                        setState(() {});
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          side:
+                                                              const BorderSide(
+                                                                  width: 1,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          107,
+                                                                          107,
+                                                                          107)),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(18),
+                                                        ),
+                                                      ),
+                                                      child: const Text(
+                                                        'Scatta una foto',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    107,
+                                                                    107,
+                                                                    107)),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                      Stack(
-                                        alignment: Alignment.center,
-                                        clipBehavior: Clip.none,
-                                        children: [
-                                          Image.asset(
-                                            'assets/immagini_pharma/ricetta_dialog.png',
-                                            height: 250,
-                                            fit: BoxFit.cover,
-                                          ),
-                                          const Positioned(
-                                            top: 40,
-                                            child: Center(
-                                              child: SizedBox(
-                                                width: 220,
-                                                child: Text(
-                                                  'Per validare la tua prenotazione allega la ricetta',
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          // TODO FINIRE IMPORTAZIONE RICETTE
-                                          Positioned(
-                                            top: 160,
-                                            child: SizedBox(
-                                              height: 50,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  2,
-                                              child: ElevatedButton(
-                                                onPressed: () async {
-                                                  await _getDocument();
-                                                  setState(() {});
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color.fromARGB(
-                                                          255, 47, 171, 148),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            18),
-                                                  ),
-                                                ),
-                                                child: const Text(
-                                                  'Allega documento',
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            top: 225,
-                                            child: SizedBox(
-                                              height: 50,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  2,
-                                              child: ElevatedButton(
-                                                onPressed: () async {
-                                                  await _getImage(
-                                                      ImageSource.camera);
-                                                  Navigator.pop(
-                                                      context, _ricetta);
-                                                  setState(() {});
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    side: const BorderSide(
-                                                        width: 1,
-                                                        color: Color.fromARGB(
-                                                            255,
-                                                            107,
-                                                            107,
-                                                            107)),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            18),
-                                                  ),
-                                                ),
-                                                child: const Text(
-                                                  'Scatta una foto',
-                                                  style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 107, 107, 107)),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        })
-                    : Navigator.of(context)
-                        .pushReplacementNamed('MappaFarmacie');
+                                );
+                              })
+                          : Navigator.of(context).pushReplacementNamed('')
+                      : Navigator.of(context)
+                          .pushReplacementNamed('MappaFarmacie');
+                } else {
+                  null;
+                }
               },
             ),
           ],
@@ -400,6 +427,7 @@ class _CheckState extends ConsumerState<Check> {
                                       setState(() {
                                         selectedOne = 0;
                                         first = newValue!;
+                                        scd = false;
                                       });
                                     }),
                                 const Text(
@@ -470,6 +498,7 @@ class _CheckState extends ConsumerState<Check> {
                                       setState(() {
                                         selectedOne = 1;
                                         scd = newValue!;
+                                        first = false;
                                       });
                                     }),
                                 const Text(
@@ -773,6 +802,8 @@ class _CheckState extends ConsumerState<Check> {
                           setState(() {
                             selectedOne = 0;
                             c1 = newValue!;
+                            c2 = false;
+                            c3 = false;
                           });
                         }),
                     const Text(
@@ -804,6 +835,8 @@ class _CheckState extends ConsumerState<Check> {
                           setState(() {
                             selectedOne = 0;
                             c2 = newValue!;
+                            c1 = false;
+                            c3 = false;
                           });
                         }),
                     const Text(
@@ -835,6 +868,8 @@ class _CheckState extends ConsumerState<Check> {
                           setState(() {
                             selectedOne = 0;
                             c3 = newValue!;
+                            c1 = false;
+                            c2 = false;
                           });
                         }),
                     const Text(

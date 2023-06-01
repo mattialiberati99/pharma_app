@@ -112,7 +112,7 @@ class _TerapieScreenState extends State<TerapieScreen> {
                                                   width: 0,
                                                   style: BorderStyle.none),
                                             ),
-                                            labelText: 'Emicrania Cronica',
+                                            labelText: 'Nome terapia',
                                             contentPadding: EdgeInsets.all(16),
                                           ),
                                         ),
