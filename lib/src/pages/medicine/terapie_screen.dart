@@ -1,20 +1,30 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/components/search_bar/search_bar_terapie.dart';
+import 'package:pharma_app/src/helpers/extensions.dart';
+import 'package:pharma_app/src/pages/medicine/widgets/medicineTerapia.dart';
+import 'package:pharma_app/src/pages/medicine/widgets/screen2terapie.dart';
+import 'package:pharma_app/src/providers/terapia_provider.dart';
 
-import '../../components/flat_button.dart';
+import '../../components/drawer/app_drawer.dart';
+import '../../components/meds_app_bar.dart';
+import '../../components/bottomNavigation.dart';
+import '../../components/search_bar/shop_search_bar.dart';
+import '../../helpers/app_config.dart';
 import '../../models/farmaco.dart';
 
-class TerapieScreen extends StatefulWidget {
+class TerapieScreen extends ConsumerStatefulWidget {
   @override
-  State<TerapieScreen> createState() => _TerapieScreenState();
+  ConsumerState<TerapieScreen> createState() => _TerapieScreenState();
 }
 
-class _TerapieScreenState extends State<TerapieScreen> {
+class _TerapieScreenState extends ConsumerState<TerapieScreen> {
   List<Farmaco> leMieTerapie = [];
-  final _searchController = TextEditingController(text: '');
-  final _creaTerapiaController = TextEditingController();
+  final tx = TextEditingController(text: '');
   Farmaco? selectedProduct;
+  String nomeTerapia = '';
 
   void selectProduct(Farmaco selectedProduct) {
     setState(() {
@@ -22,16 +32,133 @@ class _TerapieScreenState extends State<TerapieScreen> {
     });
   }
 
-  void dispose() {
-    _searchController.dispose();
-    _creaTerapiaController.dispose();
-    super.dispose();
+  _screenUno(BuildContext context) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+      ),
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.92,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const SizedBox(height: 50),
+              const Text('Aggiungi il farmaco'),
+              const SizedBox(height: 20),
+              SearchBarTerapie(callback: selectProduct),
+              const SizedBox(height: 20),
+              selectedProduct != null
+                  ? Center(
+                      child: Column(
+                        children: [
+                          Image(
+                              image:
+                                  NetworkImage(selectedProduct!.image!.url!)),
+                          // const SizedBox(height: 15),
+
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.10,
+                                width: MediaQuery.of(context).size.width * 0.60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image(
+                                      image: NetworkImage(
+                                          selectedProduct!.image!.url!),
+                                      width: 50,
+                                      height: 50),
+                                  const SizedBox(width: 10),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        selectedProduct!.name!,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SizedBox(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  _screenTerapia(context, selectedProduct!);
+                                  //   Navigator.of(context)
+                                  //  .pop();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 47, 171, 148),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Avanti',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : const Text(''),
+              //Text(selectedProduct?.name ?? '  '),
+            ],
+          ),
+        );
+      },
+    ).whenComplete(() {
+      setState(() {
+        selectedProduct = null;
+      });
+    });
+    print(selectedProduct!.name);
+  }
+
+  _screenTerapia(BuildContext ctx, Farmaco prodotto) {
+    showModalBottomSheet(
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        ),
+        isScrollControlled: true,
+        context: ctx,
+        builder: (_) => Screen2Terapie(prodotto, nomeTerapia));
   }
 
   @override
   Widget build(BuildContext context) {
+    final leMieMed = ref.read(terapiaProvider);
     FlutterNativeSplash.remove();
-    if (leMieTerapie.isEmpty) {
+    if (leMieMed.terapie.isEmpty) {
       return Scaffold(
         body: Container(
           padding: new EdgeInsets.all(26),
@@ -67,12 +194,13 @@ class _TerapieScreenState extends State<TerapieScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         showModalBottomSheet(
-                            isScrollControlled: true,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(20),
                                   topLeft: Radius.circular(20)),
                             ),
+                            context: context,
+                            isScrollControlled: true,
                             builder: (BuildContext context) {
                               return Padding(
                                 padding: EdgeInsets.only(
@@ -80,352 +208,149 @@ class _TerapieScreenState extends State<TerapieScreen> {
                                         .viewInsets
                                         .bottom),
                                 child: Container(
+                                  margin: EdgeInsets.only(top: 60),
                                   height:
                                       MediaQuery.of(context).size.height / 2.5,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      Image.asset(
-                                          'assets/immagini_pharma/Rectangle.png'),
-                                      const SizedBox(height: 30),
-                                      const Text(
-                                        'Aggiungi un nome alla terapia:',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Padding(
-                                        padding: const EdgeInsets.all(18.0),
-                                        child: TextFormField(
-                                          controller: _creaTerapiaController,
-                                          decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: Colors.grey[200],
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              borderSide: const BorderSide(
-                                                  width: 0,
-                                                  style: BorderStyle.none),
-                                            ),
-                                            labelText: 'Nome terapia',
-                                            contentPadding: EdgeInsets.all(16),
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: SizedBox(
-                                          height: 50,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              _creaTerapiaController.text == ""
-                                                  ? null
-                                                  : showModalBottomSheet(
-                                                      shape:
-                                                          const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        20),
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        20)),
-                                                      ),
-                                                      context: context,
-                                                      isScrollControlled: true,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return Container(
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.95,
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: <Widget>[
-                                                              const SizedBox(
-                                                                  height: 50),
-                                                              const Text(
-                                                                  'Aggiungi il farmaco'),
-                                                              const SizedBox(
-                                                                  height: 20),
-                                                              SearchBarTerapie(
-                                                                  callback:
-                                                                      selectProduct),
-                                                              const SizedBox(
-                                                                  height: 20),
-                                                              selectedProduct !=
-                                                                      null
-                                                                  ? Center(
-                                                                      child:
-                                                                          Column(
-                                                                        children: [
-                                                                          Image(
-                                                                              image: NetworkImage(selectedProduct!.image!.url!)),
-                                                                          const SizedBox(
-                                                                              height: 15),
-                                                                          Stack(
-                                                                            alignment:
-                                                                                Alignment.center,
-                                                                            children: [
-                                                                              Container(
-                                                                                alignment: Alignment.center,
-                                                                                height: MediaQuery.of(context).size.height * 0.10,
-                                                                                width: MediaQuery.of(context).size.width * 0.60,
-                                                                                decoration: BoxDecoration(
-                                                                                  borderRadius: BorderRadius.circular(20),
-                                                                                  color: Colors.white,
-                                                                                ),
-                                                                              ),
-                                                                              Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                                children: [
-                                                                                  Image(image: NetworkImage(selectedProduct!.image!.url!), width: 50, height: 50),
-                                                                                  const SizedBox(width: 10),
-                                                                                  Column(
-                                                                                    children: [
-                                                                                      Text(
-                                                                                        selectedProduct!.name!,
-                                                                                        overflow: TextOverflow.ellipsis,
-                                                                                        maxLines: 2,
-                                                                                        style: const TextStyle(fontWeight: FontWeight.bold),
-                                                                                      ),
-                                                                                    ],
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                          const SizedBox(
-                                                                              height: 10),
-                                                                          Align(
-                                                                            alignment:
-                                                                                Alignment.bottomCenter,
-                                                                            child:
-                                                                                SizedBox(
-                                                                              height: 50,
-                                                                              width: MediaQuery.of(context).size.width / 2,
-                                                                              child: ElevatedButton(
-                                                                                onPressed: () => {
-                                                                                  Navigator.of(context).pushReplacementNamed(''),
-                                                                                },
-                                                                                style: ElevatedButton.styleFrom(
-                                                                                  backgroundColor: const Color.fromARGB(255, 47, 171, 148),
-                                                                                  shape: RoundedRectangleBorder(
-                                                                                    borderRadius: BorderRadius.circular(18),
-                                                                                  ),
-                                                                                ),
-                                                                                child: const Text(
-                                                                                  'Continua',
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    )
-                                                                  : const Text(
-                                                                      ''),
-                                                              //Text(selectedProduct?.name ?? '  '),
-                                                            ],
-                                                          ),
-                                                        );
-                                                      },
-                                                    ).whenComplete(() {
-                                                      setState(() {
-                                                        selectedProduct = null;
-                                                      });
-                                                    });
-                                              print(selectedProduct!.name);
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  const Color.fromARGB(
-                                                      255, 47, 171, 148),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(18),
-                                              ),
-                                            ),
-                                            child: const Text(
-                                              'Crea terapia',
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      FlatButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text(
-                                          "Annulla",
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const Text(
+                                          'Aggiungi un nome alla terapia:',
                                           style: TextStyle(
-                                            color: Colors.red,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        const SizedBox(
+                                          height: 30,
+                                        ),
+                                        SizedBox(
+                                          width: 314,
+                                          height: 40,
+                                          child: TextFormField(
+                                            onChanged: (value) {
+                                              setState(() {
+                                                nomeTerapia = tx.text;
+                                              });
+                                            },
+                                            onSaved: (value) {
+                                              if (tx.text.isNotEmpty) {
+                                                setState(() {
+                                                  nomeTerapia = tx.text;
+                                                });
+                                              }
+                                            },
+                                            validator: (value) {
+                                              if (tx.text.isNotEmpty) {
+                                                return tx.text;
+                                              }
+                                              return null;
+                                            },
+                                            controller: tx,
+                                            decoration: const InputDecoration(
+                                              enabled: true,
+                                              filled: true,
+                                              fillColor: AppColors.gray6,
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 8,
+                                                      horizontal: 16),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: AppColors.gray4),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10))),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: AppColors.gray4),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10))),
+                                              disabledBorder:
+                                                  OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color:
+                                                              AppColors.gray4),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  10))),
+                                              hintText: 'Nome Terapia',
+                                              hintStyle: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 182, 184, 183)),
+                                            ),
+                                            //  prefixIconColor: Color.fromARGB(255, 167, 166, 165)),
+                                            autofocus: false,
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        const SizedBox(
+                                          height: 80,
+                                        ),
+                                        SizedBox(
+                                          height: 50,
+                                          width: 246,
+                                          child: nomeTerapia.isNotEmpty
+                                              ? ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                    _screenUno(context);
+                                                    //   Navigator.of(context)
+                                                    //  .pop();
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 47, 171, 148),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              18),
+                                                    ),
+                                                  ),
+                                                  child: const Text(
+                                                    'Crea Terapia',
+                                                  ),
+                                                )
+                                              : ElevatedButton(
+                                                  onPressed: () {},
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        const Color.fromARGB(
+                                                            255, 47, 171, 148),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              18),
+                                                    ),
+                                                  ),
+                                                  child: const Text(
+                                                    'Crea Terapia',
+                                                  ),
+                                                ),
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          child: const Text('Annulla'),
+                                          style: TextButton.styleFrom(
+                                              foregroundColor: Colors.red),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
-                            },
-                            context: context);
-
-                        /* showModalBottomSheet(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                topLeft: Radius.circular(20)),
-                          ),
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (BuildContext context) {
-                            return Container(
-                              height: MediaQuery.of(context).size.height * 0.95,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  const SizedBox(height: 50),
-                                  const Text('Aggiungi il farmaco'),
-                                  const SizedBox(height: 20),
-                                  SearchBarTerapie(callback: selectProduct),
-                                  const SizedBox(height: 20),
-                                  selectedProduct != null
-                                      ? Center(
-                                          child: Column(
-                                            children: [
-                                              Image(
-                                                  image: NetworkImage(
-                                                      selectedProduct!
-                                                          .image!.url!)),
-                                              const SizedBox(height: 15),
-                                              Stack(
-                                                alignment: Alignment.center,
-                                                children: [
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.10,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.60,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Image(
-                                                          image: NetworkImage(
-                                                              selectedProduct!
-                                                                  .image!.url!),
-                                                          width: 50,
-                                                          height: 50),
-                                                      const SizedBox(width: 10),
-                                                      Column(
-                                                        children: [
-                                                          Text(
-                                                            selectedProduct!
-                                                                .name!,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            maxLines: 2,
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10),
-                                              Align(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: SizedBox(
-                                                  height: 50,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      2,
-                                                  child: ElevatedButton(
-                                                    onPressed: () => {
-                                                      Navigator.of(context)
-                                                          .pushReplacementNamed(
-                                                              ''),
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              47,
-                                                              171,
-                                                              148),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(18),
-                                                      ),
-                                                    ),
-                                                    child: const Text(
-                                                      'Continua',
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : const Text(''),
-                                  //Text(selectedProduct?.name ?? '  '),
-                                ],
-                              ),
-                            );
-                          },
-                        ).whenComplete(() {
-                          setState(() {
-                            selectedProduct = null;
-                          });
-                        });
-                        print(selectedProduct!.name); */
+                            });
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
@@ -446,7 +371,184 @@ class _TerapieScreenState extends State<TerapieScreen> {
         ),
       );
     } else {
-      return const Center(child: Text('pieno'));
+      return Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'Le mie terapie',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: context.mqh * 0.3,
+              child: ListView.builder(
+                itemCount: leMieMed.length,
+                itemBuilder: (ctx, i) => leMieMed.terapie[i],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(20),
+                              topLeft: Radius.circular(20)),
+                        ),
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          return Container(
+                            margin: EdgeInsets.only(top: 60),
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Aggiungi un nome alla terapia:',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  SizedBox(
+                                    width: 314,
+                                    height: 40,
+                                    child: TextFormField(
+                                      onChanged: (value) {
+                                        setState(() {
+                                          nomeTerapia = tx.text;
+                                        });
+                                      },
+                                      onSaved: (value) {
+                                        if (tx.text.isNotEmpty) {
+                                          setState(() {
+                                            nomeTerapia = tx.text;
+                                          });
+                                        }
+                                      },
+                                      validator: (value) {
+                                        if (tx.text.isNotEmpty) {
+                                          return tx.text;
+                                        }
+                                        return null;
+                                      },
+                                      controller: tx,
+                                      decoration: const InputDecoration(
+                                        enabled: true,
+                                        filled: true,
+                                        fillColor: AppColors.gray6,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 16),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.gray4),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.gray4),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        disabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColors.gray4),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        hintText: 'Nome Terapia',
+                                        hintStyle: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 182, 184, 183)),
+                                      ),
+                                      //  prefixIconColor: Color.fromARGB(255, 167, 166, 165)),
+                                      autofocus: false,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 80,
+                                  ),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 246,
+                                    child: nomeTerapia.isNotEmpty
+                                        ? ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              _screenUno(context);
+                                              //   Navigator.of(context)
+                                              //  .pop();
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                      255, 47, 171, 148),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(18),
+                                              ),
+                                            ),
+                                            child: const Text(
+                                              'Crea Terapia',
+                                            ),
+                                          )
+                                        : ElevatedButton(
+                                            onPressed: () {},
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                      255, 47, 171, 148),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(18),
+                                              ),
+                                            ),
+                                            child: const Text(
+                                              'Crea Terapia',
+                                            ),
+                                          ),
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text('Annulla'),
+                                    style: TextButton.styleFrom(
+                                        foregroundColor: Colors.red),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 47, 171, 148),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
+                  child: const Text(
+                    'Aggiungi terapia',
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 }

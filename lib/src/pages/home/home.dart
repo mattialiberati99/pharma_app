@@ -71,7 +71,7 @@ class _HomeState extends ConsumerState<Home> {
       drawer: AppDrawer(),
       controller: _advancedDrawerController,
       child: Scaffold(
-        bottomNavigationBar: const BottomNavigation(),
+        bottomNavigationBar: BottomNavigation(),
         //  extendBody: ,
         //  appBar:
         /*      Container(
@@ -97,6 +97,7 @@ class _HomeState extends ConsumerState<Home> {
           controller: searchController,
           advancedDrawerController: _advancedDrawerController,
           nome: currentUser.value.name ?? 'Tac User',
+          indirizzo: currentUser.value.address ?? 'Il tuo indirizzo',
         ),
         body: SafeArea(
           child: ListView(
@@ -136,8 +137,24 @@ class _HomeState extends ConsumerState<Home> {
               const SizedBox(
                 height: 40,
               ),
-              /* Consumer(builder: (context, ref, _) {
-                return HomeCuisineFilter(
+              Consumer(builder: (context, ref, _) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: Text(
+                        'Categorie',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 28, 31, 30),
+                            fontWeight: FontWeight.w600),
+                      ),
+                    )
+                  ],
+                );
+
+                /* return HomeCuisineFilter(
                     cuisineSelected: cuisineSelected,
                     onCuisineSelected: (Cuisine cuisine) {
                       print('CuisineID: ${cuisine.id} - ${cuisine.name}');
@@ -146,8 +163,8 @@ class _HomeState extends ConsumerState<Home> {
                       });
                       ref.read(homeSelectedCuisineProvider.notifier).state =
                           cuisineSelected!;
-                    });
-              }), */
+                    });*/
+              }),
               const SizedBox(
                 height: 35,
               ),

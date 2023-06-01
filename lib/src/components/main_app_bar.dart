@@ -18,7 +18,8 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
       {Key? key,
       required this.controller,
       required this.advancedDrawerController,
-      required this.nome})
+      required this.nome,
+      required this.indirizzo})
       : super(key: key);
   void _handleMenuButtonPressed() {
     // NOTICE: Manage Advanced Drawer state through the Controller.
@@ -29,8 +30,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(237);
 
-  bool noty = false;
+  bool noty = true;
   final String nome;
+  final String indirizzo;
 
 //TODO migliorare
   @override
@@ -79,7 +81,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Container(
                     margin: const EdgeInsets.only(right: 40),
                     child: GestureDetector(
-                      onTap: () => Navigator.of(context).pushNamed('Notifiche'),
+                      onTap: () {},
                       child: noty
                           ? const Image(
                               width: 24,
@@ -125,20 +127,20 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                         image: AssetImage(
                             'assets/immagini_pharma/icon_location.png')),
                   ),
-                  const Text(
-                    'Verona' + ',',
+                  Text(
+                    indirizzo,
                     style: TextStyle(
                         fontSize: 16,
                         color: Colors.white,
                         fontWeight: FontWeight.w400),
                   ),
-                  const Text(
+                  /* const Text(
                     ' Italia',
                     style: TextStyle(
                         fontSize: 16,
                         color: Colors.white,
                         fontWeight: FontWeight.w400),
-                  ),
+                  ),*/
                 ],
               ),
               const SizedBox(
