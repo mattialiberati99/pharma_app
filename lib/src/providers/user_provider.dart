@@ -139,7 +139,7 @@ class UserProvider with ChangeNotifier {
     // 1. perform the sign-in request
     final Apple.AuthorizationResult result =
         await Apple.TheAppleSignIn.performRequests([
-      Apple.AppleIdRequest(
+      const Apple.AppleIdRequest(
           requestedScopes: [Apple.Scope.email, Apple.Scope.fullName])
     ]);
 

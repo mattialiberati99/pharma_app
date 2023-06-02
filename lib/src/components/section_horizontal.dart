@@ -46,34 +46,32 @@ class SectionHorizontal extends ConsumerWidget {
         const SizedBox(
           height: 20,
         ),
-        ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 250),
-            //TODO valutare su usare overflow o meno anche per il filtro e se mettere un padding
-            // child: OverflowBox(
-            //   maxWidth: MediaQuery.of(context).size.width,
-            child: AsyncValueWidget(
-                value: chosen,
-                loading: const CircularProgressIndicator(),
-                data: (chosenShops) {
-                  /* final filtered =
+
+        //TODO valutare su usare overflow o meno anche per il filtro e se mettere un padding
+        // child: OverflowBox(
+        //   maxWidth: MediaQuery.of(context).size.width,
+        AsyncValueWidget(
+            value: chosen,
+            loading: const CircularProgressIndicator(),
+            data: (chosenShops) {
+              /* final filtered =
                       ref.watch(shopsFilteredByDeliveryProvider(chosenShops)); */
-                  return Container(
-                    height: 250,
-                    width: 300,
-                    child: Expanded(
-                      child: ListView.builder(
-                        clipBehavior: Clip.none,
-                        scrollDirection: Axis.horizontal,
-                        //itemCount: filtered.length,
-                        itemBuilder: (_, index) {
-                          return FarmacoCardHorizontal(
-                            farmaco: chosenShops[index],
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                })),
+              return Container(
+                height: 250,
+                width: 300,
+                child: ListView.builder(
+                  clipBehavior: Clip.none,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: chosenShops.length,
+                  itemBuilder: (_, index) {
+                    print(index);
+                    return FarmacoCardHorizontal(
+                      farmaco: chosenShops[index],
+                    );
+                  },
+                ),
+              );
+            }),
         //) //overflow
       ],
     );

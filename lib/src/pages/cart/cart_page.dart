@@ -65,13 +65,13 @@ class _CartPageState extends ConsumerState<CartPage> {
   @override
   void initState() {
     super.initState();
-    _loadCards();
+    //_loadCards();
   }
 
-  _loadCards() async {
-    _loaded = await getUserCreditCards();
-    setState(() {});
-  }
+  // _loadCards() async {
+  //   _loaded = await getUserCreditCards();
+  //   setState(() {});
+  // }
 
   var quantity = 1;
 
@@ -119,7 +119,8 @@ class _CartPageState extends ConsumerState<CartPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Check(prOrd: prOrd)));
+                          builder: (context) =>
+                              Check(prOrd: prOrd * quantity)));
                 },
               ),
           ],
@@ -183,7 +184,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                       padding: const EdgeInsets.all(0),
                       shrinkWrap: true,
                       clipBehavior: Clip.none,
-                      scrollDirection: Axis.vertical,
+                      //scrollDirection: Axis.vertical,
                       itemCount: cartProv.carts.length,
                       itemBuilder: (context, index) {
                         Cart cart = cartProv.carts.elementAt(index);
@@ -192,11 +193,11 @@ class _CartPageState extends ConsumerState<CartPage> {
                         var prezzoTot;
                         var scontoTot;
                         index == 0
-                            ? prezzoTot = cart.product!.price!
-                            : prezzoTot += cart.product!.price!;
+                            ? prezzoTot = cart.product!.discountPrice!
+                            : prezzoTot += cart.product!.discountPrice!;
                         index == 0
-                            ? scontoTot = cart.product!.discountPrice
-                            : scontoTot += cart.product!.discountPrice;
+                            ? scontoTot = cart.product!.price
+                            : scontoTot += cart.product!.price;
                         prOrd = prezzoTot - scontoTot;
 
                         return Column(
@@ -266,15 +267,18 @@ class _CartPageState extends ConsumerState<CartPage> {
                                           QuantitySetter(
                                             quantity: quantity,
                                             onAdd: () => setState(() {
-                                              (quantity < 100)
-                                                  ? quantity++
-                                                  : ScaffoldMessenger.of(
-                                                          context)
-                                                      .showSnackBar(
-                                                          const SnackBar(
-                                                      content: Text(
-                                                          'Non puoi ordinare da più farmacie contemporaneamente'),
-                                                    ));
+                                              if (quantity < 100) {
+                                                quantity++;
+                                                cartProv.add(cart.product!, 1,
+                                                    cart.extras!);
+                                              } else {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  content: Text(
+                                                      'Non puoi ordinare da più farmacie contemporaneamente'),
+                                                ));
+                                              }
                                             }),
                                             onRemove: () => setState(() {
                                               quantity > 1 ? quantity-- : null;
@@ -343,7 +347,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                     ),
                                   ),
                                   Text(
-                                    '- $scontoTot€',
+                                    '- ${scontoTot * quantity}€',
                                     style: const TextStyle(
                                       color: Color.fromARGB(255, 9, 15, 71),
                                       fontSize: 20,
@@ -435,23 +439,20 @@ class _QuantitySetterState extends State<QuantitySetter> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Positioned(
-              left: 0,
-              child: OutlinedButton(
-                  //TODO riutilizzare
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(Size.square(35)),
-                    shape: MaterialStateProperty.all(const CircleBorder()),
-                    backgroundColor: MaterialStateProperty.all(
-                        AppColors.primary.withOpacity(0.5)),
-                  ),
-                  onPressed: () => widget.onRemove(),
-                  child: const Icon(
-                    Icons.remove,
-                    color: AppColors.primary,
-                    size: 20,
-                  )),
-            ),
+            OutlinedButton(
+                //TODO riutilizzare
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all(Size.square(35)),
+                  shape: MaterialStateProperty.all(const CircleBorder()),
+                  backgroundColor: MaterialStateProperty.all(
+                      AppColors.primary.withOpacity(0.5)),
+                ),
+                onPressed: () => widget.onRemove(),
+                child: const Icon(
+                  Icons.remove,
+                  color: AppColors.primary,
+                  size: 20,
+                )),
             Text(
               widget.quantity.toStringAsFixed(0),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

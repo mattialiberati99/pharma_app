@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class AppAssets {
   static const String onboarding1 = 'assets/immagini/2 presentazione.jpg';
   static const String onboarding2 = 'assets/immagini/2 presentazione1.jpg';
@@ -5,6 +7,22 @@ class AppAssets {
 
   static const String logoApple = 'assets/ico/apple.svg';
   static const String logoGoogle = 'assets/ico/google.svg';
+
+  static const List<String> immagini = [
+    'assets/immagini_pharma/hospital.png',
+    'assets/immagini_pharma/2.png',
+    'assets/immagini_pharma/3.png',
+    'assets/immagini_pharma/4.png',
+    'assets/immagini_pharma/5.png',
+  ];
+
+  static const List<Color> colori = [
+    Color.fromARGB(255, 25, 229, 165),
+    Color.fromARGB(255, 255, 192, 111),
+    Color.fromARGB(255, 77, 183, 255),
+    Color.fromARGB(255, 255, 149, 152),
+    Color.fromARGB(255, 130, 130, 130),
+  ];
 
   static const String guarda = 'assets/ico/guarda.svg';
   static const String search = 'assets/ico/search.svg';

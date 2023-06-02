@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pharma_app/src/app_assets.dart';
 import 'package:pharma_app/src/components/drawer/app_drawer.dart';
 import 'package:pharma_app/src/components/section_vertical.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/components/bottomNavigation.dart';
 import 'package:pharma_app/src/pages/home/widgets/home_banner.dart';
 import 'package:pharma_app/src/pages/home/widgets/home_cuisine_filter.dart';
+import 'package:pharma_app/src/providers/categories_provider.dart';
 import 'package:pharma_app/src/providers/home_cuisines_provider.dart';
 
 import '../../components/main_app_bar.dart';
@@ -17,6 +19,7 @@ import '../../helpers/app_config.dart';
 import '../../models/cuisine.dart';
 import '../../providers/selected_page_name_provider.dart';
 import '../../providers/user_provider.dart';
+import '../categorie+/categorie.dart';
 
 class Home extends ConsumerStatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -30,6 +33,12 @@ class _HomeState extends ConsumerState<Home> {
   final _advancedDrawerController = AdvancedDrawerController();
 
   late String? cuisineSelected;
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
@@ -53,7 +62,9 @@ class _HomeState extends ConsumerState<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final categorie = ref.watch(categoriesProvider);
     final userProv = ref.watch(userProvider);
+
     FlutterNativeSplash.remove();
 
     return AdvancedDrawer(
@@ -137,24 +148,83 @@ class _HomeState extends ConsumerState<Home> {
               const SizedBox(
                 height: 40,
               ),
-              Consumer(builder: (context, ref, _) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 20, right: 20),
-                      child: Text(
-                        'Categorie',
-                        style: const TextStyle(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 28, 31, 30),
-                            fontWeight: FontWeight.w600),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 30, right: 20),
+                    child: const Text(
+                      'Categorie',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromARGB(255, 28, 31, 30),
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 30, top: 20),
+                        width: context.mqw * 0.9,
+                        height: 100,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categorie.categories.values.length,
+                          itemBuilder: ((context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => Categorie(categorie
+                                        .categories.values
+                                        .elementAt(index))));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(right: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: AppColors.gray4),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(50)),
+                                ),
+                                width: 64,
+                                height: 98,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      width: 48,
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                          color: AppAssets.colori[index],
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(100))),
+                                      child: Image(
+                                          image: AssetImage(
+                                              AppAssets.immagini[index])),
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        categorie.categories.values
+                                            .elementAt(index)
+                                            .name!,
+                                        style: TextStyle(fontSize: 10),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
-                    )
-                  ],
-                );
+                    ],
+                  ),
+                ],
+              ),
 
-                /* return HomeCuisineFilter(
+              /* return HomeCuisineFilter(
                     cuisineSelected: cuisineSelected,
                     onCuisineSelected: (Cuisine cuisine) {
                       print('CuisineID: ${cuisine.id} - ${cuisine.name}');
@@ -164,7 +234,7 @@ class _HomeState extends ConsumerState<Home> {
                       ref.read(homeSelectedCuisineProvider.notifier).state =
                           cuisineSelected!;
                     });*/
-              }),
+
               const SizedBox(
                 height: 35,
               ),

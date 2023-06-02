@@ -65,22 +65,17 @@ class CartProvider with ChangeNotifier {
     return deliv_fee;
   }
 
-  add(Farmaco product, int quantity, List<Extra> extras) async {
-    int? index = cartContainsProduct(product, extras);
+  add(Farmaco food, int quantity, List<Extra> extras) {
+    int? index = cartContainsProduct(food, extras);
     if (index != null) {
       carts[index].quantity = carts[index].quantity! + quantity;
-      await updateCart(carts[index]);
+      updateCart(carts[index]);
     } else {
-      Cart tempCart = Cart()
-        ..product = product
+      carts.add(new Cart()
+        ..product = food
         ..quantity = quantity
-        ..extras = extras;
-      //if not null
-      Cart? cart = await addCart(tempCart, false);
-      if (cart != null) {
-        print(cart.product?.name);
-        carts.add(cart);
-      }
+        ..extras = extras);
+      addCart(carts.last, false);
     }
     notifyListeners();
   }

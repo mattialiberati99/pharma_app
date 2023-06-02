@@ -21,6 +21,7 @@ final categoriesOfShopProvider =
 class CategoriesProvider with ChangeNotifier {
   Map<String, AppCategory> categories = {};
   Map<String, AppCategory> otherCategories = {};
+  List<Farmaco> farmaciOfCate = [];
 
   CategoriesProvider() {
     Future.delayed(Duration.zero, () async {
@@ -42,6 +43,7 @@ class CategoriesProvider with ChangeNotifier {
 
   addAll(List<AppCategory> categories) {
     this.categories.addEntries(categories.map((e) => MapEntry(e.id!, e)));
+    notifyListeners();
   }
 
   del(AppCategory category) {
@@ -53,6 +55,22 @@ class CategoriesProvider with ChangeNotifier {
     categories.clear();
     notifyListeners();
   }
+
+  addAllFarm(List<Farmaco> farmaci) {
+    farmaciOfCate.addAll(farmaci);
+    notifyListeners();
+  }
+
+  getFarmaOfCate(String cateId) async {
+    farmaciOfCate.clear();
+    addAllFarm(await getFarmacosOfCategory(cateId));
+    notifyListeners();
+  }
+
+  final farmaOfCategoryProv =
+      FutureProvider.family<List<Farmaco>, String>((ref, categoryId) async {
+    return await getFarmacosByCategory(categoryId);
+  });
 
   Future<List<Farmaco>> getFarmacosOfCategory(String categoryId) async {
     final category = categories[categoryId]!;

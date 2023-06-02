@@ -146,8 +146,6 @@ class RouteGenerator {
         });
       case 'Cart':
         return MaterialPageRoute(builder: (_) => const CartPage());
-      case 'MappaFarmacie':
-        return MaterialPageRoute(builder: (_) => const MappaFarmacie());
       case 'PaymentMethods':
         return MaterialPageRoute(builder: (_) => const PaymentMethods());
       case 'Position':

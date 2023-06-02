@@ -2,6 +2,7 @@ class SearchResult {
   static const restaurant = 0;
   static const food = 1;
   static const address = 2;
+  static const categories = 2;
 
   final String? text;
   final String? id;

@@ -8,6 +8,7 @@ import 'package:pharma_app/src/helpers/app_config.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 
 import '../../components/search_bar/pre_home_search_bar.dart';
+import '../../components/search_bar/search_cat.dart';
 
 class SearchProduct extends StatefulWidget {
   const SearchProduct({super.key});

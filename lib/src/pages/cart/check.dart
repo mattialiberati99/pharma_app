@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
 import 'package:pharma_app/src/providers/user_addresses_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -321,8 +322,12 @@ class _CheckState extends ConsumerState<Check> {
                                 );
                               })
                           : Navigator.of(context).pushReplacementNamed('')
-                      : Navigator.of(context)
-                          .pushReplacementNamed('MappaFarmacie');
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MappaFarmacie(prOrd: widget.prOrd)));
+                  ;
                 } else {
                   null;
                 }
@@ -603,7 +608,7 @@ class _CheckState extends ConsumerState<Check> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -620,17 +625,17 @@ class _CheckState extends ConsumerState<Check> {
                       ),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(0),
-                        border: OutlineInputBorder(
+                        border: const OutlineInputBorder(
                           borderSide: BorderSide(color: AppColors.gray5),
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: AppColors.gray5,
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: AppColors.gray5),
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
@@ -655,7 +660,7 @@ class _CheckState extends ConsumerState<Check> {
                             Icons.calendar_today,
                             color: dateinput.text.isNotEmpty
                                 ? Colors.white
-                                : AppColors.gray7,
+                                : AppColors.gray4,
                           ),
                         ),
                         prefixIconConstraints: BoxConstraints(
@@ -666,6 +671,15 @@ class _CheckState extends ConsumerState<Check> {
                       readOnly: true,
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
+                            builder: (context, child) {
+                              return Theme(
+                                  child: child!,
+                                  data: Theme.of(context).copyWith(
+                                      colorScheme: ColorScheme.light(
+                                          primary: AppColors.primary,
+                                          onPrimary: Colors.black,
+                                          onSurface: Colors.grey)));
+                            },
                             context: context,
                             initialDate:
                                 DateTime.now().add(const Duration(days: 2)),
@@ -735,10 +749,10 @@ class _CheckState extends ConsumerState<Check> {
                             Icons.alarm,
                             color: timeinput.text.isNotEmpty
                                 ? Colors.white
-                                : AppColors.gray7,
+                                : AppColors.gray4,
                           ),
                         ),
-                        prefixIconConstraints: BoxConstraints(
+                        prefixIconConstraints: const BoxConstraints(
                           maxWidth: 40,
                           maxHeight: 40,
                         ),
@@ -746,6 +760,15 @@ class _CheckState extends ConsumerState<Check> {
                       readOnly: true,
                       onTap: () async {
                         TimeOfDay? pickedTime = await showTimePicker(
+                          builder: (context, child) {
+                            return Theme(
+                                child: child!,
+                                data: Theme.of(context).copyWith(
+                                    colorScheme: const ColorScheme.light(
+                                        primary: AppColors.primary,
+                                        onPrimary: Colors.black,
+                                        onSurface: Colors.grey)));
+                          },
                           context: context,
                           initialTime: TimeOfDay.now(),
                         );

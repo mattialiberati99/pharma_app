@@ -1,34 +1,39 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:pharma_app/src/helpers/app_config.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/models/farmaco.dart';
 import 'package:pharma_app/src/models/shop.dart';
 
 import '../../../generated/l10n.dart';
 import '../../helpers/app_config.dart';
+import '../../helpers/app_config.dart';
+import '../../helpers/app_config.dart';
+import '../../models/category.dart';
 import '../../models/search_result.dart';
 import '../../providers/filter_provider.dart';
 import '../../providers/shops_provider.dart';
 import '../../repository/food_repository.dart';
 import '../../repository/restaurant_repository.dart';
 
-class SearchBarFilter extends ConsumerStatefulWidget {
+class SearchCate extends ConsumerStatefulWidget {
   final ValueChanged? onClickFilter;
   final Function? onSuggestionSelected;
-  final String? restaurant_id;
+  final String? categoriaId;
   final bool showFilter;
   final bool isExpanded;
   final Function? onSubmitted;
   final Function? onStartSearch;
   String? route;
 
-  SearchBarFilter({
+  SearchCate({
     Key? key,
     this.onClickFilter,
     this.onSuggestionSelected,
-    this.restaurant_id,
+    this.categoriaId,
     this.showFilter = true,
     this.isExpanded = false,
     this.onSubmitted,
@@ -37,10 +42,10 @@ class SearchBarFilter extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   @override
-  ConsumerState<SearchBarFilter> createState() => _SearchBarFilterState();
+  ConsumerState<SearchCate> createState() => _SearchCateState();
 }
 
-class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
+class _SearchCateState extends ConsumerState<SearchCate> {
   @override
   Widget build(BuildContext context) {
     final isPortrait =
@@ -51,16 +56,14 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
       child: TypeAheadField(
         textFieldConfiguration: TextFieldConfiguration(
           decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.white,
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: AppColors.gray4),
-                borderRadius: BorderRadius.all(Radius.circular(15))),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: AppColors.gray4),
-                borderRadius: BorderRadius.all(Radius.circular(15))),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
             hintText: widget.isExpanded ? 'Cosa vorresti cercare?' : 'Cerca',
           ),
           autofocus: true,
@@ -84,14 +87,14 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
             dense: true,
             contentPadding: EdgeInsets.all(8),
             leading: case2(suggestion.type, {
-              SearchResult.restaurant: ClipRRect(
+              SearchResult.categories: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: CachedNetworkImage(
                   height: 40,
                   width: 40,
                   fit: BoxFit.cover,
-                  imageUrl: suggestion.type == SearchResult.restaurant
-                      ? (suggestion.data as Shop).image?.url ?? ""
+                  imageUrl: suggestion.type == SearchResult.categories
+                      ? (suggestion.data as AppCategory).image?.url ?? ""
                       : (suggestion.data as Farmaco).image?.url ?? "",
                   placeholder: (context, url) => Image.asset(
                     'assets/immagini/minimal.png',
@@ -110,7 +113,7 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
                   fit: BoxFit.cover,
                   imageUrl: suggestion.type == SearchResult.food
                       ? (suggestion.data as Farmaco).image?.url ?? ""
-                      : (suggestion.data as Shop).image?.url ?? "",
+                      : (suggestion.data as AppCategory).image?.url ?? "",
                   placeholder: (context, url) => Image.asset(
                     'assets/immagini/loading.gif',
                     fit: BoxFit.cover,
@@ -137,7 +140,7 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
           print("food");
           Navigator.of(context).pushNamed(
             widget.route!,
-            arguments: suggestion.data as Farmaco,
+            arguments: suggestion.data as AppCategory,
           );
         },
       ),
@@ -147,19 +150,20 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
   Future<List<SearchResult>> searchElements(String value) async {
     List<SearchResult> elements = [];
     if (value.length >= 3) {
-      var products =
-          await searchFoods(value, filter: ref.read(filterProvider).toQuery());
+      var categories = await searchCategories(value,
+          filter: ref.read(filterProvider).toQuery());
       //filter: ref.read(filterProvider).toQuery());
-      for (Farmaco product in products) {
+      for (AppCategory cat in categories) {
         SearchResult search = SearchResult(
-            text: product.name!,
-            id: product.id!,
-            route: 'Farmaco',
-            type: SearchResult.food,
-            data: product);
+            text: cat.name!,
+            id: cat.id!,
+            route: 'Categoria',
+            type: SearchResult.categories,
+            data: cat);
         elements.add(search);
       }
     }
+    print(elements.first.id);
     return elements;
   }
 

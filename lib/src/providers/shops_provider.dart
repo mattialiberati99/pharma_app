@@ -16,6 +16,10 @@ final currentShopIDProvider = StateProvider<String>((ref) {
   return '';
 });
 
+final currentFarmacieShopIDProvider = StateProvider<String>((ref) {
+  return '';
+});
+
 final currentShopProvider = FutureProvider((ref) async {
   final id = ref.watch(currentShopIDProvider);
   return await getRestaurant(id);
@@ -68,4 +72,15 @@ final shopsFilteredByCuisineProvider =
   final currentAddress = await getCurrentLocation();
   return await getRestaurantsOfCuisine(selectedCuisine,
       address: currentAddress);
+});
+
+final nearestShopsProviderWithProducts =
+    FutureProvider.family<List<Shop>, String>((ref, idFarmaco) async {
+  final myLocation = ref.watch(positionProvider).getAddress();
+  final farmacie = await getNearRestaurants(myLocation, myLocation);
+  return farmacie
+      .where(
+        (element) => element.id == idFarmaco,
+      )
+      .toList();
 });

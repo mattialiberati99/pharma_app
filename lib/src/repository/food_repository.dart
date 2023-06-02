@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:pharma_app/src/models/category.dart';
+
 import '../models/farmaco.dart';
 import '../providers/filter_provider.dart';
 import 'package:dio/dio.dart' as dio;
@@ -305,6 +307,54 @@ Future<List<Farmaco>> searchFoods(String search,
     final data = jsonDecode(streamedRest.body)['data'];
     return (data as List).map((data) {
       return Farmaco.fromJSON(data);
+    }).toList();
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+    return [];
+  }
+}
+
+Future<List<AppCategory>> searchCategories(String search,
+    {int offset = 0,
+    Address? address,
+    String? categoryId,
+    bool onSale = false,
+    Map<String, dynamic>? filter}) async {
+  Uri uri = Helper.getUri('api/categories');
+  Map<String, dynamic> _queryParams = {};
+  _queryParams['search'] = 'name:$search;description:$search';
+  _queryParams['searchFields'] = 'name:like;description:like';
+  //_queryParams['on_sale']=onSale.toString();
+
+  if (categoryId != null) {
+    _queryParams['categories[]'] = '$categoryId';
+  }
+  //if (filter != null) {
+  //   _queryParams.addAll(filter);
+  //}
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // Filter filter = Filter.fromJSON(
+  //     json.decode(prefs.getString('filter') ?? '{}'));
+  // _queryParams.addAll(filter.toQuery());
+  // _queryParams.remove('cuisines[]');
+  //
+  // if (address != null && !address.isUnknown()) {
+  // _queryParams['myLon'] = address.longitude.toString();
+  // _queryParams['myLat'] = address.latitude.toString();
+  // _queryParams['areaLon'] = address.longitude.toString();
+  // _queryParams['areaLat'] = address.latitude.toString();
+  // }
+  uri = uri.replace(queryParameters: _queryParams);
+  print(uri);
+
+  try {
+    final client = new http.Client();
+    final streamedRest = await client.get(uri);
+    print(streamedRest);
+    final data = jsonDecode(streamedRest.body)['data'];
+    print(data);
+    return (data as List).map((data) {
+      return AppCategory.fromJSON(data);
     }).toList();
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());

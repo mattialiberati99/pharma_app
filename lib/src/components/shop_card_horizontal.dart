@@ -12,12 +12,15 @@ import '../providers/shops_provider.dart';
 
 class FarmacoCardHorizontal extends ConsumerWidget {
   final Farmaco farmaco;
-  const FarmacoCardHorizontal({Key? key, required this.farmaco}) : super(key: key);
+  const FarmacoCardHorizontal({Key? key, required this.farmaco})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
+        ref.read(currentFarmacieShopIDProvider.notifier).state =
+            farmaco.farmacia!.id!;
         Navigator.of(context).pushNamed('Product', arguments: farmaco);
       },
       child: ShadowBox(
@@ -66,7 +69,8 @@ class FarmacoCardHorizontal extends ConsumerWidget {
                       Positioned(
                           left: 10,
                           bottom: 40,
-                          child: Text(Helper.skipHtml(farmaco.description ?? ''),
+                          child: Text(
+                              Helper.skipHtml(farmaco.description ?? ''),
                               style: context.textTheme.subtitle2?.copyWith(
                                   color: Color.fromARGB(255, 9, 15, 71),
                                   fontSize: 13))),

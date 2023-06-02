@@ -86,14 +86,10 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Positioned(
-                      left: 8,
-                      top: context.mqh * 0.065,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios_new),
-                        onPressed: () => Navigator.of(context).pop(),
-                        color: const Color(0xFF333333),
-                      ),
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back_ios_new),
+                      onPressed: () => Navigator.of(context).pop(),
+                      color: const Color(0xFF333333),
                     ),
                     GestureDetector(
                       onTap: () {

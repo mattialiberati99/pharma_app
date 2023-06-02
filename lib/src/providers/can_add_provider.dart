@@ -7,7 +7,7 @@ import 'cart_provider.dart';
 
 /// Check if cart contains a product of the current shop
 final canAddProvider = Provider((ref) {
-  final shopId = ref.watch(currentShopIDProvider);
+  final shopId = ref.watch(currentFarmacieShopIDProvider);
   print(shopId.toString());
   final cart = ref.watch(cartProvider);
   print(cart.carts.toString());
