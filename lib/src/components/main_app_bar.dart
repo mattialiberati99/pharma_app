@@ -30,7 +30,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(237);
 
-  bool noty = true;
+  bool noty = false;
   final String nome;
   final String indirizzo;
 
@@ -62,14 +62,14 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                             duration: Duration(milliseconds: 250),
                             child: value.visible
                                 ? Image(
-                                    image: AssetImage(
+                                    image: const AssetImage(
                                         'assets/immagini_pharma/close.png'),
                                     key: ValueKey<bool>(value.visible),
                                   )
                                 : Image(
                                     width: 19.6,
                                     height: 14,
-                                    image: AssetImage(
+                                    image: const AssetImage(
                                         'assets/immagini_pharma/menu.png'),
                                     key: ValueKey<bool>(value.visible),
                                   ),
@@ -81,7 +81,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Container(
                     margin: const EdgeInsets.only(right: 40),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).pushNamed('Notifiche');
+                      },
                       child: noty
                           ? const Image(
                               width: 24,
@@ -129,7 +131,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                   Text(
                     indirizzo,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         color: Colors.white,
                         fontWeight: FontWeight.w400),

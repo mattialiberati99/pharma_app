@@ -50,7 +50,11 @@ class CartProvider with ChangeNotifier {
 
   double get sconto {
     //if(discount.discountableType)
-    return 0;
+    double sconto = 0;
+    carts.forEach((cart) {
+      sconto += cart.getFarmacoDiscountPrice() * cart.quantity!;
+    });
+    return sconto;
   }
 
   double get delivery_fee {

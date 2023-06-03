@@ -83,8 +83,8 @@ class _HomeState extends ConsumerState<Home> {
       controller: _advancedDrawerController,
       child: Scaffold(
         bottomNavigationBar: BottomNavigation(),
-        //  extendBody: ,
-        //  appBar:
+          //extendBody: ,
+          //appBar:
         /*      Container(
                       margin: const EdgeInsets.only(right: 40),
                       child: GestureDetector(
@@ -95,10 +95,10 @@ class _HomeState extends ConsumerState<Home> {
                                 height: 24,
                                 image: AssetImage(
                                     'assets/immagini_pharma/icon_noti.png'))
-                            : const Image(
+                            const Image(
                                 image: AssetImage(
                                     'assets/immagini_pharma/bell.png')),
-                      ),
+                      )
                     ),*/
         // ],
         // ),
@@ -107,7 +107,7 @@ class _HomeState extends ConsumerState<Home> {
         appBar: MainAppBar(
           controller: searchController,
           advancedDrawerController: _advancedDrawerController,
-          nome: currentUser.value.name ?? 'Tac User',
+          nome: currentUser.value.name ?? 'Pharma User',
           indirizzo: currentUser.value.address ?? 'Il tuo indirizzo',
         ),
         body: SafeArea(

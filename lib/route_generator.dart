@@ -33,7 +33,6 @@ import 'package:pharma_app/src/pages/shop_detail/shop_detail.dart';
 import 'package:pharma_app/src/pages/shop_detail/widget/product_detail_sheet.dart';
 import 'package:pharma_app/src/pages/shops_by_address/shops_address.dart';
 import 'package:pharma_app/src/pages/tracking/tracking.dart';
-import 'package:pharma_app/src/pages/work_with_us/work_whit_us.dart';
 import 'package:pharma_app/src/repository/paymentCards_repository.dart';
 import 'src/components/search_bar/search_bar_terapie.dart';
 import 'src/pages/error.dart';
@@ -45,7 +44,6 @@ import 'src/pages/preHome/pre_home.dart';
 import 'src/pages/profile/profile_ph.dart';
 import 'src/pages/reviews/reviews.dart';
 import 'src/pages/cart/cart_page.dart';
-import 'src/pages/share/share.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -128,10 +126,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ContactUs());
       case 'Diventa Partner':
         return MaterialPageRoute(builder: (_) => const Partner());
-      case 'Lavora con Tac':
-        return MaterialPageRoute(builder: (_) => const WorkWithUs());
-      case 'Condividi Tac':
-        return MaterialPageRoute(builder: (_) => const Share());
+
       case 'Store':
         return MaterialPageRoute(builder: (_) {
           final shop = settings.arguments as Shop;

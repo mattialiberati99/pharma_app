@@ -83,6 +83,12 @@ class Cart {
     return result;
   }
 
+  double getFarmacoDiscountPrice() {
+    double result = product!.discountPrice!;
+
+    return result;
+  }
+
   bool isSame(Cart cart) {
     bool _same = true;
     _same &= this.product == cart.product;

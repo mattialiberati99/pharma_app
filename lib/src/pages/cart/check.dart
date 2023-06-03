@@ -803,7 +803,9 @@ class _CheckState extends ConsumerState<Check> {
                     textAlign: TextAlign.start,
                   ),
                   TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('NewCard');
+                    },
                     icon: const Icon(Icons.add),
                     label: const Text('Aggiungi carta'),
                   ),

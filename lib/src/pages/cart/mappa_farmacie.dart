@@ -130,7 +130,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
             width: s.width,
             child: GoogleMap(
                 mapToolbarEnabled: true,
-                mapType: MapType.terrain,
+                mapType: MapType.normal,
                 scrollGesturesEnabled: true,
                 initialCameraPosition:
                     CameraPosition(target: baseLatLng, zoom: 11),
