@@ -13,10 +13,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../components/search_bar/filter_search_bar.dart';
 
 class ArmadiettoScreen extends ConsumerWidget {
-  Future<void> _saveData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final leMieMedicine = ref.watch(armadiettoProvider).armadietto;

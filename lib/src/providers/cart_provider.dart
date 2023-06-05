@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/models/farmaco.dart';
+import 'package:pharma_app/src/pages/cart/check.dart';
 
 import '../models/address.dart';
 import '../models/cart.dart';
@@ -239,7 +240,7 @@ class CartProvider with ChangeNotifier {
       print(e);
       print(s);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Errore nel pagamento, riprova"),
+        content: Text("Errore nel pagamento: ECCEZZIONEEEEEEE, riprova"),
       ));
       loading = false;
       notifyListeners();

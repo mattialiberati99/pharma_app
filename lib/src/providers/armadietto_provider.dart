@@ -36,6 +36,10 @@ class ArmadiettoProvider with ChangeNotifier {
     // final encodedData = _armadietto.map((e) => jsonEncode(e.toJson())).toList();
     // await prefs.setStringList('armadietto',encodedData);
     notifyListeners();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String listaJson = jsonEncode(_armadietto.map((e) => e.toJson()).toList());
+    await prefs.setString('medicina_armadietto', listaJson);
   }
 
   void remove(MedicinaArmadietto medicina) {
@@ -55,15 +59,15 @@ class ArmadiettoProvider with ChangeNotifier {
     return [..._armadietto];
   }
 
-  saveArray(List<MedicinaArmadietto> lista) async {
-    final meds = await SharedPreferences.getInstance();
-    meds.setString('medsArmadietto', json.encode(meds));
-  }
+  Future<void> loadMedicinaArmadietto() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? listaJson = prefs.getString('medicina_armadietto');
 
-  loadArray() async {
-    final meds = await SharedPreferences.getInstance();
-    final jsonString = meds.getString('medsArmadietto') ?? '[]';
-    final jsonArray = json.decode(jsonString);
-    return jsonArray.cast<MedicinaArmadietto>().toList();
+    if (listaJson != null) {
+      List<dynamic> listaDecodificata = jsonDecode(listaJson);
+      _armadietto =
+          listaDecodificata.map((e) => MedicinaArmadietto.fromJson(e)).toList();
+      notifyListeners();
+    }
   }
 }

@@ -19,6 +19,7 @@ import '../../app_assets.dart';
 import '../../components/bottomNavigation.dart';
 import '../../helpers/app_config.dart';
 import '../../models/cart.dart';
+import '../../models/food_order.dart';
 import '../../models/order.dart';
 import '../../providers/cart_provider.dart';
 import '../../repository/paymentCards_repository.dart';
@@ -75,7 +76,9 @@ class _CartPageState extends ConsumerState<CartPage> {
   //   _loaded = await getUserCreditCards();
   //   setState(() {});
   // }
-
+  var ordine = FarmacoOrder();
+  List<FarmacoOrder> prodotti = [];
+  var ord = Order();
   var quantity = 1;
 
   @override
@@ -119,11 +122,28 @@ class _CartPageState extends ConsumerState<CartPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
+                    /*for (var i = 0; i < cartProv.carts.length; i++) {
+                      try {
+                        ordine.food = cartProv.carts[i].product!;
+                        ordine.price =
+                            cartProv.carts[i].product!.discountPrice!;
+                        ordine.quantity = cartProv.carts[i].quantity!;
+                        ordine.dateTime = DateTime.now();
+                      } finally {
+                        ord.foodOrders.add(ordine);
+                      }
+                    }
+                    ord.active = true;
+                 
+                    orderProv.add();*/
+               //     finalizeOrder(cartProv, orderProv, context);
+
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                Check(prOrd: prOrd * quantity)));
+                            builder: (context) => Check(
+                                  prOrd: prOrd * quantity,
+                                )));
                   },
                 ),
             ],
@@ -206,281 +226,290 @@ class _CartPageState extends ConsumerState<CartPage> {
                                   : scontoTot +=
                                       cartProv.carts[index].product!.price!;
                               prOrd = prezzoTot - scontoTot;
-                              return Container(
-                                margin: const EdgeInsets.only(top: 20),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10)),
-                                          child: Container(
-                                            color: const Color.fromARGB(
-                                                255, 242, 243, 243),
-                                            child: Image(
-                                                width: 77,
-                                                height: 88,
-                                                image: NetworkImage(
-                                                    //
-                                                    // .product!.image!.url!),
+                              return Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 20),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10)),
+                                            child: Container(
+                                              color: const Color.fromARGB(
+                                                  255, 242, 243, 243),
+                                              child: Image(
+                                                  width: 77,
+                                                  height: 88,
+                                                  image: NetworkImage(
+                                                      //
+                                                      // .product!.image!.url!),
 
-                                                    cartProv.carts[index]
-                                                        .product!.image!.url!)),
+                                                      cartProv
+                                                          .carts[index]
+                                                          .product!
+                                                          .image!
+                                                          .url!)),
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0),
-                                            child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        cartProv.carts[index]
-                                                            .product!.name
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    9,
-                                                                    15,
-                                                                    71),
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
-                                                      ),
-                                                      SizedBox(
-                                                        width:
-                                                            context.mqw * 0.30,
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          cartProv.remove(
-                                                              cartProv
-                                                                  .carts[index]
-                                                                  .product!,
-                                                              []);
-                                                        },
-                                                        child: const Image(
-                                                            image: AssetImage(
-                                                                'assets/immagini_pharma/delOrd.png')),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        '${cartProv.carts[index].product!.discountPrice! * cartProv.carts[index].quantity!}€',
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    9,
-                                                                    15,
-                                                                    71),
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
-                                                      ),
-                                                      SizedBox(
-                                                        width:
-                                                            context.mqw * 0.2,
-                                                      ),
-                                                      QuantitySetter(
-                                                        quantity: cartProv
-                                                            .carts[index]
-                                                            .quantity!,
-                                                        onAdd: () =>
-                                                            setState(() {
-                                                          if (cartProv
-                                                                  .carts[index]
-                                                                  .quantity! <
-                                                              100) {
-                                                            cartProv.add(
-                                                                cartProv
-                                                                    .carts[
-                                                                        index]
-                                                                    .product!,
-                                                                1,
-                                                                cartProv
-                                                                    .carts[
-                                                                        index]
-                                                                    .extras!);
-                                                            prezzoTot += cartProv
-                                                                .carts[index]
-                                                                .product!
-                                                                .discountPrice!;
-                                                            scontoTot +=
-                                                                cartProv
-                                                                    .carts[
-                                                                        index]
-                                                                    .product!
-                                                                    .price!;
-                                                          } else {
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                                    const SnackBar(
-                                                              content: Text(
-                                                                  'Non puoi ordinare da più farmacie contemporaneamente'),
-                                                            ));
-                                                          }
-                                                        }),
-                                                        onRemove: () =>
-                                                            setState(() {
-                                                          if (cartProv
-                                                                  .carts[index]
-                                                                  .quantity! >
-                                                              1) {
-                                                            cartProv.decrease(
-                                                                cartProv
-                                                                    .carts[
-                                                                        index]
-                                                                    .product!,
-                                                                cartProv
-                                                                    .carts[
-                                                                        index]
-                                                                    .extras!);
-                                                          } else {
+                                          Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0),
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          cartProv.carts[index]
+                                                              .product!.name
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      9,
+                                                                      15,
+                                                                      71),
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                        SizedBox(
+                                                          width: context.mqw *
+                                                              0.30,
+                                                        ),
+                                                        GestureDetector(
+                                                          onTap: () {
                                                             cartProv.remove(
                                                                 cartProv
                                                                     .carts[
                                                                         index]
                                                                     .product!,
-                                                                cartProv
+                                                                []);
+                                                          },
+                                                          child: const Image(
+                                                              image: AssetImage(
+                                                                  'assets/immagini_pharma/delOrd.png')),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          '${cartProv.carts[index].product!.discountPrice! * cartProv.carts[index].quantity!}€',
+                                                          style: const TextStyle(
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      9,
+                                                                      15,
+                                                                      71),
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                        ),
+                                                        SizedBox(
+                                                          width:
+                                                              context.mqw * 0.2,
+                                                        ),
+                                                        QuantitySetter(
+                                                          quantity: cartProv
+                                                              .carts[index]
+                                                              .quantity!,
+                                                          onAdd: () =>
+                                                              setState(() {
+                                                            if (cartProv
                                                                     .carts[
                                                                         index]
-                                                                    .extras!);
+                                                                    .quantity! <
+                                                                100) {
+                                                              cartProv.add(
+                                                                  cartProv
+                                                                      .carts[
+                                                                          index]
+                                                                      .product!,
+                                                                  1,
+                                                                  cartProv
+                                                                      .carts[
+                                                                          index]
+                                                                      .extras!);
+                                                              prezzoTot += cartProv
+                                                                  .carts[index]
+                                                                  .product!
+                                                                  .discountPrice!;
+                                                              scontoTot +=
+                                                                  cartProv
+                                                                      .carts[
+                                                                          index]
+                                                                      .product!
+                                                                      .price!;
+                                                            } else {
+                                                              ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                  .showSnackBar(
+                                                                      const SnackBar(
+                                                                content: Text(
+                                                                    'Non puoi ordinare da più farmacie contemporaneamente'),
+                                                              ));
+                                                            }
+                                                          }),
+                                                          onRemove: () =>
+                                                              setState(() {
+                                                            if (cartProv
+                                                                    .carts[
+                                                                        index]
+                                                                    .quantity! >
+                                                                1) {
+                                                              cartProv.decrease(
+                                                                  cartProv
+                                                                      .carts[
+                                                                          index]
+                                                                      .product!,
+                                                                  cartProv
+                                                                      .carts[
+                                                                          index]
+                                                                      .extras!);
+                                                            } else {
+                                                              cartProv.remove(
+                                                                  cartProv
+                                                                      .carts[
+                                                                          index]
+                                                                      .product!,
+                                                                  cartProv
+                                                                      .carts[
+                                                                          index]
+                                                                      .extras!);
 
-                                                            return null;
-                                                          }
-                                                        }),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ]))
-                                      ],
-                                    ),
-                                    if (index == cartProv.carts.length - 1)
-                                      const SizedBox(
-                                        height: 50,
+                                                              return null;
+                                                            }
+                                                          }),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ]))
+                                        ],
                                       ),
-                                    if (index == cartProv.carts.length - 1)
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: const [
-                                          Text(
-                                            'Riepilogo del pagamento',
-                                            style: TextStyle(
+                                      if (index == cartProv.carts.length - 1)
+                                        const SizedBox(
+                                          height: 50,
+                                        ),
+                                      if (index == cartProv.carts.length - 1)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: const [
+                                            Text(
+                                              'Riepilogo del pagamento',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 9, 15, 71),
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ],
+                                        ),
+                                      if (index == cartProv.carts.length - 1)
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                      if (index == cartProv.carts.length - 1)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              'Ordine Totale',
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    115, 9, 15, 71),
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              cartProv.total.toString(),
+                                              style: const TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 9, 15, 71),
                                                 fontSize: 20,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        ],
-                                      ),
-                                    if (index == cartProv.carts.length - 1)
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                    if (index == cartProv.carts.length - 1)
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            'Ordine Totale',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  115, 9, 15, 71),
-                                              fontSize: 17,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            // TODO FIX cartProv.total to cartProv.sconto
-                                            cartProv.sconto.toString(),
-                                            style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 9, 15, 71),
-                                              fontSize: 20,
+                                          ],
+                                        ),
+                                      if (index == cartProv.carts.length - 1)
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                      if (index == cartProv.carts.length - 1)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              'Articoli scontati',
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    115, 9, 15, 71),
+                                                fontSize: 17,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    if (index == cartProv.carts.length - 1)
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                    if (index == cartProv.carts.length - 1)
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            'Articoli scontati',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  115, 9, 15, 71),
-                                              fontSize: 17,
-                                            ),
-                                          ),
-                                          Text(
-                                            cartProv.total.toString(),
-                                            style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 9, 15, 71),
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    if (index == cartProv.carts.length - 1)
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                    if (index == cartProv.carts.length - 1)
-                                      const Divider(
-                                        thickness: 2,
-                                      ),
-                                    if (index == cartProv.carts.length - 1)
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                    if (index == cartProv.carts.length - 1)
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            'Totale',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 9, 15, 71),
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                          Text(
-                                            (cartProv.sconto - cartProv.total)
-                                                .toString(),
-                                            style: const TextStyle(
+                                            Text(
+                                              cartProv.sconto.toString(),
+                                              style: const TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 9, 15, 71),
                                                 fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      )
-                                  ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      if (index == cartProv.carts.length - 1)
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                      if (index == cartProv.carts.length - 1)
+                                        const Divider(
+                                          thickness: 2,
+                                        ),
+                                      if (index == cartProv.carts.length - 1)
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                      if (index == cartProv.carts.length - 1)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              'Totale',
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 9, 15, 71),
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            Text(
+                                              (cartProv.sconto - cartProv.total)
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 9, 15, 71),
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        )
+                                    ],
+                                  ),
                                 ),
                               );
                             })),

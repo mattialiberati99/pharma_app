@@ -87,10 +87,6 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  Stripe.publishableKey =
-      "pk_test_51NDs6qFvHRNXODVcSwP6uFRE7hdajXcCwVzwN70aExyxYbviPmjfVgWDGbCedtCg7iGgj3Rsg3RTyNmeNOh5Kd2R00yk3IZGzY";
-  await Stripe.instance.applySettings();
-
   runApp(const ProviderScope(child: App()));
 }
 

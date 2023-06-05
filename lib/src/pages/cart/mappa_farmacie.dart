@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:pharma_app/src/providers/cart_provider.dart';
+import 'package:pharma_app/src/pages/orders/widgets/ordineConfermato.dart';
 import 'dart:async';
 
 import '../../components/flat_button.dart';
@@ -116,11 +116,8 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
   @override
   Widget build(BuildContext context) {
     final baseLatLng = LatLng(long, lat);
-    // final cart = ref.watch(cartProvider);
 
-    // final products = cart.carts;
-
-    // final farmacie = ref.watch(nearestShopsProviderWithProducts());
+    //final farmacie = ref.watch(nearestShopsProviderWithProducts());
 
     Size s = MediaQuery.of(context).size;
 
@@ -134,7 +131,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
             width: s.width,
             child: GoogleMap(
                 mapToolbarEnabled: true,
-                mapType: MapType.normal,
+                mapType: MapType.terrain,
                 scrollGesturesEnabled: true,
                 initialCameraPosition:
                     CameraPosition(target: baseLatLng, zoom: 11),
@@ -339,7 +336,13 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                                                                       child:
                                                                           ElevatedButton(
                                                                         onPressed:
-                                                                            () {},
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                          Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(builder: (context) => OrdineConfermato()));
+                                                                        },
                                                                         style: ElevatedButton
                                                                             .styleFrom(
                                                                           backgroundColor: const Color.fromARGB(

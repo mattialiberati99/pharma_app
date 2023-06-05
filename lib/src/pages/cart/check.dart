@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
+import 'package:pharma_app/src/pages/orders/widgets/ordinePagato.dart';
 import 'package:pharma_app/src/providers/user_addresses_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -14,8 +15,12 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 
 import '../../dialogs/CustomDialog.dart';
+import '../../dialogs/order_success_dialog.dart';
 import '../../helpers/app_config.dart';
+import '../../models/food_order.dart';
+import '../../models/order.dart';
 import '../../providers/cart_provider.dart';
+import '../../providers/orders_provider.dart';
 
 class Check extends ConsumerStatefulWidget {
   final double prOrd;
@@ -40,6 +45,22 @@ class _CheckState extends ConsumerState<Check> {
   initState() {
     super.initState();
     _mese();
+  }
+
+  var ordine = FarmacoOrder();
+  List<FarmacoOrder> prodotti = [];
+  var ord = Order();
+
+  finalizeOrder(CartProvider cartProv, OrdersProvider orderProv,
+      BuildContext context) async {
+    List<Order>? orders = await cartProv.proceedOrder(context);
+    if (orders != null && orders.isNotEmpty) {
+      orderProv.orders.insertAll(0, orders);
+      showDialog(
+          context: context,
+          builder: (context) =>
+              OrderSuccessDialog(currentOrder: orders.first.id ?? '#'));
+    }
   }
 
   _mese() {
@@ -150,6 +171,7 @@ class _CheckState extends ConsumerState<Check> {
   @override
   Widget build(BuildContext context) {
     final cartProv = ref.watch(cartProvider);
+    final ordProv = ref.watch(ordersProvider);
     final userAddrProv = ref.watch(userAddressesProvider);
     return Scaffold(
       bottomSheet: Container(
@@ -321,13 +343,15 @@ class _CheckState extends ConsumerState<Check> {
                                   ),
                                 );
                               })
-                          : Navigator.of(context).pushReplacementNamed('')
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrdinePagato()))
                       : Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   MappaFarmacie(prOrd: widget.prOrd)));
-                  ;
                 } else {
                   null;
                 }
@@ -803,9 +827,7 @@ class _CheckState extends ConsumerState<Check> {
                     textAlign: TextAlign.start,
                   ),
                   TextButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('NewCard');
-                    },
+                    onPressed: () {},
                     icon: const Icon(Icons.add),
                     label: const Text('Aggiungi carta'),
                   ),

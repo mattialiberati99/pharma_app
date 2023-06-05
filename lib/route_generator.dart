@@ -18,6 +18,7 @@ import 'package:pharma_app/src/pages/medicine/tabs_screen.dart';
 import 'package:pharma_app/src/pages/medicine/terapie_screen.dart';
 import 'package:pharma_app/src/pages/notifications/notifications.dart';
 import 'package:pharma_app/src/pages/orders/order.dart';
+import 'package:pharma_app/src/pages/orders/order_success.dart';
 import 'package:pharma_app/src/pages/partner/partner.dart';
 import 'package:pharma_app/src/pages/payment_cards/gestisci_carte.dart';
 import 'package:pharma_app/src/pages/payment_cards/widgets/edit_credit_card_widget.dart';
@@ -94,6 +95,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ProfilePh());
       case 'Ordini':
         return MaterialPageRoute(builder: (_) => OrderP());
+      case 'OrderSuccess':
+        return MaterialPageRoute(builder: (_) => const OrderSuccess());
       case 'GestisciCarte':
         return MaterialPageRoute(
             builder: (_) => CarteWidget(isOrder: (args as bool?) ?? false));

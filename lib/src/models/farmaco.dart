@@ -1,4 +1,5 @@
 import 'package:pharma_app/src/models/shop.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/category.dart';
@@ -9,6 +10,9 @@ import '../models/nutrition.dart';
 import '../models/review.dart';
 import 'coupon.dart';
 
+part 'farmaco.g.dart';
+
+@JsonSerializable()
 class Farmaco {
   String? id;
   String? name;
@@ -23,16 +27,23 @@ class Farmaco {
   String? packageItemsCount;
   bool? featured;
   bool? deliverable;
+  @JsonKey(ignore: true)
   Shop? farmacia;
+  @JsonKey(ignore: true)
   AppCategory? category;
+  @JsonKey(ignore: true)
   List<Extra> types = []; // exta per i filtri nella pagina di ricerca
 /*   List<Extra> sizes = []; // extra per le taglie
   List<Extra> colors = []; // extra per i colori
   List<Extra> mixtures = []; // extra per le miscele, impasti, ecc
   List<Extra> additions = [];  */ // extra per le aggiunte
+  @JsonKey(ignore: true)
   List<Extra> extras = []; // per gli ingredienti
+  @JsonKey(ignore: true)
   List<ExtraGroup>? extraGroups;
+  @JsonKey(ignore: true)
   List<Review> foodReviews = [];
+  @JsonKey(ignore: true)
   List<Nutrition> nutritions = [];
   double? rate = 0;
   int? rateCount = 0;
@@ -160,6 +171,11 @@ class Farmaco {
     }
   }
 
+  factory Farmaco.fromJson(Map<String, dynamic> json) =>
+      _$FarmacoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FarmacoToJson(this);
+
   Map toMap() {
     var map = new Map<String, dynamic>();
     map["id"] = id;
@@ -218,6 +234,4 @@ class Farmaco {
     if (price! < 0) price = 0;
     return coupon;
   }
-
-  
 }
