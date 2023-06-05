@@ -156,9 +156,9 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final leMieMed = ref.read(terapiaProvider);
+    final leMieMed = ref.watch(terapiaProvider).terapie;
     FlutterNativeSplash.remove();
-    if (leMieMed.terapie.isEmpty) {
+    if (leMieMed.isEmpty) {
       return Scaffold(
         body: Container(
           padding: new EdgeInsets.all(26),
@@ -290,51 +290,32 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                           height: 80,
                                         ),
                                         SizedBox(
-                                          height: 50,
-                                          width: 246,
-                                          child: nomeTerapia.isNotEmpty
-                                              ? ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                    _screenUno(context);
-                                                    //   Navigator.of(context)
-                                                    //  .pop();
-                                                  },
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 47, 171, 148),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              18),
-                                                    ),
-                                                  ),
-                                                  child: const Text(
-                                                    'Crea Terapia',
-                                                  ),
-                                                )
-                                              : ElevatedButton(
-                                                  onPressed: () {},
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        const Color.fromARGB(
-                                                            255, 47, 171, 148),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              18),
-                                                    ),
-                                                  ),
-                                                  child: const Text(
-                                                    'Crea Terapia',
-                                                  ),
+                                            height: 50,
+                                            width: 246,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                if (nomeTerapia.isNotEmpty) {
+                                                  Navigator.of(context).pop();
+                                                  _screenUno(context);
+                                                  //   Navigator.of(context)
+                                                  //  .pop();
+                                                } else {
+                                                  null;
+                                                }
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        255, 47, 171, 148),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(18),
                                                 ),
-                                        ),
+                                              ),
+                                              child: const Text(
+                                                'Crea Terapia',
+                                              ),
+                                            )),
                                         const SizedBox(
                                           height: 15,
                                         ),
@@ -371,26 +352,26 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
         ),
       );
     } else {
-      return Expanded(
+      return SingleChildScrollView(
+        physics: const ScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             const Text(
               'Le mie terapie',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            SizedBox(
-              height: context.mqh * 0.3,
-              child: ListView.builder(
-                itemCount: leMieMed.length,
-                itemBuilder: (ctx, i) => leMieMed.terapie[i],
-              ),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: leMieMed.length,
+              itemBuilder: (ctx, i) => leMieMed[i],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

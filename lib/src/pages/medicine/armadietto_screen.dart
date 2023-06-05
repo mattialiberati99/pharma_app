@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,24 +7,24 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/intl.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/medicina_armadietto.dart';
 import 'package:pharma_app/src/providers/armadietto_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../components/search_bar/filter_search_bar.dart';
 
 class ArmadiettoScreen extends ConsumerWidget {
+  Future<void> _saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    FlutterNativeSplash.remove();
-
     final leMieMedicine = ref.watch(armadiettoProvider).armadietto;
-
-    Widget stampaArray(int i) {
-      return Center(child: Text(leMieMedicine[i].farmaco.name!));
-    }
 
     if (leMieMedicine.isEmpty) {
       return Scaffold(
         body: Container(
-          padding: new EdgeInsets.all(26),
+          padding: const EdgeInsets.all(26),
           child: Column(
             children: [
               const SizedBox(height: 15),

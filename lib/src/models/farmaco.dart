@@ -218,4 +218,6 @@ class Farmaco {
     if (price! < 0) price = 0;
     return coupon;
   }
+
+  
 }

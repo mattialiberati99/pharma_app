@@ -30,8 +30,11 @@ class ArmadiettoProvider with ChangeNotifier {
     return false;
   }
 
-  void aggiungi(MedicinaArmadietto medicina) {
+  void aggiungi(MedicinaArmadietto medicina) async {
     _armadietto.add(medicina);
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // final encodedData = _armadietto.map((e) => jsonEncode(e.toJson())).toList();
+    // await prefs.setStringList('armadietto',encodedData);
     notifyListeners();
   }
 

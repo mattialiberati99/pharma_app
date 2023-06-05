@@ -133,79 +133,80 @@ class _CartPageState extends ConsumerState<CartPage> {
             ? EmptyCartWidget()
             : Container(
                 padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back_ios_new),
-                          onPressed: () => Navigator.of(context).pop(),
-                          color: const Color(0xFF333333),
-                        ),
-                        const Text(
-                          'Carrello',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushReplacementNamed('Cart');
-                          },
-                          child: const Image(
-                              image: AssetImage(
-                                  'assets/immagini_pharma/Icon_shop.png')),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${cartProv.carts.length} articoli nel carrello',
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(115, 9, 15, 71)),
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back_ios_new),
+                            onPressed: () => Navigator.of(context).pop(),
+                            color: const Color(0xFF333333),
                           ),
-                          TextButton.icon(
-                            onPressed: () {
-                              Navigator.of(context).pushNamed('Search');
+                          const Text(
+                            'Carrello',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('Cart');
                             },
-                            icon: const Icon(Icons.add),
-                            label: const Text('Aggiungi articoli'),
-                          ),
-                        ]),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    SizedBox(
-                      height: context.mqh * 0.68,
-                      child: ListView.separated(
-                          separatorBuilder: (context, index) => const Divider(
-                                height: 10,
-                                thickness: 2,
-                              ),
-                          itemCount: cartProv.carts.length,
-                          itemBuilder: ((context, index) {
-                            Cart cart = cartProv.carts.elementAt(index);
-                            print(cart.toString());
-                            print(cart.product.toString());
-                            index == 0
-                                ? prezzoTot = cartProv
-                                    .carts[index].product!.discountPrice!
-                                : prezzoTot += cartProv
-                                    .carts[index].product!.discountPrice!;
-                            index == 0
-                                ? scontoTot =
-                                    cartProv.carts[index].product!.price!
-                                : scontoTot +=
-                                    cartProv.carts[index].product!.price!;
-                            prOrd = prezzoTot - scontoTot;
-                            return Expanded(
-                              child: Container(
+                            child: const Image(
+                                image: AssetImage(
+                                    'assets/immagini_pharma/Icon_shop.png')),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${cartProv.carts.length} articoli nel carrello',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color.fromARGB(115, 9, 15, 71)),
+                            ),
+                            TextButton.icon(
+                              onPressed: () {
+                                Navigator.of(context).pushNamed('Search');
+                              },
+                              icon: const Icon(Icons.add),
+                              label: const Text('Aggiungi articoli'),
+                            ),
+                          ]),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        height: context.mqh * 0.68,
+                        child: ListView.separated(
+                            separatorBuilder: (context, index) => const Divider(
+                                  height: 10,
+                                  thickness: 2,
+                                ),
+                            itemCount: cartProv.carts.length,
+                            itemBuilder: ((context, index) {
+                              Cart cart = cartProv.carts.elementAt(index);
+                              print(cart.toString());
+                              print(cart.product.toString());
+                              index == 0
+                                  ? prezzoTot = cartProv
+                                      .carts[index].product!.discountPrice!
+                                  : prezzoTot += cartProv
+                                      .carts[index].product!.discountPrice!;
+                              index == 0
+                                  ? scontoTot =
+                                      cartProv.carts[index].product!.price!
+                                  : scontoTot +=
+                                      cartProv.carts[index].product!.price!;
+                              prOrd = prezzoTot - scontoTot;
+                              return Container(
                                 margin: const EdgeInsets.only(top: 20),
                                 child: Column(
                                   children: [
@@ -481,11 +482,11 @@ class _CartPageState extends ConsumerState<CartPage> {
                                       )
                                   ],
                                 ),
-                              ),
-                            );
-                          })),
-                    ),
-                  ],
+                              );
+                            })),
+                      ),
+                    ],
+                  ),
                 ),
               ));
   }

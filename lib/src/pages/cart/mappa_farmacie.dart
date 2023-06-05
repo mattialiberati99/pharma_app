@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:pharma_app/src/providers/cart_provider.dart';
 import 'dart:async';
 
 import '../../components/flat_button.dart';
@@ -115,8 +116,11 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
   @override
   Widget build(BuildContext context) {
     final baseLatLng = LatLng(long, lat);
+    // final cart = ref.watch(cartProvider);
 
-    //final farmacie = ref.watch(nearestShopsProviderWithProducts());
+    // final products = cart.carts;
+
+    // final farmacie = ref.watch(nearestShopsProviderWithProducts());
 
     Size s = MediaQuery.of(context).size;
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:pharma_app/src/providers/armadietto_provider.dart';
 
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/medicina_armadietto.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers/app_config.dart';
 import '../../models/farmaco.dart';
@@ -26,7 +29,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   @override
   Widget build(BuildContext context) {
     final leMieMedicine = ref.watch(armadiettoProvider);
-
+  
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
@@ -194,7 +197,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                     height: 50,
                     width: 210,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         MedicinaArmadietto medicina =
                             MedicinaArmadietto(widget.product, dateinput.text);
                         if (leMieMedicine.exist(medicina)) {

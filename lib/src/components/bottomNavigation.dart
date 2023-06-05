@@ -109,7 +109,7 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                           selectedC = false;
                           selectedP = false;
                         });
-                        Navigator.of(context).pushReplacementNamed('Ordini');
+                        Navigator.of(context).pushNamed('Ordini');
                       }
                     },
                     child: Image(
