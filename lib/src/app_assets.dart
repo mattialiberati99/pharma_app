@@ -34,7 +34,7 @@ class AppAssets {
   static const String home = 'assets/immagini_pharma/homeB.svg';
   static const String medicine = 'assets/immagini_pharma/Pills-3.svg';
   static const String ordini = 'assets/immagini_pharma/ordini.svg';
-  static const String preferiti = 'assets/ico/favourite-2765.svg';
+  static const String preferiti = 'assets/immagini_pharma/favStar.svg';
   static const String chat = 'assets/immagini_pharma/chat.svg';
   static const String noti = 'assets/immagini_pharma/bellM.svg';
   static const String privacy2 = 'assets/immagini_pharma/Shield-Check.svg';
