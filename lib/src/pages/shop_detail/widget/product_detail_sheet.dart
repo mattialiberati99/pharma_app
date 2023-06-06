@@ -19,9 +19,13 @@ import '../../../components/async_value_widget.dart';
 import '../../../dialogs/CustomDialog.dart';
 import '../../../helpers/app_config.dart';
 import '../../../models/extra.dart';
+import '../../../models/food_favorite.dart';
 import '../../../providers/can_add_provider.dart';
 import '../../../providers/cart_provider.dart';
 import '../../../providers/current_additions_notifier.dart';
+import '../../../providers/shops_provider.dart';
+import '../../../repository/favorite_repository.dart';
+import '../../../repository/restaurant_repository.dart';
 import '../../product_detail/widgets/color_selector.dart';
 
 class ProductDetailSheet extends ConsumerStatefulWidget {
@@ -66,6 +70,8 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
   Widget build(BuildContext context) {
     final canAdd = ref.watch(canAddProvider);
     final farmaci = ref.watch(foodProvider(widget.product.farmacia!.id!));
+    final favorites = ref.watch(favoritesProvider);
+    FarmacoFavorite? isFavorite = favorites.getFarmacoFavorite(widget.product);
 
     //types = widget.product.types.first;
     // print('Current Product Provider: ${ref.read(currentProductProvider)?.name}');
@@ -200,12 +206,27 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                     Positioned(
                       left: context.mqw * 0.84,
                       top: 25,
-                      child: Image(
-                        image: fav.getFarmacoFavorite(widget.product) == null
-                            ? const AssetImage(
-                                'assets/immagini_pharma/Heart.png')
-                            : const AssetImage(
-                                'assets/immagini_pharma/fullHeart.png'),
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (isFavorite != null) {
+                            if (await removeFarmacoFavorite(isFavorite)) {
+                              favorites.delFarmaco(isFavorite);
+                            }
+                          } else {
+                            final favorite =
+                                await addFarmacoFavorite(widget.product);
+                            if (favorite != null) {
+                              favorites.addFarmaco(favorite);
+                            }
+                          }
+                        },
+                        child: Image(
+                          image: fav.getFarmacoFavorite(widget.product) == null
+                              ? const AssetImage(
+                                  'assets/immagini_pharma/Heart.png')
+                              : const AssetImage(
+                                  'assets/immagini_pharma/fullHeart.png'),
+                        ),
                       ),
                     ),
                     if (scount > 5)

@@ -14,6 +14,7 @@ import 'dart:math' as math;
 
 import '../../components/shadow_box.dart';
 import '../../helpers/app_config.dart';
+import '../../models/farmaco.dart';
 
 class Categorie extends ConsumerStatefulWidget {
   final AppCategory nomeCategoria;
@@ -122,154 +123,145 @@ class _CategorieState extends ConsumerState<Categorie> {
                             final scount =
                                 (100.toDouble() * farmaciX[index].price!) /
                                     farmaciX[index].discountPrice!;
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushNamed('Product',
-                                    arguments: farmaciX[index]);
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 20),
-                                child: Stack(
-                                  alignment: AlignmentDirectional.bottomStart,
-                                  children: [
-                                    SizedBox(
-                                      width: 174,
-                                      height: 276,
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(14.0),
-                                        ),
-                                        child: Image.network(
-                                          farmaciX[index].image!.url!,
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    ShadowBox(
-                                      color: Colors.white,
-                                      topRightRadius: 0,
-                                      topLeftRadius: 0,
-                                      bottomRightRadius: 14,
-                                      bottomLeftRadius: 14,
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(14.0),
-                                          bottomRight: Radius.circular(14.0),
-                                        ),
-                                        child: Container(
-                                          padding: const EdgeInsets.only(
-                                              left: 15, top: 15),
-                                          height: context.mqh * 0.1,
-                                          color: Colors.white,
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  farmaciX[index].name!,
-                                                  style: const TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 9, 15, 71),
-                                                      fontSize: 14),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                                  .only(
-                                                              topLeft: Radius
-                                                                  .circular(20),
-                                                              bottomLeft: Radius
-                                                                  .circular(
-                                                                      20)),
-                                                      child: Container(
-                                                        color:
-                                                            AppColors.primary,
-                                                        width: 48,
-                                                        height: 24,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left:
-                                                                          4.0),
-                                                              child: Text(
-                                                                  '${farmaciX[index].price!}€',
-                                                                  style: context
-                                                                      .textTheme
-                                                                      .subtitle2
-                                                                      ?.copyWith(
-                                                                          color: Colors
-                                                                              .white,
-                                                                          fontSize:
-                                                                              14)),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ]),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      left: 150,
-                                      top: 20,
-                                      child: Image(
-                                        image: fav.getFarmacoFavorite(
-                                                    farmaciX[index]) ==
-                                                null
-                                            ? const AssetImage(
-                                                'assets/immagini_pharma/Heart.png')
-                                            : const AssetImage(
-                                                'assets/immagini_pharma/fullHeart.png'),
-                                      ),
-                                    ),
-                                    if (scount > 5)
-                                      Positioned(
-                                        top: 0,
-                                        child: Stack(
-                                          children: [
-                                            const Image(
-                                              image: AssetImage(
-                                                  'assets/immagini_pharma/sc.png'),
-                                            ),
-                                            Transform.rotate(
-                                              angle: -math.pi / 4,
-                                              child: Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 15, left: 0),
-                                                child: Text(
-                                                  "${scount.toInt()}% OFF",
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            );
+                            return FarmacoCategoria(
+                                scount: scount, farmaco: farmaciX[index]);
                           })),
                 );
               },
             )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FarmacoCategoria extends ConsumerWidget {
+  final Farmaco farmaco;
+  const FarmacoCategoria({
+    super.key,
+    required this.farmaco,
+    required this.scount,
+  });
+
+  final double scount;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed('Product', arguments: farmaco);
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 20),
+        child: Stack(
+          alignment: AlignmentDirectional.bottomStart,
+          children: [
+            SizedBox(
+              width: 174,
+              height: 276,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(14.0),
+                ),
+                child: Image.network(
+                  farmaco.image!.url!,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            ShadowBox(
+              color: Colors.white,
+              topRightRadius: 0,
+              topLeftRadius: 0,
+              bottomRightRadius: 14,
+              bottomLeftRadius: 14,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(14.0),
+                  bottomRight: Radius.circular(14.0),
+                ),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 15, top: 15),
+                  height: context.mqh * 0.1,
+                  color: Colors.white,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          farmaco.name!,
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 9, 15, 71),
+                              fontSize: 14),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20)),
+                              child: Container(
+                                color: AppColors.primary,
+                                width: 48,
+                                height: 24,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 4.0),
+                                      child: Text('${farmaco.price!}€',
+                                          style: context.textTheme.subtitle2
+                                              ?.copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 14)),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ]),
+                ),
+              ),
+            ),
+            Positioned(
+              left: 150,
+              top: 20,
+              child: Image(
+                image: ref
+                            .read(favoritesProvider)
+                            .getFarmacoFavorite(farmaco) ==
+                        null
+                    ? const AssetImage('assets/immagini_pharma/Heart.png')
+                    : const AssetImage('assets/immagini_pharma/fullHeart.png'),
+              ),
+            ),
+            if (scount > 5)
+              Positioned(
+                top: 0,
+                child: Stack(
+                  children: [
+                    const Image(
+                      image: AssetImage('assets/immagini_pharma/sc.png'),
+                    ),
+                    Transform.rotate(
+                      angle: -math.pi / 4,
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 15, left: 0),
+                        child: Text(
+                          "${scount.toInt()}% OFF",
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
           ],
         ),
       ),

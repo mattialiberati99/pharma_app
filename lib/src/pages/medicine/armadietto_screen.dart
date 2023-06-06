@@ -15,9 +15,9 @@ import '../../components/search_bar/filter_search_bar.dart';
 class ArmadiettoScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final leMieMedicine = ref.watch(armadiettoProvider).armadietto;
+    final leMieMedicine = ref.watch(armadiettoProvider);
 
-    if (leMieMedicine.isEmpty) {
+    if (leMieMedicine.isEmpty()) {
       return Scaffold(
         body: Container(
           padding: const EdgeInsets.all(26),
@@ -148,8 +148,10 @@ class ArmadiettoScreen extends ConsumerWidget {
               shrinkWrap: true,
               itemCount: leMieMedicine.length,
               itemBuilder: (ctx, i) {
+                final mioFarmaco = leMieMedicine.armadietto[i].farmaco;
+
                 return MedicinaArmadietto(
-                    leMieMedicine[i].farmaco, leMieMedicine[i].scadenza);
+                    mioFarmaco, leMieMedicine.armadietto[i].scadenza);
               },
             ),
             const SizedBox(height: 20),

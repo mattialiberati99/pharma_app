@@ -87,6 +87,4 @@ class Media {
   String toString() {
     return this.toMap().toString();
   }
-
-  static fromJson(Map<String, dynamic> json) {}
 }

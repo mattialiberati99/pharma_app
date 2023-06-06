@@ -13,6 +13,13 @@ final armadiettoProvider = ChangeNotifierProvider<ArmadiettoProvider>((ref) {
 class ArmadiettoProvider with ChangeNotifier {
   List<MedicinaArmadietto> _armadietto = [];
 
+  ArmadiettoProvider() {
+    Future.delayed(Duration.zero, () async {
+      _armadietto = await loadMedicinaArmadietto();
+      notifyListeners();
+    });
+  }
+
   bool isEmpty() {
     return _armadietto.isEmpty;
   }
@@ -32,14 +39,10 @@ class ArmadiettoProvider with ChangeNotifier {
 
   void aggiungi(MedicinaArmadietto medicina) async {
     _armadietto.add(medicina);
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // final encodedData = _armadietto.map((e) => jsonEncode(e.toJson())).toList();
-    // await prefs.setStringList('armadietto',encodedData);
-    notifyListeners();
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String listaJson = jsonEncode(_armadietto.map((e) => e.toJson()).toList());
-    await prefs.setString('medicina_armadietto', listaJson);
+    final encodedData = _armadietto.map((e) => jsonEncode(e.toJson())).toList();
+    await prefs.setStringList('mioArmadietto', encodedData);
+    notifyListeners();
   }
 
   void remove(MedicinaArmadietto medicina) {
@@ -59,15 +62,27 @@ class ArmadiettoProvider with ChangeNotifier {
     return [..._armadietto];
   }
 
-  Future<void> loadMedicinaArmadietto() async {
+  Future<List<MedicinaArmadietto>> loadMedicinaArmadietto() async {
+    List<MedicinaArmadietto> myList = [];
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? listaJson = prefs.getString('medicina_armadietto');
+    List<String>? listaJson = prefs.getStringList('mioArmadietto');
 
     if (listaJson != null) {
-      List<dynamic> listaDecodificata = jsonDecode(listaJson);
-      _armadietto =
-          listaDecodificata.map((e) => MedicinaArmadietto.fromJson(e)).toList();
+      for (var el in listaJson) {
+        MedicinaArmadietto farmaco;
+        Map<String, dynamic> decodedJson = jsonDecode(el);
+        farmaco = MedicinaArmadietto.fromJson(decodedJson);
+        myList.add(farmaco);
+      }
+
+      //listaJson.map((e) => MedicinaArmadietto.fromJson())
+      //myList = jsonDecode(listaJson);
+      // myList =
+      //     listaDecodificata.map((e) => MedicinaArmadietto.fromJson(e)).toList();
       notifyListeners();
     }
+
+    return myList;
   }
 }

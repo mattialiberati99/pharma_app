@@ -29,7 +29,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   @override
   Widget build(BuildContext context) {
     final leMieMedicine = ref.watch(armadiettoProvider);
-  
+
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
@@ -212,6 +212,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                           ).show();
                         } else {
                           leMieMedicine.aggiungi(medicina);
+                          print(medicina.toJson());
                           AwesomeDialog(
                             context: context,
                             dialogType: DialogType.success,

@@ -10,11 +10,16 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:pharma_app/src/pages/orders/widgets/ordineConfermato.dart';
+import 'package:pharma_app/src/providers/cart_provider.dart';
+import 'package:random_string/random_string.dart';
 import 'dart:async';
 
+import '../../components/CircularLoadingWidget.dart';
 import '../../components/flat_button.dart';
 import '../../helpers/app_config.dart';
+import '../../models/shop.dart';
 import '../../providers/shops_provider.dart';
+import '../orders/stripe_payment.dart';
 
 class MappaFarmacie extends ConsumerStatefulWidget {
   final double prOrd;
@@ -31,6 +36,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
   Set<Marker> markers = Set();
   TextEditingController timeinput = TextEditingController();
   late TimeOfDay time;
+  final stripe = StripePayment();
 
   TextEditingController codiceFiscaleController = TextEditingController();
   TextEditingController telefonoController = TextEditingController();
@@ -39,8 +45,10 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
   double lat = 0.0;
   double long = 0.0;
 
+  Shop? _currentIndex;
+
   BitmapDescriptor defaultIcon = BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueBlue); //default marker
+      BitmapDescriptor.hueCyan); //default marker
   BitmapDescriptor selectedIcon = BitmapDescriptor.defaultMarkerWithHue(
       BitmapDescriptor.hueRed); //selected marker
 
@@ -73,6 +81,14 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
       // });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    codiceFiscaleController.dispose();
+    telefonoController.dispose();
+    noteController.dispose();
+    super.dispose();
   }
 
   getPosition() async {
@@ -117,758 +133,753 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
   Widget build(BuildContext context) {
     final baseLatLng = LatLng(long, lat);
 
-    //final farmacie = ref.watch(nearestShopsProviderWithProducts());
+    final cart = ref.watch(cartProvider);
+    final farmacie = ref.watch(nearestShopsProvider);
 
     Size s = MediaQuery.of(context).size;
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          SizedBox(
-            height: s.height,
-            width: s.width,
-            child: GoogleMap(
-                mapToolbarEnabled: true,
-                mapType: MapType.terrain,
-                scrollGesturesEnabled: true,
-                initialCameraPosition:
-                    CameraPosition(target: baseLatLng, zoom: 11),
-                onMapCreated: _onMapCreated,
-                myLocationEnabled: true,
-                // markers: data!
-                //     .map((e) => Marker(
-                //         markerId: MarkerId(randomString(5)),
-                //         onTap: () {
-                //           setState(() {
-                //             _currentIndex = e;
-                //           });
-                //         },
-                //         icon: _currentIndex == e ? selectedIcon : defaultIcon,
-                //         consumeTapEvents: true,
-                //         anchor: const Offset(0.5, 0.5),
-                //         position:
-                //             LatLng(e.from!.latitude!, e.from!.longitude!)))
-                //     .toSet(),
-                circles: {
-                  Circle(
-                    circleId: const CircleId("-1"),
-                    center: baseLatLng,
-                    radius: 400,
-                    fillColor: Colors.blue.shade100.withOpacity(0.5),
-                    strokeColor: Colors.blue.shade100.withOpacity(0.1),
-                  )
-                }),
-          ),
-          Positioned(
-            height: 285,
-            left: 0,
-            right: 0,
-            child: Card(
-              elevation: 1,
-              color: Colors.white,
-              margin: EdgeInsets.zero,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40))),
-              borderOnForeground: false,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Image.asset('assets/immagini_pharma/Rectangle.png'),
-                  const SizedBox(height: 30),
-                  const Text(
-                    'Scegli la tua farmacia preferita',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    width: MediaQuery.of(context).size.width - 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: AppColors.gray8,
-                    ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(Icons.location_on, color: Colors.red),
-                              const SizedBox(width: 10),
-                              Column(
-                                children: [
-                                  Text(
-                                    'Farmacia Bresciani',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    'Via Roma 340, 12345 Verona, VR, Italia',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: const TextStyle(fontSize: 10),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  topLeft: Radius.circular(20)),
+    return farmacie.when(
+        data: (data) {
+          return Scaffold(
+            extendBodyBehindAppBar: true,
+            body: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                SizedBox(
+                  height: s.height,
+                  width: s.width,
+                  child: GoogleMap(
+                      mapToolbarEnabled: true,
+                      mapType: MapType.normal,
+                      scrollGesturesEnabled: true,
+                      initialCameraPosition:
+                          CameraPosition(target: baseLatLng, zoom: 11),
+                      onMapCreated: _onMapCreated,
+                      myLocationEnabled: true,
+                      markers: data
+                          .map(
+                            (e) => Marker(
+                              markerId: MarkerId(e.id!),
+                              onTap: () {
+                                setState(() {
+                                  _currentIndex = e;
+                                });
+                              },
+                              icon: _currentIndex == e
+                                  ? selectedIcon
+                                  : defaultIcon,
+                              consumeTapEvents: true,
+                              anchor: const Offset(0.5, 0.5),
+                              position: LatLng(
+                                double.parse(e.latitude!),
+                                double.parse(e.longitude!),
+                              ),
                             ),
-                            backgroundColor: Color.fromARGB(249, 249, 249, 249),
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (BuildContext context) {
-                              return SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.96,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20)),
-                                  child: Scaffold(
-                                    bottomSheet: Container(
-                                      width: double.infinity,
-                                      height: 120,
-                                      color: Colors.white,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: SizedBox(
-                                              height: 50,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  2,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  // TODO
-                                                  Navigator.of(context).pop();
-                                                  showModalBottomSheet(
-                                                    shape:
-                                                        const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                              topRight: Radius
-                                                                  .circular(20),
-                                                              topLeft: Radius
-                                                                  .circular(
-                                                                      20)),
-                                                    ),
-                                                    backgroundColor:
-                                                        Color.fromARGB(
-                                                            249, 249, 249, 249),
-                                                    context: context,
-                                                    isScrollControlled: true,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return SizedBox(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.96,
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                      .only(
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          20),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          20)),
-                                                          child: Scaffold(
-                                                            bottomSheet:
-                                                                Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              height: 120,
-                                                              color:
-                                                                  Colors.white,
-                                                              child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Align(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    child:
-                                                                        SizedBox(
-                                                                      height:
-                                                                          50,
-                                                                      width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width /
-                                                                          2,
-                                                                      child:
-                                                                          ElevatedButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                          Navigator.push(
-                                                                              context,
-                                                                              MaterialPageRoute(builder: (context) => OrdineConfermato()));
-                                                                        },
-                                                                        style: ElevatedButton
-                                                                            .styleFrom(
-                                                                          backgroundColor: const Color.fromARGB(
-                                                                              255,
-                                                                              47,
-                                                                              171,
-                                                                              148),
-                                                                          shape:
-                                                                              RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(18),
-                                                                          ),
-                                                                        ),
-                                                                        child:
-                                                                            const Text(
-                                                                          'Conferma',
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  FlatButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    child:
-                                                                        const Text(
-                                                                      "Annulla",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .red,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            backgroundColor:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    249,
-                                                                    249,
-                                                                    249),
-                                                            body: Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.95,
-                                                                  child:
-                                                                      Container(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left: 8,
-                                                                        right:
-                                                                            8),
-                                                                    child:
-                                                                        Column(
-                                                                      children: [
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              15,
-                                                                        ),
-                                                                        Image.asset(
-                                                                            'assets/immagini_pharma/Rectangle.png'),
-                                                                        Row(
-                                                                            children: [
-                                                                              IconButton(
-                                                                                onPressed: () {
-                                                                                  Navigator.of(context).pop();
-                                                                                },
-                                                                                icon: const Icon(Icons.arrow_back_ios),
-                                                                              ),
-                                                                              const SizedBox(width: 50),
-                                                                              const Align(
-                                                                                alignment: Alignment.center,
-                                                                                child: Text('Salta la fila e ritira in farmacia', style: TextStyle(fontWeight: FontWeight.bold)),
-                                                                              ),
-                                                                            ]),
-                                                                        Container(
-                                                                          alignment:
-                                                                              Alignment.topLeft,
-                                                                          decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.circular(8),
-                                                                              color: Colors.white),
-                                                                          height:
-                                                                              470,
-                                                                          width:
-                                                                              MediaQuery.of(context).size.width - 30,
-                                                                          child:
-                                                                              Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(20.0),
-                                                                            child:
-                                                                                Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                const Text(
-                                                                                  'Riepilogo per il ritiro',
-                                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                                                                                ),
-                                                                                const SizedBox(height: 20),
-                                                                                const Text(
-                                                                                  'Dati Farmacia',
-                                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                                                                                ),
-                                                                                const SizedBox(height: 20),
-                                                                                Column(
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  children: const [
-                                                                                    Text('F. Bresciani'),
-                                                                                    Text('Via Roma 3400,12345 Verona, VR, Italia'),
-                                                                                  ],
-                                                                                ),
-                                                                                const SizedBox(height: 20),
-                                                                                Row(
-                                                                                  children: [
-                                                                                    const Text(
-                                                                                      'Numero Telefono: ',
-                                                                                      style: TextStyle(color: AppColors.primary),
-                                                                                    ),
-                                                                                    const SizedBox(width: 5),
-                                                                                    Text(telefonoController.text),
-                                                                                  ],
-                                                                                ),
-                                                                                const SizedBox(height: 20),
-                                                                                const Text(
-                                                                                  'Dettagli per il ritiro',
-                                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                                                                                ),
-                                                                                const SizedBox(height: 15),
-                                                                                Text(codiceFiscaleController.text),
-                                                                                const SizedBox(height: 10),
-                                                                                Row(
-                                                                                  children: [
-                                                                                    const Text(
-                                                                                      'Orario di ritiro: ',
-                                                                                      style: TextStyle(color: AppColors.primary),
-                                                                                    ),
-                                                                                    const SizedBox(width: 5),
-                                                                                    Text(timeinput.text),
-                                                                                  ],
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(10.0),
-                                                                          child:
-                                                                              Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
-                                                                            children: [
-                                                                              Text('Totale'),
-                                                                              Text('${widget.prOrd}€', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color.fromARGB(
-                                                          255, 47, 171, 148),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            18),
-                                                  ),
-                                                ),
-                                                child: const Text(
-                                                  'Procedi',
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          FlatButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text(
-                                              "Annulla",
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    backgroundColor:
-                                        Color.fromARGB(255, 249, 249, 249),
-                                    body: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.95,
-                                          child: Container(
-                                            padding: const EdgeInsets.only(
-                                                left: 8, right: 8),
-                                            child: Column(
-                                              children: [
-                                                const SizedBox(
-                                                  height: 15,
-                                                ),
-                                                Image.asset(
-                                                    'assets/immagini_pharma/Rectangle.png'),
-                                                Row(children: [
-                                                  IconButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    icon: const Icon(
-                                                        Icons.arrow_back_ios),
-                                                  ),
-                                                  const SizedBox(width: 50),
-                                                  const Align(
-                                                    alignment: Alignment.center,
-                                                    child: Text(
-                                                        'Salta la fila e ritira in farmacia',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ),
-                                                ]),
-                                                Container(
-                                                  alignment: Alignment.topLeft,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      color: Colors.white),
-                                                  height: 470,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width -
-                                                      30,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            20.0),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const Text(
-                                                          'Informazioni per il ritiro',
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 16),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 20),
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: const [
-                                                            Text(
-                                                                'F. Bresciani'),
-                                                            Text(
-                                                                'Via Roma 3400,12345 Verona, VR, Italia'),
-                                                          ],
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 20),
-                                                        TextFormField(
-                                                          controller:
-                                                              codiceFiscaleController,
-                                                          obscureText: false,
-                                                          decoration:
-                                                              InputDecoration(
-                                                                  labelText:
-                                                                      'Codice fiscale'),
-                                                        ),
-                                                        TextFormField(
-                                                          controller:
-                                                              telefonoController,
-                                                          obscureText: false,
-                                                          decoration:
-                                                              InputDecoration(
-                                                                  labelText:
-                                                                      'Telefono'),
-                                                        ),
-                                                        TextFormField(
-                                                          controller:
-                                                              noteController,
-                                                          obscureText: false,
-                                                          decoration:
-                                                              InputDecoration(
-                                                                  labelText:
-                                                                      'Note'),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 20),
-                                                        const Text(
-                                                          'Seleziona un orario indicativo per il ritiro',
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 16),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 170,
-                                                          child: TextFormField(
-                                                            style: TextStyle(
-                                                              color: timeinput
-                                                                      .text
-                                                                      .isNotEmpty
-                                                                  ? Colors.white
-                                                                  : Colors
-                                                                      .black,
-                                                            ),
-                                                            controller:
-                                                                timeinput,
-                                                            cursorColor:
-                                                                AppColors.gray5,
-                                                            decoration:
-                                                                InputDecoration(
-                                                              contentPadding:
-                                                                  const EdgeInsets
-                                                                      .all(0),
-                                                              border:
-                                                                  const OutlineInputBorder(
-                                                                borderSide: BorderSide(
-                                                                    color: AppColors
-                                                                        .gray5),
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            10)),
-                                                              ),
-                                                              focusedBorder:
-                                                                  const OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                  color:
-                                                                      AppColors
-                                                                          .gray5,
-                                                                ),
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            10)),
-                                                              ),
-                                                              enabledBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide: BorderSide(
-                                                                    color: AppColors
-                                                                        .gray5),
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            10)),
-                                                              ),
-                                                              hintText:
-                                                                  'Orario',
-                                                              //hintStyle: TextStyles.mediumGrey,
-                                                              filled: true,
-                                                              fillColor: timeinput
-                                                                      .text
-                                                                      .isNotEmpty
-                                                                  ? AppColors
-                                                                      .primary
-                                                                  : Colors
-                                                                      .white,
+                          )
+                          .toSet(),
+                      circles: {
+                        Circle(
+                          circleId: const CircleId("-1"),
+                          center: baseLatLng,
+                          radius: 400,
+                          fillColor: Colors.blue.shade100.withOpacity(0.5),
+                          strokeColor: Colors.blue.shade100.withOpacity(0.1),
+                        )
+                      }),
+                ),
+                _bottomSheetFarmacia(_currentIndex!),
+              ],
+            ),
+          );
+        },
+        error: (e, v) => const SizedBox(),
+        loading: () => CircularLoadingWidget(height: 100));
+  }
 
-                                                              prefix:
-                                                                  const SizedBox(
-                                                                width: 16,
-                                                              ),
-                                                              prefixIcon:
-                                                                  Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            16.0),
-                                                                child: Icon(
-                                                                  Icons.alarm,
-                                                                  color: timeinput
-                                                                          .text
-                                                                          .isNotEmpty
-                                                                      ? Colors
-                                                                          .white
-                                                                      : AppColors
-                                                                          .gray4,
-                                                                ),
-                                                              ),
-                                                              prefixIconConstraints:
-                                                                  const BoxConstraints(
-                                                                maxWidth: 40,
-                                                                maxHeight: 40,
-                                                              ),
-                                                            ),
-                                                            readOnly: true,
-                                                            onTap: () async {
-                                                              TimeOfDay?
-                                                                  pickedTime =
-                                                                  await showTimePicker(
-                                                                builder:
-                                                                    (context,
-                                                                        child) {
-                                                                  return Theme(
-                                                                      child:
-                                                                          child!,
-                                                                      data: Theme.of(context).copyWith(
-                                                                          colorScheme: const ColorScheme.light(
-                                                                              primary: AppColors.primary,
-                                                                              onPrimary: Colors.black,
-                                                                              onSurface: Colors.grey)));
-                                                                },
-                                                                context:
-                                                                    context,
-                                                                initialTime:
-                                                                    TimeOfDay
-                                                                        .now(),
-                                                              );
-
-                                                              //DateTime.now() - not to allow to choose before today.
-
-                                                              if (pickedTime !=
-                                                                  null) {
-                                                                setState(() {
-                                                                  time =
-                                                                      pickedTime;
-                                                                  timeinput
-                                                                          .text =
-                                                                      '${time.hour} : ${time.minute}';
-                                                                });
-                                                              } else {
-                                                                print(
-                                                                    "Time is not selected");
-                                                              }
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text('Totale'),
-                                                      Text('${widget.prOrd}€',
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize:
-                                                                      16)),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 47, 171, 148),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                        ),
-                        child: const Text(
-                          'Conferma',
-                        ),
-                      ),
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      "Annulla",
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
+  Positioned _bottomSheetFarmacia(Shop farmacia) {
+    return Positioned(
+      height: 285,
+      left: 0,
+      right: 0,
+      child: Card(
+        elevation: 1,
+        color: Colors.white,
+        margin: EdgeInsets.zero,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+        borderOnForeground: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 15,
+            ),
+            Image.asset('assets/immagini_pharma/Rectangle.png'),
+            const SizedBox(height: 30),
+            const Text(
+              'Scegli la tua farmacia preferita',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              alignment: Alignment.center,
+              height: 50,
+              width: MediaQuery.of(context).size.width - 150,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: AppColors.gray8,
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.location_on, color: Colors.red),
+                        const SizedBox(width: 10),
+                        Column(
+                          children: [
+                            Text(
+                              farmacia.name!,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              farmacia.address!,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: const TextStyle(fontSize: 10),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                height: 50,
+                width: MediaQuery.of(context).size.width / 2,
+                child: ElevatedButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            topLeft: Radius.circular(20)),
+                      ),
+                      backgroundColor: Color.fromARGB(249, 249, 249, 249),
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.96,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20)),
+                            child: Scaffold(
+                              bottomSheet: Container(
+                                width: double.infinity,
+                                height: 120,
+                                color: Colors.white,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: SizedBox(
+                                        height: 50,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            if (codiceFiscaleController.text !=
+                                                    '' &&
+                                                telefonoController.text != '' &&
+                                                noteController.text != '' &&
+                                                timeinput.text != '') {
+                                              Navigator.of(context).pop();
+                                              showModalBottomSheet(
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  20),
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  20)),
+                                                ),
+                                                backgroundColor: Color.fromARGB(
+                                                    249, 249, 249, 249),
+                                                context: context,
+                                                isScrollControlled: true,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.96,
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .only(
+                                                              topLeft: Radius
+                                                                  .circular(20),
+                                                              topRight: Radius
+                                                                  .circular(
+                                                                      20)),
+                                                      child: Scaffold(
+                                                        bottomSheet: Container(
+                                                          width:
+                                                              double.infinity,
+                                                          height: 120,
+                                                          color: Colors.white,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Align(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: SizedBox(
+                                                                  height: 50,
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width /
+                                                                      2,
+                                                                  child:
+                                                                      ElevatedButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      // TODO STRIPE
+
+                                                                      // Navigator.of(context)
+                                                                      //     .pop();
+                                                                      // Navigator.push(
+                                                                      //     context,
+                                                                      //     MaterialPageRoute(builder: (context) => OrdineConfermato()));
+                                                                    },
+                                                                    style: ElevatedButton
+                                                                        .styleFrom(
+                                                                      backgroundColor: const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          47,
+                                                                          171,
+                                                                          148),
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(18),
+                                                                      ),
+                                                                    ),
+                                                                    child:
+                                                                        const Text(
+                                                                      'Conferma',
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              FlatButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                  "Annulla",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .red,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        backgroundColor:
+                                                            Color.fromARGB(255,
+                                                                249, 249, 249),
+                                                        body: Column(
+                                                          children: [
+                                                            SizedBox(
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  0.95,
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left: 8,
+                                                                        right:
+                                                                            8),
+                                                                child: Column(
+                                                                  children: [
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          15,
+                                                                    ),
+                                                                    Image.asset(
+                                                                        'assets/immagini_pharma/Rectangle.png'),
+                                                                    Row(
+                                                                        children: [
+                                                                          IconButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                            icon:
+                                                                                const Icon(Icons.arrow_back_ios),
+                                                                          ),
+                                                                          const SizedBox(
+                                                                              width: 50),
+                                                                          const Align(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            child:
+                                                                                Text('Salta la fila e ritira in farmacia', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                                          ),
+                                                                        ]),
+                                                                    Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .topLeft,
+                                                                      decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              8),
+                                                                          color:
+                                                                              Colors.white),
+                                                                      height:
+                                                                          470,
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width -
+                                                                          30,
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(20.0),
+                                                                        child:
+                                                                            Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            const Text(
+                                                                              'Riepilogo per il ritiro',
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                                                            ),
+                                                                            const SizedBox(height: 20),
+                                                                            const Text(
+                                                                              'Dati Farmacia',
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                                                            ),
+                                                                            const SizedBox(height: 20),
+                                                                            Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Text(farmacia.name!),
+                                                                                Text(farmacia.address!),
+                                                                              ],
+                                                                            ),
+                                                                            const SizedBox(height: 20),
+                                                                            Row(
+                                                                              children: [
+                                                                                const Text(
+                                                                                  'Numero Telefono: ',
+                                                                                  style: TextStyle(color: AppColors.primary),
+                                                                                ),
+                                                                                const SizedBox(width: 5),
+                                                                                Text(telefonoController.text),
+                                                                              ],
+                                                                            ),
+                                                                            const SizedBox(height: 20),
+                                                                            const Text(
+                                                                              'Dettagli per il ritiro',
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                                                            ),
+                                                                            const SizedBox(height: 15),
+                                                                            Text(codiceFiscaleController.text),
+                                                                            const SizedBox(height: 10),
+                                                                            Row(
+                                                                              children: [
+                                                                                const Text(
+                                                                                  'Orario di ritiro: ',
+                                                                                  style: TextStyle(color: AppColors.primary),
+                                                                                ),
+                                                                                const SizedBox(width: 5),
+                                                                                Text(timeinput.text),
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .all(
+                                                                          10.0),
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Text(
+                                                                              'Totale'),
+                                                                          Text(
+                                                                              '${widget.prOrd}€',
+                                                                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            } else {
+                                              null;
+                                            }
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 47, 171, 148),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'Procedi',
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    FlatButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        "Annulla",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              backgroundColor:
+                                  Color.fromARGB(255, 249, 249, 249),
+                              body: Column(
+                                children: [
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.95,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8),
+                                      child: Column(
+                                        children: [
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Image.asset(
+                                              'assets/immagini_pharma/Rectangle.png'),
+                                          Row(children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              icon: const Icon(
+                                                  Icons.arrow_back_ios),
+                                            ),
+                                            const SizedBox(width: 50),
+                                            const Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                  'Salta la fila e ritira in farmacia',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            ),
+                                          ]),
+                                          Container(
+                                            alignment: Alignment.topLeft,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: Colors.white),
+                                            height: 470,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                30,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(20.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text(
+                                                    'Informazioni per il ritiro',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16),
+                                                  ),
+                                                  const SizedBox(height: 20),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(farmacia.name!),
+                                                      Text(farmacia.address!),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 20),
+                                                  TextFormField(
+                                                    controller:
+                                                        codiceFiscaleController,
+                                                    obscureText: false,
+                                                    decoration: InputDecoration(
+                                                        labelText:
+                                                            'Codice fiscale'),
+                                                  ),
+                                                  TextFormField(
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    controller:
+                                                        telefonoController,
+                                                    obscureText: false,
+                                                    decoration: InputDecoration(
+                                                        labelText: 'Telefono'),
+                                                  ),
+                                                  TextFormField(
+                                                    controller: noteController,
+                                                    obscureText: false,
+                                                    decoration: InputDecoration(
+                                                        labelText: 'Note'),
+                                                  ),
+                                                  const SizedBox(height: 20),
+                                                  const Text(
+                                                    'Seleziona un orario indicativo per il ritiro',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 170,
+                                                    child: TextFormField(
+                                                      style: TextStyle(
+                                                        color: timeinput
+                                                                .text.isNotEmpty
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                      ),
+                                                      controller: timeinput,
+                                                      cursorColor:
+                                                          AppColors.gray5,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        contentPadding:
+                                                            const EdgeInsets
+                                                                .all(0),
+                                                        border:
+                                                            const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppColors
+                                                                  .gray5),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                        ),
+                                                        focusedBorder:
+                                                            const OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color:
+                                                                AppColors.gray5,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                        ),
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppColors
+                                                                  .gray5),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                        ),
+                                                        hintText: 'Orario',
+                                                        //hintStyle: TextStyles.mediumGrey,
+                                                        filled: true,
+                                                        fillColor: timeinput
+                                                                .text.isNotEmpty
+                                                            ? AppColors.primary
+                                                            : Colors.white,
+
+                                                        prefix: const SizedBox(
+                                                          width: 16,
+                                                        ),
+                                                        prefixIcon: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 16.0),
+                                                          child: Icon(
+                                                            Icons.alarm,
+                                                            color: timeinput
+                                                                    .text
+                                                                    .isNotEmpty
+                                                                ? Colors.white
+                                                                : AppColors
+                                                                    .gray4,
+                                                          ),
+                                                        ),
+                                                        prefixIconConstraints:
+                                                            const BoxConstraints(
+                                                          maxWidth: 40,
+                                                          maxHeight: 40,
+                                                        ),
+                                                      ),
+                                                      readOnly: true,
+                                                      onTap: () async {
+                                                        TimeOfDay? pickedTime =
+                                                            await showTimePicker(
+                                                          builder:
+                                                              (context, child) {
+                                                            return Theme(
+                                                                child: child!,
+                                                                data: Theme.of(context).copyWith(
+                                                                    colorScheme: const ColorScheme
+                                                                            .light(
+                                                                        primary:
+                                                                            AppColors
+                                                                                .primary,
+                                                                        onPrimary:
+                                                                            Colors
+                                                                                .black,
+                                                                        onSurface:
+                                                                            Colors.grey)));
+                                                          },
+                                                          context: context,
+                                                          initialTime:
+                                                              TimeOfDay.now(),
+                                                        );
+
+                                                        //DateTime.now() - not to allow to choose before today.
+
+                                                        if (pickedTime !=
+                                                            null) {
+                                                          setState(() {
+                                                            time = pickedTime;
+                                                            timeinput.text =
+                                                                '${time.hour} : ${time.minute}';
+                                                          });
+                                                        } else {
+                                                          print(
+                                                              "Time is not selected");
+                                                        }
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text('Totale'),
+                                                Text('${widget.prOrd}€',
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16)),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 47, 171, 148),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
+                  child: const Text(
+                    'Conferma',
+                  ),
+                ),
+              ),
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                "Annulla",
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

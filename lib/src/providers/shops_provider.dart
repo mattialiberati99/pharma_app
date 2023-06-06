@@ -44,6 +44,10 @@ final nearestAddressShopsProvider = FutureProvider((ref) async {
   return await getNearRestaurants(address, address);
 });
 
+final recentRestaurantsProvider = FutureProvider<List<Shop>>((ref) async {
+  return await loadRecentRestaurants();
+});
+
 ///Provider filters shops based on suggested address in [PreHome]
 final suggestedAddressProvider =
     StateProvider<Address>((ref) => ref.watch(positionProvider).getAddress());

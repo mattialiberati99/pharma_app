@@ -8,7 +8,7 @@ import 'package:pharma_app/src/pages/cart/checkout.dart';
 import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
 import 'package:pharma_app/src/pages/chat/chat_page.dart';
 import 'package:pharma_app/src/pages/contact_us/contact_us.dart';
-import 'package:pharma_app/src/pages/favourites/favorite.dart';
+import 'package:pharma_app/src/pages/favorites/favorites.dart';
 import 'package:pharma_app/src/pages/login/otp_screen.dart';
 import 'package:pharma_app/src/pages/login/preSignUp.dart';
 import 'package:pharma_app/src/pages/login/success_verification_page.dart';
@@ -121,7 +121,7 @@ class RouteGenerator {
       case 'Notifiche':
         return MaterialPageRoute(builder: (_) => const NotificationsWidget());
       case 'Preferiti':
-        return MaterialPageRoute(builder: (_) => const Favorite());
+        return MaterialPageRoute(builder: (_) => FavoritesWidget());
       case 'Chat':
         return MaterialPageRoute(
             builder: (_) => ChatPage(routeArgument: args as RouteArgument));

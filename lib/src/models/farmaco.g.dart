@@ -14,7 +14,7 @@ Farmaco _$FarmacoFromJson(Map<String, dynamic> json) => Farmaco()
   ..iva = (json['iva'] as num?)?.toDouble()
   ..image = json['image'] == null
       ? null
-      : Media.fromJson(json['image'] as Map<String, dynamic>)
+      : Media.fromJSON(json['image'] as Map<String, dynamic>)
   ..description = json['description'] as String?
   ..ingredients = json['ingredients'] as String?
   ..weight = json['weight'] as String?
@@ -24,10 +24,7 @@ Farmaco _$FarmacoFromJson(Map<String, dynamic> json) => Farmaco()
   ..deliverable = json['deliverable'] as bool?
   ..rate = (json['rate'] as num?)?.toDouble()
   ..rateCount = json['rateCount'] as int?
-  ..arrivo = json['arrivo'] as String?
-  ..gallery = (json['gallery'] as List<dynamic>?)
-      ?.map((e) => Media.fromJson(e as Map<String, dynamic>)).cast<Media>()
-      .toList();
+  ..arrivo = json['arrivo'] as String?;
 
 Map<String, dynamic> _$FarmacoToJson(Farmaco instance) => <String, dynamic>{
       'id': instance.id,
