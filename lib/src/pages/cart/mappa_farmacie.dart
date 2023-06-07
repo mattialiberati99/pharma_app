@@ -153,7 +153,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                       mapType: MapType.normal,
                       scrollGesturesEnabled: true,
                       initialCameraPosition:
-                          CameraPosition(target: baseLatLng, zoom: 11),
+                          CameraPosition(target: baseLatLng, zoom: 3),
                       onMapCreated: _onMapCreated,
                       myLocationEnabled: true,
                       markers: data
@@ -187,13 +187,46 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                         )
                       }),
                 ),
-                _bottomSheetFarmacia(_currentIndex!),
+                if (_currentIndex != null) _bottomSheetFarmacia(_currentIndex!),
+                if (_currentIndex == null) _bottomSheetScegli(),
               ],
             ),
           );
         },
         error: (e, v) => const SizedBox(),
         loading: () => CircularLoadingWidget(height: 100));
+  }
+
+  Positioned _bottomSheetScegli() {
+    return Positioned(
+        height: 285,
+        left: 0,
+        right: 0,
+        child: Card(
+          elevation: 1,
+          color: Colors.white,
+          margin: EdgeInsets.zero,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+          borderOnForeground: false,
+          child: Container(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 15,
+                ),
+                Image.asset('assets/immagini_pharma/Rectangle.png'),
+                const SizedBox(height: 30),
+                const Text(
+                  'Scegli la tua farmacia preferita',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ));
   }
 
   Positioned _bottomSheetFarmacia(Shop farmacia) {
