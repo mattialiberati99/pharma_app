@@ -1,6 +1,6 @@
 {
-  "base_url": "http://snapolitano.ddns.net:8000/pharma_backend/public/",
-  "api_base_url": "http://snapolitano.ddns.net:8000/pharma_backend/public/api/"
+  "base_url": "https://console.pharmadeliveryitalia.it/",
+  "api_base_url": "https://console.pharmadeliveryitalia.it/api/"
 }
 
 

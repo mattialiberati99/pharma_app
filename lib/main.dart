@@ -45,6 +45,8 @@ void main() async {
     sound: true,
   );
 
+  print('User granted permission: ${settings.authorizationStatus}');
+
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     if (message.notification != null && navigatorKey.currentContext != null) {
       final hidePopupRoutes = ['Chat', 'ChatList'];

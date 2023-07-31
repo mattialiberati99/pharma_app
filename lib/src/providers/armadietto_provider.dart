@@ -75,14 +75,8 @@ class ArmadiettoProvider with ChangeNotifier {
         farmaco = MedicinaArmadietto.fromJson(decodedJson);
         myList.add(farmaco);
       }
-
-      //listaJson.map((e) => MedicinaArmadietto.fromJson())
-      //myList = jsonDecode(listaJson);
-      // myList =
-      //     listaDecodificata.map((e) => MedicinaArmadietto.fromJson(e)).toList();
       notifyListeners();
     }
-
     return myList;
   }
 }

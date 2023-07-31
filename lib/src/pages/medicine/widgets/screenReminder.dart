@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pharma_app/src/pages/medicine/widgets/medicineTerapia.dart';
+import 'package:pharma_app/src/pages/medicine/widgets/medicina_terapia.dart';
 import 'package:pharma_app/src/providers/terapia_provider.dart';
 
 import '../../../helpers/app_config.dart';

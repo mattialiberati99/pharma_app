@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:location/location.dart';
 
 import '../../../generated/l10n.dart';
 import '../../components/AppButton.dart';
@@ -55,6 +56,24 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
         }
       });
     });
+  }
+
+  void locationPermission() async {
+    var location = Location();
+    var _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+    var _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
   }
 
   @override
@@ -110,11 +129,18 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
       return;
     }
 
+    locationPermission();
+
     if (buildNumber >= setting.value.minVersion!) {
       print(currentUser.value.apiToken);
       if (currentUser.value.apiToken != null) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
-          Navigator.of(context).pushReplacementNamed('Home');
+          if (currentUser.value.verified != null ||
+              !setting.value.verifyEmail) {
+            Navigator.of(context).pushReplacementNamed('Home');
+          } else {
+            Navigator.of(context).pushReplacementNamed('VerifyOtp');
+          }
         });
       } else {
         SchedulerBinding.instance.addPostFrameCallback((_) {

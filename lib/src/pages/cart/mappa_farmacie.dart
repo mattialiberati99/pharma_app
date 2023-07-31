@@ -19,11 +19,9 @@ import '../../components/flat_button.dart';
 import '../../helpers/app_config.dart';
 import '../../models/shop.dart';
 import '../../providers/shops_provider.dart';
-import '../orders/stripe_payment.dart';
 
 class MappaFarmacie extends ConsumerStatefulWidget {
-  final double prOrd;
-  const MappaFarmacie({super.key, required this.prOrd});
+  const MappaFarmacie({super.key});
 
   @override
   ConsumerState<MappaFarmacie> createState() => _MappaFarmacieState();
@@ -36,7 +34,6 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
   Set<Marker> markers = Set();
   TextEditingController timeinput = TextEditingController();
   late TimeOfDay time;
-  final stripe = StripePayment();
 
   TextEditingController codiceFiscaleController = TextEditingController();
   TextEditingController telefonoController = TextEditingController();
@@ -48,7 +45,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
   Shop? _currentIndex;
 
   BitmapDescriptor defaultIcon = BitmapDescriptor.defaultMarkerWithHue(
-      BitmapDescriptor.hueCyan); //default marker
+      BitmapDescriptor.hueBlue); //default marker
   BitmapDescriptor selectedIcon = BitmapDescriptor.defaultMarkerWithHue(
       BitmapDescriptor.hueRed); //selected marker
 
@@ -120,20 +117,9 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
     });
   }
 
-  Future<String?> getAddressFromLatLang(Position position) async {
-    String? address;
-    List<Placemark> placemark =
-        await placemarkFromCoordinates(position.latitude, position.latitude);
-    Placemark place = placemark[0];
-    address = place.locality;
-    return address;
-  }
-
   @override
   Widget build(BuildContext context) {
     final baseLatLng = LatLng(long, lat);
-
-    final cart = ref.watch(cartProvider);
     final farmacie = ref.watch(nearestShopsProvider);
 
     Size s = MediaQuery.of(context).size;
@@ -153,7 +139,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                       mapType: MapType.normal,
                       scrollGesturesEnabled: true,
                       initialCameraPosition:
-                          CameraPosition(target: baseLatLng, zoom: 11),
+                          CameraPosition(target: baseLatLng, zoom: 3),
                       onMapCreated: _onMapCreated,
                       myLocationEnabled: true,
                       markers: data
@@ -187,7 +173,8 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                         )
                       }),
                 ),
-                _bottomSheetFarmacia(_currentIndex!),
+                if (_currentIndex != null) _bottomSheetFarmacia(_currentIndex!),
+                if (_currentIndex == null) _bottomSheetScegli(),
               ],
             ),
           );
@@ -196,7 +183,41 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
         loading: () => CircularLoadingWidget(height: 100));
   }
 
+  Positioned _bottomSheetScegli() {
+    return Positioned(
+        height: 285,
+        left: 0,
+        right: 0,
+        child: Card(
+          elevation: 1,
+          color: Colors.white,
+          margin: EdgeInsets.zero,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+          borderOnForeground: false,
+          child: Container(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 15,
+                ),
+                Image.asset('assets/immagini_pharma/Rectangle.png'),
+                const SizedBox(height: 30),
+                const Text(
+                  'Scegli la tua farmacia preferita',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ));
+  }
+
   Positioned _bottomSheetFarmacia(Shop farmacia) {
+    final cartProv = ref.watch(cartProvider);
+
     return Positioned(
       height: 285,
       left: 0,
@@ -371,11 +392,13 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                                                                         () {
                                                                       // TODO STRIPE
 
-                                                                      // Navigator.of(context)
-                                                                      //     .pop();
-                                                                      // Navigator.push(
-                                                                      //     context,
-                                                                      //     MaterialPageRoute(builder: (context) => OrdineConfermato()));
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                      Navigator.push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                              builder: (context) => OrdineConfermato(timeinput.text, farmacia)));
                                                                     },
                                                                     style: ElevatedButton
                                                                         .styleFrom(
@@ -547,7 +570,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                                                                           Text(
                                                                               'Totale'),
                                                                           Text(
-                                                                              '${widget.prOrd}€',
+                                                                              '${cartProv.sconto}€',
                                                                               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                                                                         ],
                                                                       ),
@@ -835,7 +858,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                                                       .spaceBetween,
                                               children: [
                                                 Text('Totale'),
-                                                Text('${widget.prOrd}€',
+                                                Text('${cartProv.sconto}€',
                                                     style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -883,4 +906,13 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
       ),
     );
   }
+}
+
+Future<String?> getAddressFromLatLang(Position position) async {
+  String? address;
+  List<Placemark> placemark =
+      await placemarkFromCoordinates(position.latitude, position.latitude);
+  Placemark place = placemark[0];
+  address = place.locality;
+  return address;
 }

@@ -8,8 +8,13 @@ import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/providers/cart_provider.dart';
 import 'package:pharma_app/src/providers/orders_provider.dart';
 
+import '../../../models/shop.dart';
+
 class OrdineConfermato extends ConsumerStatefulWidget {
-  const OrdineConfermato({super.key});
+  String timeinput;
+  Shop farmacia;
+
+  OrdineConfermato(this.timeinput, this.farmacia);
 
   @override
   ConsumerState<OrdineConfermato> createState() => _OrdineConfermatoState();
@@ -235,15 +240,15 @@ class _OrdineConfermatoState extends ConsumerState<OrdineConfermato> {
                   ),
                 if (index == cartProv.carts.length - 1)
                   Row(
-                    children: const [
-                      Image(
+                    children: [
+                      const Image(
                         image: AssetImage(
                             'assets/immagini_pharma/icon_location.png'),
                         color: Color.fromARGB(255, 167, 166, 165),
                       ),
                       Text(
-                        'Indirizzo farmacia',
-                        style: TextStyle(
+                        widget.farmacia.address!,
+                        style: const TextStyle(
                           color: Color.fromARGB(255, 167, 166, 165),
                         ),
                       )
@@ -255,15 +260,15 @@ class _OrdineConfermatoState extends ConsumerState<OrdineConfermato> {
                   ),
                 if (index == cartProv.carts.length - 1)
                   Row(
-                    children: const [
-                      Icon(
+                    children: [
+                      const Icon(
                         Icons.calendar_today,
                         color: Color.fromARGB(255, 167, 166, 165),
                         size: 20,
                       ),
                       Text(
-                        'Orario consegna',
-                        style: TextStyle(
+                        widget.timeinput,
+                        style: const TextStyle(
                           color: Color.fromARGB(255, 167, 166, 165),
                         ),
                       )

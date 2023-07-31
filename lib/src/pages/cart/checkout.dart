@@ -48,7 +48,7 @@ class CheckoutWidget extends ConsumerWidget {
               onTap: () {
                 cartProv.deliveryAddress = null;
                 Navigator.of(context).pop();
-                Helper.nextOrderPage(context, cartProv);
+                Helper.nextOrderPage(context, cartProv, orderProv);
               },
             ),
           ),
@@ -106,7 +106,7 @@ class CheckoutWidget extends ConsumerWidget {
               onTap: () {
                 cartProv.paymentMethod = null;
                 Navigator.of(context).pop();
-                Helper.nextOrderPage(context, cartProv);
+                Helper.nextOrderPage(context, cartProv, orderProv);
               },
             ),
           ),
@@ -230,7 +230,8 @@ class CheckoutWidget extends ConsumerWidget {
                     )
                   : AppButton(
                       onPressed: () async {
-                        List<Order>? orders = await cartProv.proceedOrder(context);
+                        List<Order>? orders =
+                            await cartProv.proceedOrder(context);
                         if (orders != null && orders.isNotEmpty) {
                           orderProv.orders.insertAll(0, orders);
                           Navigator.of(context).pushNamed('OrderSuccess');

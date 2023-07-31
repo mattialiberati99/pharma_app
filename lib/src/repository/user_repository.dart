@@ -70,7 +70,7 @@ Future<User> register(User user) async {
     print(CustomTrace(StackTrace.current, message: response.body).toString());
     throw new Exception(response.body);
   }
-}
+}   
 
 Future<bool> resetPassword(User user) async {
   final String url =

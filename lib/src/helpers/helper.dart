@@ -10,14 +10,16 @@ import 'package:global_configuration/global_configuration.dart';
 
 import 'package:html/parser.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:pharma_app/src/pages/cart/check.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../models/farmaco.dart';
 import '../models/food_order.dart';
 
 import '../models/shop.dart';
-
+import '../pages/payment_cards/gestisci_carte.dart';
 import '../providers/cart_provider.dart';
+import '../providers/orders_provider.dart';
 import '../providers/settings_provider.dart';
 import 'app_config.dart' as config;
 import 'app_config.dart';
@@ -193,13 +195,9 @@ class Helper {
   //   return total;
   // }
 
-  static String getDistance(double distance, String unit) {
-    String _unit = setting.value.distanceUnit!;
-    if (_unit == 'km') {
-      distance *= 1.60934;
-    }
+  static String getDistance(double? distance) {
     return distance != null && distance > 0
-        ? distance.toStringAsFixed(2) + " " + unit
+        ? distance.toStringAsFixed(2) + " km"
         : "";
   }
 
@@ -483,15 +481,44 @@ class Helper {
     }
   }
 
-  static void nextOrderPage(BuildContext context, CartProvider cartProv) {
+  static void nextOrderPage(
+      BuildContext context, CartProvider cartProv, OrdersProvider orderProv) {
     if (cartProv.deliveryAddress == null) {
       Navigator.of(context).pushNamed('DeliveryAddresses', arguments: true);
     } else if (cartProv.paymentMethod == null) {
       Navigator.of(context).pushNamed('GestisciCarte', arguments: true);
     } else {
-      Navigator.of(context).pushNamed('Checkout');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Conferma'),
+              content:
+                  Text('Confermare il pagamento con la carta selezionata?'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Annulla'),
+                ),
+                ElevatedButton(
+                    onPressed: () async {
+                      callFinalizeOrder(cartProv, orderProv, context);
+                    },
+                    child: Text('Paga'))
+              ],
+            );
+          });
+      //Navigator.of(context).pushNamed('Check');
     }
   }
+
+  static void callFinalizeOrder(
+      CartProvider cartProv, OrdersProvider orderProv, BuildContext context) {
+    finalizeOrder(cartProv, orderProv, context);
+  }
+
   //
   // static imgFromCamera(User user) async {
   //   PickedFile? image = await ImagePicker().getImage(source: ImageSource.camera, imageQuality: 50);

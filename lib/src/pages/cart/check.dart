@@ -6,8 +6,10 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:pharma_app/src/pages/cart/cart_page.dart';
 import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
 import 'package:pharma_app/src/pages/orders/widgets/ordinePagato.dart';
+import 'package:pharma_app/src/pages/payment_cards/gestisci_carte.dart';
 import 'package:pharma_app/src/providers/user_addresses_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -23,8 +25,7 @@ import '../../providers/cart_provider.dart';
 import '../../providers/orders_provider.dart';
 
 class Check extends ConsumerStatefulWidget {
-  final double prOrd;
-  const Check({Key? key, required this.prOrd}) : super(key: key);
+  const Check({Key? key}) : super(key: key);
 
   @override
   ConsumerState<Check> createState() => _CheckState();
@@ -50,18 +51,6 @@ class _CheckState extends ConsumerState<Check> {
   var ordine = FarmacoOrder();
   List<FarmacoOrder> prodotti = [];
   var ord = Order();
-
-  finalizeOrder(CartProvider cartProv, OrdersProvider orderProv,
-      BuildContext context) async {
-    List<Order>? orders = await cartProv.proceedOrder(context);
-    if (orders != null && orders.isNotEmpty) {
-      orderProv.orders.insertAll(0, orders);
-      showDialog(
-          context: context,
-          builder: (context) =>
-              OrderSuccessDialog(currentOrder: orders.first.id ?? '#'));
-    }
-  }
 
   _mese() {
     var mese = DateTime.now().month;
@@ -191,170 +180,7 @@ class _CheckState extends ConsumerState<Check> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                if ((c1 || c2 || c3) && (first || scd)) {
-                  first
-                      ? _ricetta == null
-                          ? showDialog(
-                              context: context,
-                              builder: (_) {
-                                return AlertDialog(
-                                  title: const Center(
-                                      child: Text("Importa ricetta")),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        width: double.infinity,
-                                        height: 300,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.2),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Divider(
-                                              color: Colors.grey[300],
-                                              thickness: 1.0,
-                                            ),
-                                            Stack(
-                                              alignment: Alignment.center,
-                                              clipBehavior: Clip.none,
-                                              children: [
-                                                Image.asset(
-                                                  'assets/immagini_pharma/ricetta_dialog.png',
-                                                  height: 250,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                                const Positioned(
-                                                  top: 40,
-                                                  child: Center(
-                                                    child: SizedBox(
-                                                      width: 220,
-                                                      child: Text(
-                                                        'Per validare la tua prenotazione allega la ricetta',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                // TODO FINIRE IMPORTAZIONE RICETTE
-                                                Positioned(
-                                                  top: 160,
-                                                  child: SizedBox(
-                                                    height: 50,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width /
-                                                            2,
-                                                    child: ElevatedButton(
-                                                      onPressed: () async {
-                                                        await _getDocument();
-                                                        setState(() {});
-                                                      },
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                47,
-                                                                171,
-                                                                148),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(18),
-                                                        ),
-                                                      ),
-                                                      child: const Text(
-                                                        'Allega documento',
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  top: 225,
-                                                  child: SizedBox(
-                                                    height: 50,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width /
-                                                            2,
-                                                    child: ElevatedButton(
-                                                      onPressed: () async {
-                                                        await _getImage(
-                                                            ImageSource.camera);
-                                                        Navigator.pop(
-                                                            context, _ricetta);
-                                                        setState(() {});
-                                                      },
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          side:
-                                                              const BorderSide(
-                                                                  width: 1,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          107,
-                                                                          107,
-                                                                          107)),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(18),
-                                                        ),
-                                                      ),
-                                                      child: const Text(
-                                                        'Scatta una foto',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    107,
-                                                                    107,
-                                                                    107)),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              })
-                          : Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => OrdinePagato()))
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  MappaFarmacie(prOrd: widget.prOrd)));
-                } else {
-                  null;
-                }
+                gestisciPagamento();
               },
             ),
           ],
@@ -406,7 +232,7 @@ class _CheckState extends ConsumerState<Check> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    '${widget.prOrd}€',
+                    '${cartProv.total}€',
                     style: const TextStyle(
                         color: Color.fromARGB(255, 9, 15, 71),
                         fontSize: 20,
@@ -937,5 +763,180 @@ class _CheckState extends ConsumerState<Check> {
         ),
       ),
     );
+  }
+
+  void gestisciPagamento() {
+    if ((c1 || c2 || c3) && (first || scd)) {
+      if (first) {
+        if (_ricetta == null) {
+          importaRicetta();
+        } else {
+          if (c1) {
+            pagaConCarta();
+          }
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) =>
+          //             OrdinePagato(dateinput.text, timeinput.text)));
+        }
+      } else {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const MappaFarmacie()));
+      }
+    } else {
+      null;
+    }
+  }
+
+  void importaRicetta() {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: const Center(child: Text("Importa ricetta")),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      Divider(
+                        color: Colors.grey[300],
+                        thickness: 1.0,
+                      ),
+                      Stack(
+                        alignment: Alignment.center,
+                        clipBehavior: Clip.none,
+                        children: [
+                          Image.asset(
+                            'assets/immagini_pharma/ricetta_dialog.png',
+                            height: 250,
+                            fit: BoxFit.cover,
+                          ),
+                          const Positioned(
+                            top: 40,
+                            child: Center(
+                              child: SizedBox(
+                                width: 220,
+                                child: Text(
+                                  'Per validare la tua prenotazione allega la ricetta',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                          // TODO FINIRE IMPORTAZIONE RICETTE
+                          Positioned(
+                            top: 160,
+                            child: SizedBox(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  await _getDocument();
+                                  setState(() {});
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 47, 171, 148),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Allega documento',
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 225,
+                            child: SizedBox(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  await _getImage(ImageSource.camera);
+                                  Navigator.pop(context, _ricetta);
+                                  setState(() {});
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        width: 1,
+                                        color:
+                                            Color.fromARGB(255, 107, 107, 107)),
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Scatta una foto',
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 107, 107, 107)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void pagaConCarta() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.8),
+              child: CarteWidget(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+finalizeOrder(CartProvider cartProv, OrdersProvider orderProv,
+    BuildContext context) async {
+  List<Order>? orders = await cartProv.proceedOrder(context);
+  if (orders != null && context.mounted) {
+    orderProv.orders.insertAll(0, orders);
+    cartProv.carts.clear();
+    showDialog(
+        context: context,
+        builder: (context) =>
+            OrderSuccessDialog(currentOrder: orders.first.id ?? '#'));
   }
 }

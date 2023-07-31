@@ -4,7 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/components/search_bar/search_bar_terapie.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
-import 'package:pharma_app/src/pages/medicine/widgets/medicineTerapia.dart';
+import 'package:pharma_app/src/pages/medicine/widgets/medicina_terapia.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/screen2terapie.dart';
 import 'package:pharma_app/src/providers/terapia_provider.dart';
 
@@ -156,9 +156,9 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final leMieMed = ref.watch(terapiaProvider).terapie;
+    final leMieMed = ref.watch(terapiaProvider);
     FlutterNativeSplash.remove();
-    if (leMieMed.isEmpty) {
+    if (leMieMed.isEmpty()) {
       return Scaffold(
         body: Container(
           padding: new EdgeInsets.all(26),
@@ -371,7 +371,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: leMieMed.length,
-              itemBuilder: (ctx, i) => leMieMed[i],
+              itemBuilder: (ctx, i) => leMieMed.terapie[i],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:retry/retry.dart';
@@ -194,10 +195,11 @@ Future<Stream<DestinationObject?>> getTrackingStatus(orderId) async {
   });
 }
 
-Future<Order?> addOrder(Order order, {CreditCard? card}) async {
+Future<Order?> addOrder(Order order,
+    {PaymentIntent? paymentIntentResult}) async {
   User _user = currentUser.value;
   if (_user.apiToken == null) {
-    return new Order();
+    return null;
   }
   order.payment = Payment('credit_card');
   final String url = '${GlobalConfiguration().getValue('api_base_url')}orders';
@@ -206,9 +208,11 @@ Future<Order?> addOrder(Order order, {CreditCard? card}) async {
   _queryParams['with'] =
       'foodOrders;foodOrders.food;foodOrders.extras;orderStatus;payment;deliveryAddress';
   Uri uri = Uri.parse(url).replace(queryParameters: _queryParams);
-  final client = new http.Client();
+  final client = http.Client();
   Map params = order.toMap();
-  if (card != null) params.addAll(card.toMap());
+  if (paymentIntentResult != null) {
+    params['client_secret'] = paymentIntentResult.clientSecret;
+  }
   try {
     final response = await client.post(
       uri,
@@ -249,13 +253,13 @@ Future<Order> cancelOrder(Order order) async {
   }
 }
 
-Future<String> getPaymentIntent(Order order) async {
+Future<Map> getPaymentIntent(Order order) async {
   User _user = currentUser.value;
   final String _apiToken = 'api_token=${_user.apiToken}';
   final String url =
       '${GlobalConfiguration().getValue('api_base_url')}get_payment_intent?$_apiToken';
   final client = new http.Client();
-  Map params = order.stripeMap();
+  Map params = order.toMap();
   final response = await client.post(
     Uri.parse(url),
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},

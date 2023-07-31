@@ -9,28 +9,23 @@ List<CreditCard> cards = <CreditCard>[];
 int index = 0;
 
 Future<bool> getUserCreditCards() async {
-
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var string = await prefs.getString("credit_card");
     var responseJson = json.decode(string!);
     cards = (responseJson as List).map((p) => CreditCard.fromJSON(p)).toList();
     if (cards.isNotEmpty) {
-      print('CREDIT CARDS LOADED [getUserCreditCards] - ${cards.length.toString()}');
-      print('FIRST CARD ID - ${cards.first.id}');
       //ultima carta installata +1
       index = cards[cards.length - 1].id! + 1;
     }
     return true;
-  } catch (e, s) {
-    print('ERROR [getUserCreditCards] - ${e.toString()}');
-    print(s.toString());
+  } catch (e) {
+    print(e);
     return false;
   }
 }
 
 Future<bool> addCreditCard(CreditCard creditCard) async {
-
   try {
     if (creditCard.id == null || creditCard.id! <= 0) {
       creditCard.id = index++;

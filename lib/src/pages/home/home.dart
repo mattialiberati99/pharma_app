@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:pharma_app/src/app_assets.dart';
 import 'package:pharma_app/src/components/drawer/app_drawer.dart';
 import 'package:pharma_app/src/components/section_vertical.dart';
@@ -11,6 +13,7 @@ import 'package:pharma_app/src/pages/home/widgets/home_banner.dart';
 import 'package:pharma_app/src/pages/home/widgets/home_cuisine_filter.dart';
 import 'package:pharma_app/src/providers/categories_provider.dart';
 import 'package:pharma_app/src/providers/home_cuisines_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../components/main_app_bar.dart';
 import '../../components/search_bar/home_search_bar.dart';
@@ -31,6 +34,8 @@ class Home extends ConsumerStatefulWidget {
 class _HomeState extends ConsumerState<Home> {
   final searchController = TextEditingController(text: '');
   final _advancedDrawerController = AdvancedDrawerController();
+
+  String _locationText = "";
 
   late String? cuisineSelected;
   @override
@@ -67,6 +72,8 @@ class _HomeState extends ConsumerState<Home> {
 
     FlutterNativeSplash.remove();
 
+    _getLocation();
+
     return AdvancedDrawer(
       childDecoration: const BoxDecoration(
         boxShadow: <BoxShadow>[
@@ -79,12 +86,12 @@ class _HomeState extends ConsumerState<Home> {
       animationCurve: Curves.easeInOut,
       animationDuration: const Duration(milliseconds: 300),
       animateChildDecoration: true,
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       controller: _advancedDrawerController,
       child: Scaffold(
         bottomNavigationBar: const BottomNavigation(),
-          //extendBody: ,
-          //appBar:
+        //extendBody: ,
+        //appBar:
         /*      Container(
                       margin: const EdgeInsets.only(right: 40),
                       child: GestureDetector(
@@ -108,7 +115,7 @@ class _HomeState extends ConsumerState<Home> {
           controller: searchController,
           advancedDrawerController: _advancedDrawerController,
           nome: currentUser.value.name ?? 'Pharma User',
-          indirizzo: currentUser.value.address ?? 'Il tuo indirizzo',
+          indirizzo: _locationText,
         ),
         body: SafeArea(
           child: ListView(
@@ -260,5 +267,25 @@ class _HomeState extends ConsumerState<Home> {
           controller: searchController,
         ),
       */
+  }
+
+  void _getLocation() async {
+    Position position;
+    try {
+      position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+      String cityName = placemarks.first.locality ?? "Sconosciuto";
+      String regionName = placemarks.first.administrativeArea ?? "Sconosciuto";
+      String countryName = placemarks.first.country ?? "Sconosciuto";
+      setState(() {
+        _locationText = "$cityName, $regionName, $countryName";
+      });
+    } catch (e) {
+      setState(() {
+        _locationText = "Impossibile ottenere posizione";
+      });
+    }
   }
 }

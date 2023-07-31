@@ -9,8 +9,13 @@ import 'package:pharma_app/src/pages/orders/widgets/aestetic_widget.dart';
 import 'package:pharma_app/src/providers/cart_provider.dart';
 import 'package:pharma_app/src/providers/orders_provider.dart';
 
+import '../../../providers/user_provider.dart';
+
 class OrdinePagato extends ConsumerStatefulWidget {
-  const OrdinePagato({super.key});
+  String date;
+  String time;
+
+  OrdinePagato(this.date, this.time);
 
   @override
   ConsumerState<OrdinePagato> createState() => _OrdinePagatoState();
@@ -237,14 +242,14 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                   ),
                 if (index == cartProv.carts.length - 1)
                   Row(
-                    children: const [
-                      Image(
+                    children: [
+                      const Image(
                         image: AssetImage(
                             'assets/immagini_pharma/icon_location.png'),
                         color: Color.fromARGB(255, 167, 166, 165),
                       ),
                       Text(
-                        'Indirizzo farmacia',
+                        'Indirizzo di casa',
                         style: TextStyle(
                           color: Color.fromARGB(255, 167, 166, 165),
                         ),
@@ -257,14 +262,14 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                   ),
                 if (index == cartProv.carts.length - 1)
                   Row(
-                    children: const [
+                    children: [
                       Icon(
                         Icons.calendar_today,
                         color: Color.fromARGB(255, 167, 166, 165),
                         size: 20,
                       ),
                       Text(
-                        'Orario consegna',
+                        widget.date + '   ore  ' + widget.time,
                         style: TextStyle(
                           color: Color.fromARGB(255, 167, 166, 165),
                         ),

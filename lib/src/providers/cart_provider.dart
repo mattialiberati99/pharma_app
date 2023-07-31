@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' as Stripe;
 import 'package:pharma_app/src/models/farmaco.dart';
 import 'package:pharma_app/src/pages/cart/check.dart';
+import 'package:pharma_app/src/providers/settings_provider.dart';
+import 'package:pharma_app/src/providers/user_provider.dart';
 
 import '../models/address.dart';
 import '../models/cart.dart';
@@ -178,15 +181,15 @@ class CartProvider with ChangeNotifier {
     //Creiamo multipli ordini per i vari negozi coinvolti
     try {
       for (MapEntry entry in cartSplitPerShop.entries) {
-        Order _order = new Order();
+        Order _order = Order();
         _order.foodOrders = entry.value;
         //_order.tax = checkout!.cart!.taxAmount;
-        _order.deliveryFee = delivery_fee;
         //_order.note = checkout.note;
-        _order.consegna = DateTime.now().add(Duration(
-            days: entry.value.first.food!.restaurant!.giorni_consegna!));
+        _order.farmaciaId = int.tryParse(entry.value.first.food!.farmacia!.id);
+        _order.consegna = DateTime.now().add(
+            Duration(days: entry.value.first.food!.farmacia!.giorni_consegna!));
         //_order.importo = checkout.importo;
-        OrderStatus _orderStatus = new OrderStatus();
+        OrderStatus _orderStatus = OrderStatus();
         _orderStatus.id = OrderStatus.received;
         _order.orderStatus = _orderStatus;
         _order.deliveryAddress = deliveryAddress;
@@ -194,23 +197,89 @@ class CartProvider with ChangeNotifier {
         _order.discountCode = coupon?.code ?? '';
 
         print("Fin qui tutto ok");
-        Order? order = await orderRepo.addOrder(_order, card: paymentMethod);
-        if (order != null) {
-          orders.insert(0, order);
+        try {
+          Stripe.Stripe.publishableKey = setting.value.stripeKey!;
+          _order.card = paymentMethod!;
+          await Stripe.Stripe.instance.dangerouslyUpdateCardDetails(
+              Stripe.CardDetails(
+                  number: paymentMethod!.number,
+                  expirationMonth:
+                      int.parse(paymentMethod!.expiration!.split('/')[0]),
+                  expirationYear: int.parse(
+                    paymentMethod!.expiration!.split('/')[1],
+                  ),
+                  cvc: paymentMethod!.cvc));
+
+          final billingDetails = Stripe.BillingDetails(
+            email: currentUser.value.email,
+            name: currentUser.value.name,
+          ); // mocked data for tests
+
+          final stripePaymentMethod =
+              await Stripe.Stripe.instance.createPaymentMethod(
+                  params: Stripe.PaymentMethodParams.card(
+            paymentMethodData: Stripe.PaymentMethodData(
+              billingDetails: billingDetails,
+            ),
+          ));
+
+          Map intentRequest = await orderRepo.getPaymentIntent(_order);
+
+          Stripe.Stripe.merchantIdentifier = intentRequest['connected_id'];
+          Stripe.PaymentIntent paymentIntentResult =
+              await Stripe.Stripe.instance.confirmPayment(
+            paymentIntentClientSecret: intentRequest['payment_intent'],
+            data: Stripe.PaymentMethodParams.card(
+              paymentMethodData: Stripe.PaymentMethodData(
+                billingDetails: billingDetails,
+              ),
+            ),
+          );
+
+          if (paymentIntentResult.nextAction != null) {
+            paymentIntentResult = await Stripe.Stripe.instance
+                .handleNextAction(paymentIntentResult.clientSecret);
+          }
+
+          if (paymentIntentResult.status ==
+              Stripe.PaymentIntentsStatus.RequiresCapture) {
+            Order? newOrder = await orderRepo.addOrder(_order,
+                paymentIntentResult: paymentIntentResult);
+
+            if (newOrder != null) {
+              coupon = null;
+              paymentMethod = null;
+              loading = false;
+              notifyListeners();
+              orders.insert(0, newOrder);
+              notifyListeners();
+            } else {
+              loading = false;
+              notifyListeners();
+            }
+          } else {
+            print("no status");
+
+            loading = false;
+            notifyListeners();
+          }
+        } on Stripe.StripeConfigException catch (stripeError) {
+          print(stripeError.message);
+          loading = false;
           notifyListeners();
-        } else {
-          _order.foodOrders.forEach((element) {
-            carts.add(Cart()
-              ..product = element.food
-              ..extras = element.extras
-              ..quantity = element.quantity);
-          });
+        } catch (e, stack) {
+          print("--------------------");
+          print(e.toString());
+          print(stack);
+
+          loading = false;
+          notifyListeners();
         }
       }
     } catch (e, stack) {
       print(e);
       print(stack);
-      return orders;
+      return null;
     }
     return orders;
   }
@@ -240,7 +309,7 @@ class CartProvider with ChangeNotifier {
       print(e);
       print(s);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Errore nel pagamento: ECCEZZIONEEEEEEE, riprova"),
+        content: Text("Errore nel pagamento, riprova"),
       ));
       loading = false;
       notifyListeners();

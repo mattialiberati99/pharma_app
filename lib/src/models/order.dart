@@ -19,10 +19,13 @@ class Order {
   Address? deliveryAddress;
   String? note;
   String? importo;
-  double? sconto;
+  double? sconto; 
   DateTime? consegna;
   DateTime? oraRitiro;
   String? discountCode;
+  CreditCard? card;
+  int? farmaciaId;
+  User? user;
 
   Order();
 
@@ -63,6 +66,8 @@ class Order {
       sconto = jsonMap['sconto'] != null ? jsonMap['sconto'].toDouble() : 0.0;
       consegna = DateTime.tryParse(jsonMap['delivery_time'] ?? "");
       oraRitiro = DateTime.tryParse(jsonMap['ora_ritiro'] ?? "");
+
+      farmaciaId = jsonMap['farmacia_id'] ?? "";
     } catch (e, stack) {
       print(e);
       print(stack);
@@ -95,6 +100,7 @@ class Order {
     map["note"] = note;
     map["sconto"] = sconto;
     map["coupon"] = discountCode;
+    map["farmacia_id"] = foodOrders[0].food!.farmacia!.id;
     return map;
   }
 
@@ -118,5 +124,13 @@ class Order {
     map["foods"] = foodOrders.map((element) => element.toMap()).toList();
     map["sconto"] = sconto;
     return map;
+  }
+
+  double getTotalPrice() {
+    double total = 0.0;
+    for (var foodOrder in foodOrders) {
+      total += foodOrder.quantity! * foodOrder.price!;
+    }
+    return total;
   }
 }

@@ -38,19 +38,16 @@ class FavoritesWidget extends ConsumerWidget {
   Widget buildFavoriteList(favorites, showFood) {
     return favorites.isEmpty
         ? EmptyFavoritesWidget()
-        : ListView.separated(
+        : GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.6,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             primary: false,
             itemCount: favorites.length,
-            separatorBuilder: (context, index) {
-              return const SizedBox(
-                height: 30,
-                child: Center(
-                  child: Divider(),
-                ),
-              );
-            },
             itemBuilder: (context, index) {
               return showFood
                   ? farmaco.FoodFavoriteListItemWidget(

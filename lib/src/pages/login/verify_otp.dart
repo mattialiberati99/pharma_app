@@ -19,6 +19,7 @@ import '../../helpers/app_config.dart';
 import '../../helpers/validators.dart';
 
 import '../../providers/selected_page_name_provider.dart';
+import '../../repository/user_repository.dart';
 
 class VerifyOtp extends ConsumerStatefulWidget {
   const VerifyOtp({Key? key}) : super(key: key);
@@ -144,7 +145,9 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
+                                  sendVerificationMail();
                                   print('invia di nuovo');
+                                  secondsRemaining = 59;
                                   enableResend
                                       ? () {
                                           secondsRemaining == 0;

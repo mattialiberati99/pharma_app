@@ -10,6 +10,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:pharma_app/src/helpers/validators.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import '../../providers/user_provider.dart';
 
 import '../../helpers/app_config.dart';
 import '../../models/address.dart';
@@ -372,7 +373,12 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                                     onTap: () {
                                       posProv.suggestion = null;
                                     },
-                                    onEditingComplete: () {},
+                                    onEditingComplete: () {
+                                      setState(() {
+                                        currentUser.value.address =
+                                            posizione.text;
+                                      });
+                                    },
                                     onChanged: (val) async {
                                       if (val.length > 3) {
                                         posProv.searchAddress(

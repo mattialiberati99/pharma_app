@@ -15,6 +15,8 @@ import 'dart:math' as math;
 import '../../components/shadow_box.dart';
 import '../../helpers/app_config.dart';
 import '../../models/farmaco.dart';
+import '../../models/food_favorite.dart';
+import '../../repository/favorite_repository.dart';
 
 class Categorie extends ConsumerStatefulWidget {
   final AppCategory nomeCategoria;
@@ -148,6 +150,8 @@ class FarmacoCategoria extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final favorites = ref.watch(favoritesProvider);
+    FarmacoFavorite? isFavorite = favorites.getFarmacoFavorite(farmaco);
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed('Product', arguments: farmaco);
@@ -227,15 +231,29 @@ class FarmacoCategoria extends ConsumerWidget {
               ),
             ),
             Positioned(
-              left: 150,
+              left: 140,
               top: 20,
-              child: Image(
-                image: ref
-                            .read(favoritesProvider)
-                            .getFarmacoFavorite(farmaco) ==
-                        null
-                    ? const AssetImage('assets/immagini_pharma/Heart.png')
-                    : const AssetImage('assets/immagini_pharma/fullHeart.png'),
+              child: GestureDetector(
+                onTap: () async {
+                  if (isFavorite != null) {
+                    if (await removeFarmacoFavorite(isFavorite)) {
+                      favorites.delFarmaco(isFavorite);
+                    }
+                  } else {
+                    final favorite = await addFarmacoFavorite(farmaco);
+                    if (favorite != null) {
+                      favorites.addFarmaco(favorite);
+                    }
+                  }
+                },
+                child: Image(
+                  image:
+                      ref.read(favoritesProvider).getFarmacoFavorite(farmaco) ==
+                              null
+                          ? const AssetImage('assets/immagini_pharma/Heart.png')
+                          : const AssetImage(
+                              'assets/immagini_pharma/fullHeart.png'),
+                ),
               ),
             ),
             if (scount > 5)

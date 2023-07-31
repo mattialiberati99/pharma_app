@@ -61,9 +61,10 @@ dependencies:
   flutter_html: ^3.0.0-alpha.3
   footer: ^0.0.4
   csc_picker: ^0.2.7
+  permission_handler: ^10.4.3
 
   firebase_auth: ^4.1.1
-  firebase_messaging: ^14.6.1
+  firebase_messaging: ^14.6.4
   flutter_local_notifications: ^14.1.0
   firebase_dynamic_links: ^5.0.4
   firebase_analytics: ^10.2.0

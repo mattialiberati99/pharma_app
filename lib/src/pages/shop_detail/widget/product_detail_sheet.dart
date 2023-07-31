@@ -76,8 +76,8 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
     //types = widget.product.types.first;
     // print('Current Product Provider: ${ref.read(currentProductProvider)?.name}');
     // widget.product.extras.forEach((element) {print(element.color);});
-    final scount = (100.toDouble() * widget.product.discountPrice!) /
-        widget.product.price!;
+    final scount = (100.toDouble() * widget.product.price!) /
+        widget.product.discountPrice!;
     final cart = ref.watch(cartProvider);
     final fav = ref.watch(favoritesProvider);
     return Scaffold(

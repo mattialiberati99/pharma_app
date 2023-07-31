@@ -1,24 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/screenReminder.dart';
-import 'package:provider/provider.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import '../../../models/farmaco.dart';
 import '../../../providers/terapia_provider.dart';
 
-class MedicinaTerapia extends StatelessWidget {
+part 'medicina_terapia.g.dart';
+
+@JsonSerializable()
+class MedicinaTerapia extends ConsumerWidget {
   final Farmaco farmaco;
   final String nomeTerapia;
   final List<int> giorni;
   final String durata;
   final String quantita;
   final String orario;
-  const MedicinaTerapia(this.farmaco, this.nomeTerapia, this.giorni,
-      this.durata, this.quantita, this.orario,
-      {super.key});
+  const MedicinaTerapia(
+    this.farmaco,
+    this.nomeTerapia,
+    this.giorni,
+    this.durata,
+    this.quantita,
+    this.orario,
+  );
+
+  factory MedicinaTerapia.fromJson(Map<String, dynamic> json) =>
+      _$MedicinaTerapiaFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MedicinaTerapiaToJson(this);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final terapiaProv = ref.read(terapiaProvider);
+
     return Container(
       width: 366,
       height: 198,
@@ -42,29 +58,47 @@ class MedicinaTerapia extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Nome ',
                         style: TextStyle(
                             color: Color.fromARGB(255, 140, 149, 149),
                             fontSize: 12),
                       ),
                       SizedBox(
-                        width: context.mqw * 0.45,
+                        width: context.mqw * 0.25,
                       ),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ScreenReminder(
-                                        farmaco,
-                                        nomeTerapia,
-                                        giorni,
-                                        durata,
-                                        quantita,
-                                        orario)));
-                          },
-                          icon: Icon(Icons.more_vert))
+                      DropdownButton(
+                        icon: const Icon(
+                          Icons.more_vert,
+                          color: Colors.black,
+                        ),
+                        items: [
+                          DropdownMenuItem(
+                            value: 'rimuovi',
+                            child: Container(
+                              child: Row(
+                                children: const [
+                                  Icon(
+                                    Icons.remove,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('Rimuovi',
+                                      style: TextStyle(fontSize: 12)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          if (value == 'rimuovi') {
+                            terapiaProv.remove(this);
+                          }
+                        },
+                      ),
                     ],
                   ),
                   const SizedBox(

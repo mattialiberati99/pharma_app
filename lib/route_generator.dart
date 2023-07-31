@@ -4,6 +4,7 @@ import 'package:pharma_app/src/models/farmaco.dart';
 import 'package:pharma_app/src/models/order.dart';
 import 'package:pharma_app/src/models/route_argument.dart';
 import 'package:pharma_app/src/models/shop.dart';
+import 'package:pharma_app/src/pages/cart/check.dart';
 import 'package:pharma_app/src/pages/cart/checkout.dart';
 import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
 import 'package:pharma_app/src/pages/chat/chat_page.dart';
@@ -74,7 +75,7 @@ class RouteGenerator {
       /* case 'OtpScreen':
         return MaterialPageRoute(builder: (_) => const OtpScreen()); */
       case 'Check':
-        return MaterialPageRoute(builder: (_) => CheckoutWidget());
+        return MaterialPageRoute(builder: (_) => const Check());
       case 'VerifyOtp':
         return MaterialPageRoute(builder: (_) => const VerifyOtp());
       case 'SuccessVerificationPage':
@@ -98,8 +99,7 @@ class RouteGenerator {
       case 'OrderSuccess':
         return MaterialPageRoute(builder: (_) => const OrderSuccess());
       case 'GestisciCarte':
-        return MaterialPageRoute(
-            builder: (_) => CarteWidget(isOrder: (args as bool?) ?? false));
+        return MaterialPageRoute(builder: (_) => const CarteWidget());
       case 'NewCard':
         return MaterialPageRoute(
             builder: (_) => Material(

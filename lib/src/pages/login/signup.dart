@@ -178,7 +178,7 @@ class _SignupState extends ConsumerState<Signup> {
                               onPressed: agree
                                   ? () {
                                       userProv.register(context);
-                                     // sendVerificationMail();
+                                      sendVerificationMail();
                                     }
                                   : null,
                               style: ElevatedButton.styleFrom(
