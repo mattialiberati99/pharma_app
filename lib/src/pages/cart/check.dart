@@ -909,17 +909,22 @@ class _CheckState extends ConsumerState<Check> {
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(16.0),
+          top: Radius.circular(40.0),
         ),
       ),
       builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.8,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height * 0.8),
-              child: CarteWidget(),
+        return ClipRRect(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(16.0),
+          ),
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.8,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height * 0.8),
+                child: const CarteWidget(),
+              ),
             ),
           ),
         );

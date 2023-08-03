@@ -47,90 +47,79 @@ class _CarteWidgetState extends ConsumerState<CarteWidget> {
       backgroundColor: AppColors.primary,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
-          child: Column(
-        children: [
-          Positioned(
-            top: App(context).appHeight(20),
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: DecoratedBox(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
+        child: Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
               ),
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  height: App(context).appHeight(80),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                        child: Text("Metodo di pagamento",
-                            style: ExtraTextStyles.normalBlackBold),
-                      ),
-                      Expanded(
-                        child: _loaded
-                            ? GestisciCarteWidget(
-                                cards: cards,
-                                selected: selected,
-                                onTap: (cardIndex) {
-                                  //if (widget.type == OrderType.shop) {
-                                  selected = cards[cardIndex];
-                                  final cartProv = ref.watch(cartProvider);
-                                  final orderProv = ref.watch(ordersProvider);
-                                  cartProv.paymentMethod = cards[cardIndex];
-                                  Navigator.of(context).pop();
-                                  Helper.nextOrderPage(
-                                      context, cartProv, orderProv);
-                                  //}  else if (widget.type ==
-                                  //     OrderType.booking) {
-                                  //   selected = cards[cardIndex];
-                                  //   final prenotazioneCartProv = ref
-                                  //       .watch(prenotazioneCartProvider);
-                                  //   prenotazioneCartProv.paymentMethod =
-                                  //       cards[cardIndex];
-                                  //   Navigator.of(context).pop();
-                                  //   Helper.nextBookingPage(
-                                  //       context, prenotazioneCartProv);
-                                  // }
-                                },
-                              )
-                            : EditCreditCard(
-                                onChanged: (card) async {
-                                  if (card != null) {
-                                    if (card.id == null) {
-                                      await addCreditCard(card);
-                                    } else {
-                                      await updateCreditCard(card);
-                                    }
-                                  }
-                                  setState(() => _loaded = true);
-                                },
-                              ),
-                      ),
-                    ],
+            ),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: Text(
+                    "Metodo di pagamento",
+                    style: ExtraTextStyles.normalBlackBold,
                   ),
                 ),
-              ),
+                Expanded(
+                  child: _loaded
+                      ? GestisciCarteWidget(
+                          cards: cards,
+                          selected: selected,
+                          onTap: (cardIndex) {
+                            //if (widget.type == OrderType.shop) {
+                            selected = cards[cardIndex];
+                            final cartProv = ref.watch(cartProvider);
+                            final orderProv = ref.watch(ordersProvider);
+                            cartProv.paymentMethod = cards[cardIndex];
+                            Navigator.of(context).pop();
+                            Helper.nextOrderPage(context, cartProv, orderProv);
+                            //}  else if (widget.type ==
+                            //     OrderType.booking) {
+                            //   selected = cards[cardIndex];
+                            //   final prenotazioneCartProv = ref
+                            //       .watch(prenotazioneCartProvider);
+                            //   prenotazioneCartProv.paymentMethod =
+                            //       cards[cardIndex];
+                            //   Navigator.of(context).pop();
+                            //   Helper.nextBookingPage(
+                            //       context, prenotazioneCartProv);
+                            // }
+                          },
+                        )
+                      : EditCreditCard(
+                          onChanged: (card) async {
+                            if (card != null) {
+                              if (card.id == null) {
+                                await addCreditCard(card);
+                              } else {
+                                await updateCreditCard(card);
+                              }
+                            }
+                            setState(() => _loaded = true);
+                          },
+                        ),
+                ),
+              ],
             ),
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      )),
+        ),
+      ),
+      floatingActionButton: IconButton(
+        icon: const Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
     );
   }
 }
