@@ -206,9 +206,6 @@ class _SignupState extends ConsumerState<Signup> {
                     SocialLogin(
                       margin: context.mqw * 0.06,
                     ),
-                    SizedBox(
-                      height: context.mqh * 0.09,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

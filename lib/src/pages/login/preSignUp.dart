@@ -8,8 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
+import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/helpers/validators.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import '../../components/social_login_row.dart';
 import '../../providers/user_provider.dart';
 
 import '../../helpers/app_config.dart';
@@ -600,16 +602,19 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset('assets/ico/google.svg'),
-                    const SizedBox(
-                      width: 80,
-                    ),
-                    SvgPicture.asset('assets/ico/fb.svg'),
-                  ],
+                SocialLogin(
+                  margin: context.mqw * 0.06,
                 ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     SvgPicture.asset('assets/ico/google.svg'),
+                //     const SizedBox(
+                //       width: 80,
+                //     ),
+                //     SvgPicture.asset('assets/ico/fb.svg'),
+                //   ],
+                // ),
               ],
             ),
           ),
