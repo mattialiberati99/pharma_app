@@ -426,19 +426,26 @@ class _CheckState extends ConsumerState<Check> {
                               border: Border.all(
                                   color: const Color.fromARGB(26, 7, 15, 71))),
                           alignment: Alignment.centerLeft,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.all(10),
-                              ),
-                              Image.asset(
-                                  'assets/immagini_pharma/file_ricetta.png'),
-                              const Padding(
-                                padding: EdgeInsets.all(5),
-                              ),
-                              Text(p.basename(_ricetta!.path)),
-                            ],
+                          child: FittedBox(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.all(10),
+                                ),
+                                Image.asset(
+                                  'assets/immagini_pharma/file_ricetta.png',
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.all(5),
+                                ),
+                                Text(
+                                  p.basename(_ricetta!.path),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
                           )),
                     )
                   : const Text(''),
@@ -685,7 +692,14 @@ class _CheckState extends ConsumerState<Check> {
                           color: Colors.black,
                           fontSize: 18,
                           fontWeight: FontWeight.w700),
-                    )
+                    ),
+                    const Spacer(),
+                    Image.asset(
+                      'assets/immagini_pharma/icon_visa.png',
+                    ),
+                    const SizedBox(width: 10),
+                    Image.asset('assets/immagini_pharma/icon_master_card.png'),
+                    const SizedBox(width: 10),
                   ],
                 ),
               ),
@@ -718,7 +732,10 @@ class _CheckState extends ConsumerState<Check> {
                           color: Colors.black,
                           fontSize: 18,
                           fontWeight: FontWeight.w700),
-                    )
+                    ),
+                    const Spacer(),
+                    Image.asset('assets/immagini_pharma/icon_paypal.png'),
+                    const SizedBox(width: 10),
                   ],
                 ),
               ),
