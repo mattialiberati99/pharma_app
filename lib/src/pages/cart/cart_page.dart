@@ -26,7 +26,6 @@ import '../../repository/paymentCards_repository.dart';
 import '../payment_methods/payment_methods.dart';
 import 'checkout.dart';
 
-
 class CartPage extends ConsumerStatefulWidget {
   const CartPage({Key? key}) : super(key: key);
 
@@ -104,7 +103,7 @@ class _CartPageState extends ConsumerState<CartPage> {
     return Scaffold(
         extendBody: true,
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: const BottomNavigation(),
+        bottomNavigationBar: BottomNavigation(sel: SelectedBottom.carrello),
         bottomSheet: Container(
           color: Colors.white,
           padding: const EdgeInsets.only(bottom: 20.0),
@@ -123,7 +122,6 @@ class _CartPageState extends ConsumerState<CartPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
-                    
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => const Check()));
                   },

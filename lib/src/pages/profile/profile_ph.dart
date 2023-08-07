@@ -23,7 +23,7 @@ class _ProfilePhState extends State<ProfilePh> {
       appBar: const ProfileAppBar(
         title: "Profilo",
       ),
-      bottomNavigationBar: const BottomNavigation(),
+      bottomNavigationBar: BottomNavigation(sel: SelectedBottom.profilo),
       body: Padding(
         padding: const EdgeInsets.only(top: 30, left: 40),
         child: SingleChildScrollView(

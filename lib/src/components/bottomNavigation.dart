@@ -15,9 +15,20 @@ import '../models/route_argument.dart';
 import '../providers/chat_provider.dart';
 import '../providers/user_provider.dart';
 
+enum SelectedBottom {
+  home,
+  ordini,
+  chat,
+  profilo,
+  carrello,
+}
+
 class BottomNavigation extends ConsumerStatefulWidget
     implements PreferredSizeWidget {
-  const BottomNavigation({super.key});
+  BottomNavigation({super.key, required this.sel});
+
+  SelectedBottom sel;
+
   @override
   Size get preferredSize => const Size.fromHeight(89);
 
@@ -28,26 +39,6 @@ class BottomNavigation extends ConsumerStatefulWidget
 class BottomNavigationState extends ConsumerState<BottomNavigation> {
   int countShowBottomSheet = 1;
   bool toggle = false;
-
-  bool selectedH = true;
-
-  bool selectedL = false;
-
-  bool selectedP = false;
-
-  bool selectedC = false;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    bool selectedH = true;
-
-    bool selectedL = false;
-
-    bool selectedP = false;
-
-    bool selectedC = false;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,35 +76,25 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      if (selectedH || selectedC || selectedP || selectedL) {
-                        setState(() {
-                          selectedH = true;
-                          selectedL = false;
-                          selectedC = false;
-                          selectedP = false;
-                        });
-                        Navigator.of(context).pushReplacementNamed('Home');
-                      }
+                      widget.sel = SelectedBottom.home;
+                      Navigator.of(context).pushReplacementNamed('Home');
                     },
                     child: Image(
-                        color: selectedH ? AppColors.primary : AppColors.gray4,
+                        color: widget.sel == SelectedBottom.home
+                            ? AppColors.primary
+                            : AppColors.gray4,
                         image: const AssetImage(
                             'assets/immagini_pharma/icon_home.png')),
                   ),
                   GestureDetector(
                     onTap: () {
-                      if (selectedH || selectedC || selectedP || selectedL) {
-                        setState(() {
-                          selectedL = true;
-                          selectedH = false;
-                          selectedC = false;
-                          selectedP = false;
-                        });
-                        Navigator.of(context).pushNamed('Ordini');
-                      }
+                      widget.sel = SelectedBottom.ordini;
+                      Navigator.of(context).pushNamed('Ordini');
                     },
                     child: Image(
-                        color: selectedL ? AppColors.primary : AppColors.gray4,
+                        color: widget.sel == SelectedBottom.ordini
+                            ? AppColors.primary
+                            : AppColors.gray4,
                         image: const AssetImage(
                             'assets/immagini_pharma/icon_receipt.png')),
                   ),
@@ -189,39 +170,28 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      if (selectedH || selectedC || selectedP || selectedL) {
-                        setState(() {
-                          selectedC = true;
-                          selectedL = false;
-                          selectedH = false;
-                          selectedP = false;
-                        });
-                        final chatProv = ref.watch(chatProvider);
-                        Chat? chat =
-                            await chatProv.getChat(currentUser.value.id);
-                        Navigator.of(context).pushReplacementNamed('Chat',
-                            arguments: RouteArgument(id: chat?.id));
-                      }
+                      widget.sel = SelectedBottom.chat;
+                      final chatProv = ref.watch(chatProvider);
+                      Chat? chat = await chatProv.getChat(currentUser.value.id);
+                      Navigator.of(context).pushReplacementNamed('Chat',
+                          arguments: RouteArgument(id: chat?.id));
                     },
                     child: Image(
-                        color: selectedC ? AppColors.primary : AppColors.gray4,
+                        color: widget.sel == SelectedBottom.chat
+                            ? AppColors.primary
+                            : AppColors.gray4,
                         image: const AssetImage(
                             'assets/immagini_pharma/icon_chat.png')),
                   ),
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        if (selectedH || selectedC || selectedP || selectedL) {
-                          selectedP = true;
-                          selectedL = false;
-                          selectedC = false;
-                          selectedH = false;
-                        }
-                      });
-                      Navigator.of(context).pushReplacementNamed('Profilo');
+                      widget.sel = SelectedBottom.home;
+                      Navigator.of(context).pushNamed('Profilo');
                     },
                     child: Image(
-                        color: selectedP ? AppColors.primary : AppColors.gray4,
+                        color: widget.sel == SelectedBottom.profilo
+                            ? AppColors.primary
+                            : AppColors.gray4,
                         image: const AssetImage(
                             'assets/immagini_pharma/icon_profil.png')),
                   ),

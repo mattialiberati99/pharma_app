@@ -89,7 +89,7 @@ class _HomeState extends ConsumerState<Home> {
       drawer: const AppDrawer(),
       controller: _advancedDrawerController,
       child: Scaffold(
-        bottomNavigationBar: const BottomNavigation(),
+        bottomNavigationBar: BottomNavigation(sel: SelectedBottom.home),
         //extendBody: ,
         //appBar:
         /*      Container(

@@ -529,7 +529,7 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
 
         hasNote: false,
       ),
-      bottomNavigationBar: const BottomNavigation(),
+      bottomNavigationBar:  BottomNavigation(sel: SelectedBottom.home),
     );
   }
 }

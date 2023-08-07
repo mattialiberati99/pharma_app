@@ -40,7 +40,7 @@ class _TabsScreenState extends State<TabsScreen>
     FlutterNativeSplash.remove();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 244, 246, 245),
-      bottomNavigationBar: const BottomNavigation(),
+      bottomNavigationBar: BottomNavigation(sel: SelectedBottom.home),
       resizeToAvoidBottomInset: false,
       drawer: const AppDrawer(),
       drawerEnableOpenDragGesture: true,

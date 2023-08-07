@@ -37,6 +37,7 @@ import 'package:pharma_app/src/pages/shops_by_address/shops_address.dart';
 import 'package:pharma_app/src/pages/tracking/tracking.dart';
 import 'package:pharma_app/src/repository/paymentCards_repository.dart';
 import 'src/components/search_bar/search_bar_terapie.dart';
+import 'src/pages/chat/messages_page.dart';
 import 'src/pages/error.dart';
 import 'src/pages/filters/filters.dart';
 import 'src/pages/home/home.dart';
@@ -87,6 +88,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SearchProduct());
       case 'Filtri':
         return MaterialPageRoute(builder: (_) => const Filters());
+      case 'Chat':
+        return MaterialPageRoute(builder: (_) => MessagesPage());
       case 'Reviews':
         return MaterialPageRoute(builder: (_) => const Reviews());
       case 'Reminder':
@@ -122,9 +125,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const NotificationsWidget());
       case 'Preferiti':
         return MaterialPageRoute(builder: (_) => FavoritesWidget());
-      case 'Chat':
+      /*  case 'Chat':
         return MaterialPageRoute(
-            builder: (_) => ChatPage(routeArgument: args as RouteArgument));
+            builder: (_) => ChatPage(routeArgument: args as RouteArgument)); */
       case 'Contattaci':
         return MaterialPageRoute(builder: (_) => const ContactUs());
       case 'Diventa Partner':

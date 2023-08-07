@@ -15,7 +15,7 @@ class OrderP extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final orders = ref.watch(ordersProvider);
     return Scaffold(
-      bottomNavigationBar: const BottomNavigation(),
+      bottomNavigationBar: BottomNavigation(sel: SelectedBottom.ordini),
       body: SizedBox(
         height: MediaQuery.of(context).size.height * 0.6,
         child: SingleChildScrollView(
