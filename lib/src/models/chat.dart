@@ -1,13 +1,13 @@
 import '/src/models/user.dart';
 import 'message.dart';
+import 'shop.dart';
 
 class Chat {
   String? id;
 
-  // conversation name for example chat with restaurant name
+  // conversation name for example chat with shop name
   String? name;
-  User? other;
-
+  Shop? shop;
   // Chats messages
   Message? lastMessage;
 
@@ -22,9 +22,9 @@ class Chat {
     try {
       id = jsonMap['id'] != null ? jsonMap['id'].toString() : null;
       name = jsonMap['name'] != null ? jsonMap['name'].toString() : '';
-      other = jsonMap['other'] != null
-          ? User.fromJSON(jsonMap['other'])
-          : User.fromJSON({});
+      shop = jsonMap['restaurant'] != null
+          ? Shop.fromJSON(jsonMap['restaurant'])
+          : Shop.fromJSON({});
       lastMessage = jsonMap['last_message'] != null
           ? Message.fromJSON(jsonMap['last_message'])
           : null;

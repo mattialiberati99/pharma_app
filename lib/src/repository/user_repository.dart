@@ -11,6 +11,7 @@ import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../main.dart';
 import '../helpers/custom_trace.dart';
 import '../models/user.dart';
 import '../providers/user_provider.dart';
@@ -70,7 +71,7 @@ Future<User> register(User user) async {
     print(CustomTrace(StackTrace.current, message: response.body).toString());
     throw new Exception(response.body);
   }
-}   
+}
 
 Future<bool> resetPassword(User user) async {
   final String url =
@@ -122,25 +123,24 @@ Future<User> loginAsUserToken(String token) async {
 
 Future<bool> sendVerificationMail() async {
   User _user = currentUser.value;
-  print(_user);
   final String _apiToken = 'api_token=${_user.apiToken}';
   //address.userId = _user.id;
   final String url =
       '${GlobalConfiguration().getValue('api_base_url')}send_validation_email?$_apiToken';
-  final client = new http.Client();
+  final client = http.Client();
   try {
     final response = await client.post(
       Uri.parse(url),
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       //body: json.encode(address.toMap()),
     );
-    print(url);
+    logger.info(url);
     //print(json.encode(address.toMap()));
     return response.statusCode == 200;
   } catch (e, stack) {
-    print(e);
-    print(stack);
-    print(CustomTrace(StackTrace.current, message: url));
+    logger.error(e);
+    logger.error(stack);
+    logger.error(CustomTrace(StackTrace.current, message: url));
     return false;
   }
 }
@@ -149,22 +149,22 @@ Future<User?> validateUserCode(String text) async {
   User _user = currentUser.value;
   final String _apiToken = 'api_token=${_user.apiToken}';
   //address.userId = _user.id;
-  var map = new Map<String, dynamic>();
+  var map = <String, dynamic>{};
   map["code"] = text;
   final String url =
       '${GlobalConfiguration().getValue('api_base_url')}validate_code?$_apiToken';
-  final client = new http.Client();
+  final client = http.Client();
   try {
     final response = await client.post(
       Uri.parse(url),
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: json.encode(map),
     );
-    print(url);
+    logger.info(url);
     //print(json.encode(address.toMap()));
     return User.fromJSON(json.decode(response.body)['data']);
   } catch (e) {
-    print(e);
+    logger.error(e);
     //print(CustomTrace(StackTrace.current, message: url));
     return null;
   }

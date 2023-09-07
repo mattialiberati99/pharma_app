@@ -34,8 +34,42 @@ class NotificationItemWidget extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Container(
-            height: 120,
-            child: Stack(
+            height: 100,
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                bottom: BorderSide(
+                    color: Color.fromRGBO(244, 246, 245, 1), width: 10),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image.asset(
+                        'assets/immagini_pharma/logo_notifiche.png'),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                              // TODO: FINIRE NOTIFICHE 25/08/23
+                              'prova'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            /* child: Stack(
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -96,7 +130,7 @@ class NotificationItemWidget extends StatelessWidget {
                         style: ExtraTextStyles.normalAccent,
                       ))
               ],
-            ),
+            ), */
           ),
         ));
   }

@@ -89,7 +89,7 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                   GestureDetector(
                     onTap: () {
                       widget.sel = SelectedBottom.ordini;
-                      Navigator.of(context).pushNamed('Ordini');
+                      Navigator.of(context).pushReplacementNamed('Ordini');
                     },
                     child: Image(
                         color: widget.sel == SelectedBottom.ordini
@@ -171,10 +171,12 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                   GestureDetector(
                     onTap: () async {
                       widget.sel = SelectedBottom.chat;
-                      final chatProv = ref.watch(chatProvider);
-                      Chat? chat = await chatProv.getChat(currentUser.value.id);
-                      Navigator.of(context).pushReplacementNamed('Chat',
-                          arguments: RouteArgument(id: chat?.id));
+                      //final chatProv = ref.watch(chatProvider);
+                      //Chat? chat = await chatProv.getChat(currentUser.value.id);
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pushReplacementNamed(
+                        'Chat',
+                      );
                     },
                     child: Image(
                         color: widget.sel == SelectedBottom.chat
@@ -186,7 +188,7 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                   GestureDetector(
                     onTap: () {
                       widget.sel = SelectedBottom.home;
-                      Navigator.of(context).pushNamed('Profilo');
+                      Navigator.of(context).pushReplacementNamed('Profilo');
                     },
                     child: Image(
                         color: widget.sel == SelectedBottom.profilo

@@ -73,76 +73,95 @@ class _ChatState extends ConsumerState<ChatPage> {
   }
 
   @override
+  void dispose() {
+    chatProv.setAllRead(widget.routeArgument.id);
+    super.dispose();
+  }
+
+  Future<bool> onBackPress() {
+    if (showEmoji) {
+      setState(() {
+        showEmoji = false;
+      });
+    } else {
+      Navigator.pop(context);
+    }
+
+    return Future.value(false);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return chat != null
         ? Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Color.fromRGBO(244, 246, 245, 1),
             appBar: ChatAppBar(
-              backPressed: () {
-                chatProv.setAllRead(chat!.id);
-                Navigator.of(context).pushReplacementNamed('Home');
-              },
-              titleWidget: Row(
-                children: <Widget>[
-                  // ClipRRect(
-                  //   borderRadius: BorderRadius.circular(60),
-                  //   child: CachedNetworkImage(
-                  //     imageUrl: chat!.other!.image!.thumb!,
-                  //     height: 50,
-                  //     width: 50,
-                  //   ),
-                  // ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 4, top: 4),
-                      child: AutoSizeText(
-                        chat!.other!.name!,
-                        style: const TextStyle(color: AppColors.lightGray1),
-                        maxLines: 1,
+              titleWidget: InkWell(
+                onTap: () => Navigator.of(context).pushReplacementNamed(
+                    'Restaurant',
+                    arguments: RouteArgument(id: chat!.shop!.id)),
+                child: Row(
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(60),
+                      child: CachedNetworkImage(
+                        imageUrl: chat!.shop!.image!.thumb!,
+                        height: 50,
+                        width: 50,
                       ),
                     ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                ],
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 4, top: 4),
+                        child: AutoSizeText(
+                          chat!.shop!.name!,
+                          style: ExtraTextStyles.bigBlack,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 20)),
+                  ],
+                ),
               ),
               backgroundColor: Colors.white,
-              actions: [
-                InkWell(
-                    onTap: () => showDialog(
-                                context: context,
-                                builder: (_) => CustomDialog(
-                                    title: S.current.delete_chat,
-                                    description: S.current.eliminated_for_both))
-                            .then((value) async {
-                          if (value) {
-                            var deleted =
-                                await deleteChat(widget.routeArgument.id);
-                            if (deleted) {
-                              Navigator.of(context).pop();
-                            }
-                          }
-                        }),
-                    child: const Icon(
-                      Icons.delete_forever,
-                      color: AppColors.mainBlack,
-                    )),
-                PopupMenuButton<String>(
-                  onSelected: (a) {}, //chatProv.handleReport,
-                  itemBuilder: (BuildContext context) {
-                    return {S.current.report_user, S.current.block_user}
-                        .map((String choice) {
-                      return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(choice),
-                      );
-                    }).toList();
-                  },
-                  icon: const Icon(
-                    Icons.more_vert,
-                    color: AppColors.mainBlack,
-                  ),
-                ),
-              ],
+              // actions: [
+              //   InkWell(
+              //       onTap: () => showDialog(
+              //                   context: context,
+              //                   builder: (_) => CustomDialog(
+              //                       title: S.current.delete_chat,
+              //                       description: S.current.eliminated_for_both))
+              //               .then((value) async {
+              //             if (value) {
+              //               var deleted =
+              //                   await deleteChat(widget.routeArgument.id);
+              //               if (deleted) {
+              //                 Navigator.of(context).pop();
+              //               }
+              //             }
+              //           }),
+              //       child: Icon(
+              //         Icons.delete_forever,
+              //         color: AppColors.mainBlack,
+              //       )),
+              //   PopupMenuButton<String>(
+              //     onSelected: (a) {}, //chatProv.handleReport,
+              //     itemBuilder: (BuildContext context) {
+              //       return {S.current.report_user, S.current.block_user}
+              //           .map((String choice) {
+              //         return PopupMenuItem<String>(
+              //           value: choice,
+              //           child: Text(choice),
+              //         );
+              //       }).toList();
+              //     },
+              //     icon: Icon(
+              //       Icons.more_vert,
+              //       color: AppColors.mainBlack,
+              //     ),
+              //   ),
+              // ],
             ),
             body: Center(
               child: Container(
@@ -157,8 +176,7 @@ class _ChatState extends ConsumerState<ChatPage> {
                               Colors.black
                             ],
                           )
-                        : const LinearGradient(
-                            colors: [Colors.white, Colors.white]),
+                        : LinearGradient(colors: [Colors.white, Colors.white]),
                   ),
                   child: Column(
                     children: <Widget>[
@@ -170,10 +188,9 @@ class _ChatState extends ConsumerState<ChatPage> {
                                 child: Container(
                                   child: Text(
                                     S.current
-                                        .send_first_message(chat!.other!.name!),
+                                        .send_first_message(chat!.shop!.name!),
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        color: AppColors.primary),
+                                    style: ExtraTextStyles.bigGreyW,
                                   ),
                                 ))
                             : Padding(
@@ -185,77 +202,131 @@ class _ChatState extends ConsumerState<ChatPage> {
                       //         !chat.user!.has_blocked! &&
                       //         !chat.other!.has_blocked!)
                       //TODO - blocked
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8.0, bottom: 8.0),
-                            //height: 130,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 4,
-                                  child: DetectableTextField(
-                                    detectionRegExp: hashTagAtSignUrlRegExp,
-                                    focusNode: focusNode,
-                                    controller: _textEditingController,
-                                    decoratedStyle:
-                                        TextStyle(color: AppColors.solidBlack),
-                                    basicStyle: const TextStyle(
-                                        color: AppColors.primary),
-                                    textAlignVertical: TextAlignVertical.center,
-                                    keyboardType: TextInputType.multiline,
-                                    maxLines: 5,
-                                    minLines: 1,
-                                    onChanged: (value) {},
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: AppColors.gray8,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(4),
-                                        borderSide: BorderSide.none,
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          //height: 130,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Card(
+                                      margin: EdgeInsets.only(
+                                          left: 2, right: 2, bottom: 8),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(25),
                                       ),
-                                      hintText: S.current.typeToStartChat,
-                                      hintStyle:
-                                          const TextStyle(color: Colors.grey),
-                                      prefixIcon: GestureDetector(
-                                        onTap: () =>
-                                            ChatHelper.showUploadMediaDialog(
-                                                chatProv, chat!.id!, context),
-                                        child: const Icon(
-                                          Icons.camera_alt,
-                                          color: Colors.black,
+                                      child: DetectableTextField(
+                                        detectionRegExp: hashTagAtSignUrlRegExp,
+                                        focusNode: focusNode,
+                                        controller: _textEditingController,
+                                        decoratedStyle:
+                                            ExtraTextStyles.normalBlack,
+                                        basicStyle: ExtraTextStyles.normalBlack,
+                                        textAlignVertical:
+                                            TextAlignVertical.center,
+                                        keyboardType: TextInputType.multiline,
+                                        maxLines: 5,
+                                        minLines: 1,
+                                        onChanged: (value) {},
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: "Scrivi il messaggio",
+                                          hintStyle: const TextStyle(
+                                              color: Colors.grey),
+                                          prefixIcon: GestureDetector(
+                                            onTap: () => ChatHelper
+                                                .showUploadMediaDialog(chatProv,
+                                                    chat!.id!, context),
+                                            child: Container(
+                                              margin: EdgeInsets.all(5),
+                                              decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppColors.primary),
+                                              child: const Icon(
+                                                Icons.camera_alt,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          suffixIcon: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              if (_textEditingController
+                                                  .text.isEmpty)
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    /*decoration: BoxDecoration(
+                                          color: Theme.of(context).primaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),*/
+                                                    child: IconButton(
+                                                      icon: Icon(
+                                                        Icons.emoji_emotions,
+                                                        color: Colors
+                                                            .grey.shade400,
+                                                      ),
+                                                      onPressed: () {
+                                                        focusNode.unfocus();
+                                                        focusNode
+                                                                .canRequestFocus =
+                                                            false;
+                                                        setState(() {
+                                                          showEmoji =
+                                                              !showEmoji;
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  bottom: 0,
+                                                  right: 0,
+                                                  left: 2,
+                                                ),
+                                                child: CircleAvatar(
+                                                  radius: 25,
+                                                  backgroundColor:
+                                                      AppColors.primary,
+                                                  child: IconButton(
+                                                    icon: Icon(
+                                                      Icons.send,
+                                                      color: Colors.white,
+                                                    ),
+                                                    onPressed: () async {
+                                                      if (_textEditingController
+                                                          .text.isNotEmpty) {
+                                                        await chatProv.sendMessage(
+                                                            chat!,
+                                                            _textEditingController
+                                                                .text);
+                                                        setState(() =>
+                                                            _textEditingController
+                                                                .clear());
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          //contentPadding: EdgeInsets.all(5),
                                         ),
-                                      ), //contentPadding: EdgeInsets.all(5),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: CircleAvatar(
-                                    radius: 25,
-                                    backgroundColor: AppColors.error,
-                                    child: IconButton(
-                                      icon: SvgPicture.asset(
-                                        'assets/ico/invia.svg',
-                                        color: Colors.white,
                                       ),
-                                      onPressed: () async {
-                                        if (_textEditingController
-                                            .text.isNotEmpty) {
-                                          await chatProv.sendMessage(chat!,
-                                              _textEditingController.text);
-                                          setState(() =>
-                                              _textEditingController.clear());
-                                        }
-                                      },
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       )

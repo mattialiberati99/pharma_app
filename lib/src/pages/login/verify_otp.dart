@@ -68,6 +68,7 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     //final userProv = ref.watch(userProvider);
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
@@ -144,8 +145,8 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                                 color: AppColors.primary,
                               ),
                               recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  sendVerificationMail();
+                                ..onTap = () async {
+                                  await sendVerificationMail();
                                   print('invia di nuovo');
                                   secondsRemaining = 59;
                                   enableResend

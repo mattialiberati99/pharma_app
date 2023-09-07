@@ -5,6 +5,7 @@ import 'package:pharma_app/src/pages/notifications/widgets/NotificationItemWidge
 
 import '../../components/EmptyNotificationsWidget.dart';
 import '../../components/PermissionDeniedWidget.dart';
+import '../../components/custom_app_bar_notifiche.dart';
 import '../../models/route_argument.dart';
 import '../../providers/notification_provider.dart';
 import '../../models/notification.dart' as Model;
@@ -21,7 +22,7 @@ class NotificationsWidget extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: false,
-      appBar: const CustomAppBar(title: "Notifiche"),
+      appBar: const CustomAppBarNotifiche(title: "Notifiche"),
       body: currentUser.value.apiToken == null
           ? PermissionDeniedWidget()
           : RefreshIndicator(

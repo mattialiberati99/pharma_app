@@ -63,7 +63,7 @@ dependencies:
   csc_picker: ^0.2.7
   permission_handler: ^10.4.3
 
-  firebase_auth: ^4.1.1
+  firebase_auth: ^4.9.0
   firebase_messaging: ^14.6.4
   flutter_local_notifications: ^14.1.0
   firebase_dynamic_links: ^5.0.4
@@ -72,6 +72,7 @@ dependencies:
   the_apple_sign_in: ^1.1.1
   package_info: ^2.0.2
   timeago: ^3.3.0
+  talker: ^3.1.1
 
 
   location: ^4.4.0
@@ -112,7 +113,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.0
-  flutter_launcher_icons: ^0.13.0
+  flutter_launcher_icons: ^0.13.1
   build_runner: ^2.3.2
   freezed: ^2.2.0
   json_serializable: ^6.5.4
@@ -132,10 +133,6 @@ flutter:
 
 
 flutter_icons:
-  image_path: "assets/immagini_pharma/logo_small.png"
   android: true
   ios: true
-#  adaptive_icon_background: "assets/app_icon/adaptive_back.png" # only available for Android 8.0 devices and above
-#  adaptive_icon_foreground: "assets/app_icon/adaptive_fore.png" # only available for Android 8.0 devices and above
-  min_sdk_android: 21
-  remove_alpha_ios: true
+  image_path: "assets/immagini_pharma/logo_small.png"

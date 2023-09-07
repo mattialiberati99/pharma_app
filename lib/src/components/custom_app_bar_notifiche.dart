@@ -5,7 +5,8 @@ import 'package:pharma_app/src/providers/selected_page_name_provider.dart';
 
 import '../helpers/app_config.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBarNotifiche extends StatelessWidget
+    implements PreferredSizeWidget {
   final VoidCallback? leftPressed;
   final Function? openMenu;
   final String? title;
@@ -16,7 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final VoidCallback? onPop;
 
-  const CustomAppBar(
+  const CustomAppBarNotifiche(
       {Key? key,
       this.leftPressed,
       this.openMenu,
@@ -62,19 +63,38 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             //   backgroundColor: Colors.white,
             // ),
             ),
-        title: title != null
-            ? Container(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (title != null)
+              Container(
                 decoration: const BoxDecoration(boxShadow: [
                   BoxShadow(
                       color: Colors.white60, blurRadius: 6.0, spreadRadius: 2.0)
                 ]),
-                child: Text(title!,
-                    textAlign: TextAlign.start,
-                    style: context.textTheme.subtitle1?.copyWith(
-                      color: const Color(0xff333333),
-                    )),
-              )
-            : Container(),
+                child: Text(
+                  title!,
+                  textAlign: TextAlign.start,
+                  style: context.textTheme.subtitle1?.copyWith(
+                    color: const Color(0xff333333),
+                  ),
+                ),
+              ),
+            GestureDetector(
+              onTap: () {
+                // Handle the click action here
+                print('Cancella tutto Clicked');
+              },
+              child: const Text(
+                'Cancella tutto',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        ),
         actions: [
           if (rightWidget != null) rightWidget!,
         ],

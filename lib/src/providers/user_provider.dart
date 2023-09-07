@@ -74,10 +74,10 @@ class UserProvider with ChangeNotifier {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Registrazione effettuata con successo"),
           ));
-          Future.delayed(const Duration(seconds: 2), () {
+          Future.delayed(const Duration(seconds: 2), () async {
+            await userRepo.sendVerificationMail();
             Navigator.of(context).pushReplacementNamed(afterRegisterPage);
           });
-          // TODO ? Navigator.of(scaffoldKey.currentContext!).pushReplacementNamed('ValidateEmail');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(S.current.wrong_email_or_password),

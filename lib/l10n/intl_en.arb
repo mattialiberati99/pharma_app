@@ -92,6 +92,7 @@
 
   "@_EMPTY_WIDGETS": {},
   "empty_cart": "Non hai nessun articolo nel carrello",
+  "empty_messages": "Nessun messaggio presente",
 
   "@_PAYMENTS": {},
   "payment_options": "Opzioni di pagamento",

@@ -60,9 +60,9 @@ class ChatProvider with ChangeNotifier {
   Future<Chat?> getChatWithUser(id) async {
     print(id);
     for (Chat chat in chats.values) {
-      print(chat.other!.id);
+      print(chat.shop!.id);
 
-      if (chat.other!.id == id) {
+      if (chat.shop!.id == id) {
         return chat;
       }
     }

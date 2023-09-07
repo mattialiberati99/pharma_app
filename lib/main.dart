@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:talker/talker.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ import 'generated/l10n.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 final navigatorKey = GlobalKey<NavigatorState>();
+final logger = Talker();
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -90,6 +92,9 @@ void main() async {
   ]);
 
   runApp(const ProviderScope(child: App()));
+/*   final fCMToken = await FirebaseMessaging.instance.getToken();
+  print('TOKEN DEVICE PER FIREBASE:');
+  print(fCMToken); */
 }
 
 class App extends ConsumerWidget {
@@ -100,7 +105,7 @@ class App extends ConsumerWidget {
     //final selectedPageBuilder = ref.watch(selectedPageBuilderProvider);
     return MaterialApp(
       navigatorKey: navigatorKey,
-      title: 'Pharma Delivery',
+      title: 'Pharmalivero',
       theme: themeData,
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,

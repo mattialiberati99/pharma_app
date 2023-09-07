@@ -29,7 +29,7 @@ class AppAssets {
   static const String marker = 'assets/ico/marker.svg';
   static const String filter = 'assets/ico/filter.svg';
 
-  static const String logo_green = 'assets/immagini_pharma/logo2.png';
+  static const String logo_green = 'assets/immagini_pharma/logo.png';
 
   static const String home = 'assets/immagini_pharma/homeB.svg';
   static const String medicine = 'assets/immagini_pharma/Pills-3.svg';

@@ -135,8 +135,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
       print(currentUser.value.apiToken);
       if (currentUser.value.apiToken != null) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
-          if (currentUser.value.verified != null ||
-              !setting.value.verifyEmail) {
+          if (currentUser.value.verified != null) {
             Navigator.of(context).pushReplacementNamed('Home');
           } else {
             Navigator.of(context).pushReplacementNamed('VerifyOtp');
@@ -158,7 +157,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: const DecorationImage(
-            image: ExactAssetImage('assets/immagini_pharma/logo2.png'),
+            image: ExactAssetImage('assets/immagini_pharma/logo.png'),
             fit: BoxFit.cover,
           ),
           color: Theme.of(context).scaffoldBackgroundColor,

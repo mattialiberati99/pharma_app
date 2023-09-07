@@ -90,6 +90,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const Filters());
       case 'Chat':
         return MaterialPageRoute(builder: (_) => MessagesPage());
+      case 'ChatPage':
+        return MaterialPageRoute(
+            builder: (_) => ChatPage(routeArgument: args as RouteArgument));
       case 'Reviews':
         return MaterialPageRoute(builder: (_) => const Reviews());
       case 'Reminder':
