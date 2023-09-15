@@ -58,6 +58,13 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
     });
   }
 
+  @override
+  void dispose() {
+    currentUser.removeListener(() {});
+    setting.removeListener(() {});
+    super.dispose();
+  }
+
   void locationPermission() async {
     var location = Location();
     var _serviceEnabled = await location.serviceEnabled();

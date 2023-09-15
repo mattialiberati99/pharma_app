@@ -131,9 +131,11 @@ Future<bool> sendVerificationMail() async {
   try {
     final response = await client.post(
       Uri.parse(url),
+
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       //body: json.encode(address.toMap()),
     );
+
     logger.info(url);
     //print(json.encode(address.toMap()));
     return response.statusCode == 200;

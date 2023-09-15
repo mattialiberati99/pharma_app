@@ -134,33 +134,36 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                     const SizedBox(
                       width: 10,
                     ),
-                    RichText(
-                      text: TextSpan(
-                        style: context.textTheme.titleSmall,
-                        children: [
-                          const TextSpan(text: 'Invia di nuovo? '),
-                          TextSpan(
-                              text: ' Clicca qui',
-                              style: const TextStyle(
-                                color: AppColors.primary,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  await sendVerificationMail();
-                                  print('invia di nuovo');
-                                  secondsRemaining = 59;
-                                  enableResend
-                                      ? () {
-                                          secondsRemaining == 0;
-                                        }
-                                      : ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content: Text(
-                                                  'Potrai reinviare il codice al termine dei secondi.')));
-                                }),
-                        ],
-                      ),
-                    ),
+                    secondsRemaining == 0
+                        ? RichText(
+                            text: TextSpan(
+                              style: context.textTheme.titleSmall,
+                              children: [
+                                const TextSpan(text: 'Invia di nuovo? '),
+                                TextSpan(
+                                    text: ' Clicca qui',
+                                    style: const TextStyle(
+                                      color: AppColors.primary,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        await sendVerificationMail();
+                                        print('invia di nuovo');
+                                        print(_otpCode);
+                                        secondsRemaining = 3;
+                                        enableResend
+                                            ? () {
+                                                secondsRemaining == 0;
+                                              }
+                                            : ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'Potrai reinviare il codice al termine dei secondi.')));
+                                      }),
+                              ],
+                            ),
+                          )
+                        : const SizedBox(),
                   ],
                 ),
                 const SizedBox(height: 90),
@@ -171,11 +174,21 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                         height: 50,
                         width: 210,
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_otpCode != null) {
-                              Navigator.of(context).pushReplacementNamed(
-                                  'SuccessVerificationPage');
-                              // _verifyOtp(context, _otpCode!);
+                          onPressed: () async {
+                            if (_otpCode != null && _otpCode!.length == 4) {
+                              try {
+                                var user = await validateUserCode(_otpCode!);
+                                if (user != null && user.verified != null) {
+                                  currentUser.value = user;
+
+                                  Navigator.of(context).pushReplacementNamed(
+                                      'SuccessVerificationPage');
+                                } else {
+                                  print("cathc1");
+                                }
+                              } catch (e) {
+                                print("cathc2");
+                              }
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
@@ -204,5 +217,3 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
     );
   }
 }
-
-void _verifyOtp(BuildContext context, String otpCode) {}

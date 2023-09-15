@@ -18,9 +18,13 @@ class OrdineConfermato extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<OrdineConfermato> createState() => _OrdineConfermatoState();
+
 }
 
+
+
 class _OrdineConfermatoState extends ConsumerState<OrdineConfermato> {
+
   @override
   Widget build(BuildContext context) {
     final cartProv = ref.watch(cartProvider);

@@ -50,9 +50,9 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ProfileAppBar(
-        title: "Profilo",
-      ),
+      // appBar:  ProfileAppBar(
+      //   title: "Profilo", advancedDrawerController: _advancedDrawerController,
+      // ),
       extendBody: true,
       extendBodyBehindAppBar: true,
       bottomNavigationBar: Stack(

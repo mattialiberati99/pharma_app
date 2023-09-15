@@ -391,7 +391,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                                                                     onPressed:
                                                                         () {
                                                                       // TODO STRIPE
-
+                                                                      
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
@@ -570,7 +570,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                                                                           Text(
                                                                               'Totale'),
                                                                           Text(
-                                                                              '${cartProv.sconto}€',
+                                                                              '${cartProv.total}€',
                                                                               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                                                                         ],
                                                                       ),
@@ -858,7 +858,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                                                       .spaceBetween,
                                               children: [
                                                 Text('Totale'),
-                                                Text('${cartProv.sconto}€',
+                                                Text('${cartProv.total}€',
                                                     style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
