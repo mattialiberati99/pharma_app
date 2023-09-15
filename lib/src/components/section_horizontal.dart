@@ -5,6 +5,7 @@ import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/providers/categories_provider.dart';
 import 'package:pharma_app/src/providers/food_provider.dart';
 
+import '../providers/acquistiRecenti_provider.dart';
 import '../providers/shops_provider.dart';
 import 'async_value_widget.dart';
 import 'shop_card_horizontal.dart';
@@ -21,7 +22,7 @@ class SectionHorizontal extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chosen = ref.watch(farmaOfCategoryProvider('11'));
-
+    final chosen1 = ref.watch(acquistiRecenti);
     return Column(
       children: [
         Row(
@@ -52,6 +53,7 @@ class SectionHorizontal extends ConsumerWidget {
         //   maxWidth: MediaQuery.of(context).size.width,
         AsyncValueWidget(
             value: chosen,
+            
             loading: const CircularProgressIndicator(),
             data: (chosenShops) {
               /* final filtered =

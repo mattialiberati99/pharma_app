@@ -79,7 +79,9 @@ class SearchProduct extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 30.0),
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      researchList.elimina();
+                    },
                     child: const Text(
                       'Elimina',
                       style: TextStyle(color: Colors.red),
@@ -87,7 +89,6 @@ class SearchProduct extends ConsumerWidget {
               )
             ],
           ),
-          // TODO ricerche recenti
           Expanded(
             child: ListView.builder(
               itemCount: researchList.researchItems.length,

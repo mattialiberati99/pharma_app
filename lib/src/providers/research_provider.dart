@@ -32,4 +32,9 @@ class ResearchProvider with ChangeNotifier {
     await prefs.setStringList('researchItems', researchItems);
     notifyListeners();
   }
+
+  elimina() {
+    researchItems.clear();
+    notifyListeners();
+  }
 }
