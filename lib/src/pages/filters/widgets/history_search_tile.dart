@@ -32,13 +32,13 @@ class HistorySearchTile extends StatelessWidget {
             style: context.textTheme.bodyText1?.copyWith(
                 fontWeight: FontWeight.w600, color: Color(0xff555555)),
           ),
-          Spacer(),
-          GestureDetector(
-              onTap: onTap,
-              child: Icon(
-                Icons.close,
-                color: context.colorScheme.primary,
-              ))
+          // Spacer(),
+          // GestureDetector(
+          //     onTap: onTap,
+          //     child: Icon(
+          //       Icons.close,
+          //       color: context.colorScheme.primary,
+          //     ))
         ],
       ),
     );

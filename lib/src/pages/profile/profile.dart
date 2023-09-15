@@ -61,7 +61,7 @@ class _ProfileState extends State<Profile> {
             return Visibility(
               visible: currentStep == 1,
               child: FooterActions(
-                firstLabel: "AGGIUNGI INDIRIZZO +", //TODO stringhe
+                firstLabel: "AGGIUNGI INDIRIZZO +", 
                 firstAction: () {
                   Navigator.of(context).pushNamed('SearchAddress');
                   ref.refresh(addressesProvider);
@@ -73,7 +73,7 @@ class _ProfileState extends State<Profile> {
           Visibility(
             visible: currentStep == 3,
             child: FooterActions(
-              firstLabel: "AGGIUNGI CARTA +", //TODO stringhe
+              firstLabel: "AGGIUNGI CARTA +", 
               firstAction: () =>
                   Navigator.of(context).pushNamed('GestisciCarte'),
               hasSecond: false,

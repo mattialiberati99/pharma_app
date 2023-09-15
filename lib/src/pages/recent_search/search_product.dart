@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/components/search_bar/filter_search_bar.dart';
 import 'package:pharma_app/src/components/search_bar/home_search_bar.dart';
 import 'package:pharma_app/src/components/search_bar/shop_search_bar.dart';
 import 'package:pharma_app/src/helpers/app_config.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
+import 'package:pharma_app/src/providers/research_provider.dart';
 
 import '../../components/search_bar/pre_home_search_bar.dart';
 import '../../components/search_bar/search_cat.dart';
+import '../filters/widgets/history_search_tile.dart';
 
-class SearchProduct extends StatefulWidget {
-  const SearchProduct({super.key});
-
+class SearchProduct extends ConsumerWidget {
   @override
-  State<SearchProduct> createState() => _SearchProductState();
-}
-
-class _SearchProductState extends State<SearchProduct> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final researchList = ref.watch(researchProvider);
     return Scaffold(
       body: Column(
         children: [
@@ -89,7 +86,19 @@ class _SearchProductState extends State<SearchProduct> {
                     )),
               )
             ],
-          )
+          ),
+          // TODO ricerche recenti
+          Expanded(
+            child: ListView.builder(
+              itemCount: researchList.researchItems.length,
+              itemBuilder: ((context, index) {
+                return HistorySearchTile(
+                  title: researchList.researchItems.elementAt(index),
+                  onTap: () {},
+                );
+              }),
+            ),
+          ),
         ],
       ),
     );

@@ -85,7 +85,7 @@ class RouteGenerator {
       //case 'PreHome':
       // return MaterialPageRoute(builder: (_) => const PreHome());
       case 'Search':
-        return MaterialPageRoute(builder: (_) => const SearchProduct());
+        return MaterialPageRoute(builder: (_) => SearchProduct());
       case 'Filtri':
         return MaterialPageRoute(builder: (_) => const Filters());
       case 'Chat':

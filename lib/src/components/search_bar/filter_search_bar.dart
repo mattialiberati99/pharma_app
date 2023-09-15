@@ -10,6 +10,7 @@ import '../../../generated/l10n.dart';
 import '../../helpers/app_config.dart';
 import '../../models/search_result.dart';
 import '../../providers/filter_provider.dart';
+import '../../providers/research_provider.dart';
 import '../../providers/shops_provider.dart';
 import '../../repository/food_repository.dart';
 import '../../repository/restaurant_repository.dart';
@@ -45,6 +46,7 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
+    final researchList = ref.watch(researchProvider);
 
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
@@ -134,7 +136,7 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
           ),
         ),
         onSuggestionSelected: (suggestion) {
-          print("food");
+          researchList.saveResearchItems(suggestion.text as String);
           Navigator.of(context).pushNamed(
             widget.route!,
             arguments: suggestion.data as Farmaco,
