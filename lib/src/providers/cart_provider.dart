@@ -37,7 +37,7 @@ class CartProvider with ChangeNotifier {
   }
 
   double get total {
-    double total = 0;
+    double total = 0.00;
     carts.forEach((cart) {
       total += cart.getFarmacoPrice() * cart.quantity!;
     });

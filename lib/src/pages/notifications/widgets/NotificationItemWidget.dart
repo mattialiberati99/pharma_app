@@ -27,6 +27,20 @@ class NotificationItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dismissible(
         key: Key(notification.id ?? '0'),
+        background: Container(
+          color: Theme.of(context).colorScheme.error,
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 20),
+          margin: const EdgeInsets.symmetric(
+            horizontal: 15,
+            vertical: 4,
+          ),
+          child: const Icon(
+            Icons.delete,
+            color: Colors.white,
+            size: 40,
+          ),
+        ),
         onDismissed: (dir) {
           onRemoved();
         },

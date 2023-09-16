@@ -53,14 +53,14 @@ class NotificationsWidget extends ConsumerWidget {
                                   notifProv.delete(notification);
                                 },
                                 onTap: () {
-                                  notifProv.setRead(notification);
+                                  /*  notifProv.setRead(notification);
                                   Navigator.of(context).pushNamed(
                                       notification.data['screen'],
                                       arguments: RouteArgument(
                                           id: notification.data['id']
                                               .toString(),
                                           showFull: notification.data['full'] ??
-                                              false));
+                                              false)); */
                                 });
                           },
                         ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/components/bottomNavigation.dart';
 import 'package:pharma_app/src/components/flat_button.dart';
 import 'package:pharma_app/src/components/footer_actions.dart';
+import 'package:pharma_app/src/components/same_category_product.dart';
 import 'package:pharma_app/src/components/shadow_box.dart';
 import 'package:pharma_app/src/dialogs/ConfirmDialog.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
@@ -15,6 +16,7 @@ import 'package:pharma_app/src/providers/products_provider.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 import 'dart:math' as math;
+import '../../../../main.dart';
 import '../../../components/async_value_widget.dart';
 import '../../../dialogs/CustomDialog.dart';
 import '../../../helpers/app_config.dart';
@@ -66,6 +68,7 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
 
   bool desc = false;
   bool foglietto = false;
+
   @override
   Widget build(BuildContext context) {
     final canAdd = ref.watch(canAddProvider);
@@ -80,409 +83,266 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
         widget.product.discountPrice!;
     final cart = ref.watch(cartProvider);
     final fav = ref.watch(favoritesProvider);
+
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
-      body: SizedBox(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_new),
-                      onPressed: () => Navigator.of(context).pop(),
-                      color: const Color(0xFF333333),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushReplacementNamed('Cart');
-                      },
-                      child: cart.carts.isNotEmpty
-                          ? const Image(
-                              image: AssetImage(
-                                  'assets/immagini_pharma/Icon_shop_noti.png'))
-                          : const Image(
-                              image: AssetImage(
-                                  'assets/immagini_pharma/Icon_shop.png')),
-                    )
-                  ],
-                ),
-                Stack(
-                  alignment: AlignmentDirectional.bottomStart,
-                  children: [
-                    SizedBox(
-                      width: context.mqw,
-                      height: context.mqh * 0.35,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(14.0),
-                        ),
-                        child: Image.network(
-                          widget.product.image!.url!,
-                          fit: BoxFit.cover,
-                        ),
+      body: ListView(
+        shrinkWrap: true,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_ios_new),
+                        onPressed: () => Navigator.of(context).pop(),
+                        color: const Color(0xFF333333),
                       ),
-                    ),
-                    ShadowBox(
-                      color: Colors.white,
-                      topRightRadius: 0,
-                      topLeftRadius: 0,
-                      bottomRightRadius: 14,
-                      bottomLeftRadius: 14,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(14.0),
-                          bottomRight: Radius.circular(14.0),
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 15, top: 15),
-                          height: context.mqh * 0.1,
-                          color: Colors.white,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      widget.product.farmacia!.name!
-                                          .toUpperCase(),
-                                      style: const TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 190, 190, 190),
-                                          fontSize: 12),
-                                    ),
-                                    ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          bottomLeft: Radius.circular(20)),
-                                      child: Container(
-                                        color: AppColors.primary,
-                                        width: 48,
-                                        height: 24,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 4.0),
-                                              child: Text(
-                                                  '${widget.product.price!}€',
-                                                  style: context
-                                                      .textTheme.subtitle2
-                                                      ?.copyWith(
-                                                          color: Colors.white,
-                                                          fontSize: 14)),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Text(
-                                  widget.product.name!,
-                                  style: const TextStyle(
-                                      color: Color.fromARGB(255, 9, 15, 71),
-                                      fontSize: 14),
-                                ),
-                              ]),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: context.mqw * 0.85,
-                      top: 50,
-                      child: const Image(
-                        image: AssetImage('assets/immagini_pharma/points.png'),
-                      ),
-                    ),
-                    Positioned(
-                      left: context.mqw * 0.84,
-                      top: 25,
-                      child: GestureDetector(
-                        onTap: () async {
-                          if (isFavorite != null) {
-                            if (await removeFarmacoFavorite(isFavorite)) {
-                              favorites.delFarmaco(isFavorite);
-                            }
-                          } else {
-                            final favorite =
-                                await addFarmacoFavorite(widget.product);
-                            if (favorite != null) {
-                              favorites.addFarmaco(favorite);
-                            }
-                          }
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacementNamed('Cart');
                         },
-                        child: Image(
-                          image: fav.getFarmacoFavorite(widget.product) == null
-                              ? const AssetImage(
-                                  'assets/immagini_pharma/Heart.png')
-                              : const AssetImage(
-                                  'assets/immagini_pharma/fullHeart.png'),
+                        child: cart.carts.isNotEmpty
+                            ? const Image(
+                                image: AssetImage(
+                                    'assets/immagini_pharma/Icon_shop_noti.png'))
+                            : const Image(
+                                image: AssetImage(
+                                    'assets/immagini_pharma/Icon_shop.png')),
+                      )
+                    ],
+                  ),
+                  Stack(
+                    alignment: AlignmentDirectional.bottomStart,
+                    children: [
+                      SizedBox(
+                        width: context.mqw,
+                        height: context.mqh * 0.35,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(14.0),
+                          ),
+                          child: Image.network(
+                            widget.product.image!.url!,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    if (scount > 5)
+                      ShadowBox(
+                        color: Colors.white,
+                        topRightRadius: 0,
+                        topLeftRadius: 0,
+                        bottomRightRadius: 14,
+                        bottomLeftRadius: 14,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(14.0),
+                            bottomRight: Radius.circular(14.0),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 15, top: 15),
+                            height: context.mqh * 0.1,
+                            color: Colors.white,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        widget.product.farmacia!.name!
+                                            .toUpperCase(),
+                                        style: const TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 190, 190, 190),
+                                            fontSize: 12),
+                                      ),
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            bottomLeft: Radius.circular(20)),
+                                        child: Container(
+                                          color: AppColors.primary,
+                                          width: 48,
+                                          height: 24,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 4.0),
+                                                child: Text(
+                                                    '${widget.product.price!}€',
+                                                    style: context
+                                                        .textTheme.subtitle2
+                                                        ?.copyWith(
+                                                            color: Colors.white,
+                                                            fontSize: 14)),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Text(
+                                    widget.product.name!,
+                                    style: const TextStyle(
+                                        color: Color.fromARGB(255, 9, 15, 71),
+                                        fontSize: 14),
+                                  ),
+                                ]),
+                          ),
+                        ),
+                      ),
                       Positioned(
-                        top: 0,
-                        child: Stack(
-                          children: [
-                            const Image(
-                              image:
-                                  AssetImage('assets/immagini_pharma/sc.png'),
-                            ),
-                            Transform.rotate(
-                              angle: -math.pi / 4,
-                              child: Container(
-                                margin: const EdgeInsets.only(top: 15, left: 0),
-                                child: Text(
-                                  "${scount.toInt()}% OFF",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            )
-                          ],
+                        left: context.mqw * 0.85,
+                        top: 50,
+                        child: const Image(
+                          image:
+                              AssetImage('assets/immagini_pharma/points.png'),
                         ),
                       ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
+                      Positioned(
+                        left: context.mqw * 0.84,
+                        top: 25,
+                        child: GestureDetector(
+                          onTap: () async {
+                            if (isFavorite != null) {
+                              if (await removeFarmacoFavorite(isFavorite)) {
+                                favorites.delFarmaco(isFavorite);
+                              }
+                            } else {
+                              final favorite =
+                                  await addFarmacoFavorite(widget.product);
+                              if (favorite != null) {
+                                favorites.addFarmaco(favorite);
+                              }
+                            }
+                          },
+                          child: Image(
+                            image:
+                                fav.getFarmacoFavorite(widget.product) == null
+                                    ? const AssetImage(
+                                        'assets/immagini_pharma/Heart.png')
+                                    : const AssetImage(
+                                        'assets/immagini_pharma/fullHeart.png'),
+                          ),
+                        ),
+                      ),
+                      if (scount > 5)
+                        Positioned(
+                          top: 0,
+                          child: Stack(
+                            children: [
+                              const Image(
+                                image:
+                                    AssetImage('assets/immagini_pharma/sc.png'),
+                              ),
+                              Transform.rotate(
+                                angle: -math.pi / 4,
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 15, left: 0),
+                                  child: Text(
+                                    "${scount.toInt()}% OFF",
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ListTile(
+                    title: const Text(
                       'Descrizione',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          desc = !desc;
-                        });
-                      },
-                      child: desc
-                          ? const Image(
-                              width: 28,
-                              height: 24,
-                              image: AssetImage(
-                                  'assets/immagini_pharma/arrow_up.png'))
-                          : const Image(
-                              width: 28,
-                              height: 24,
-                              image: AssetImage(
-                                  'assets/immagini_pharma/arrow_down.png')),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  width: 40,
-                ),
-                if (desc)
-                  Text(
-                    widget.product.description!,
-                    style: const TextStyle(
-                        color: Color.fromARGB(115, 9, 15, 71), fontSize: 12),
-                  ),
-                const Divider(
-                  thickness: 2,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Foglietto illustrativo',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    trailing: Icon(
+                      desc
+                          ? Icons.keyboard_arrow_up
+                          : Icons.keyboard_arrow_down,
+                      size: 30,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          foglietto = !foglietto;
-                        });
-                      },
-                      child: foglietto
-                          ? const Image(
-                              width: 28,
-                              height: 24,
-                              image: AssetImage(
-                                  'assets/immagini_pharma/arrow_up.png'))
-                          : const Image(
-                              width: 28,
-                              height: 24,
-                              image: AssetImage(
-                                  'assets/immagini_pharma/arrow_down.png')),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  width: 40,
-                ),
-                if (foglietto)
-                  Text(
-                    widget.product.description!,
-                    style: const TextStyle(
-                        color: Color.fromARGB(115, 9, 15, 71), fontSize: 12),
+                    onTap: () => setState(() {
+                      desc = !desc;
+                    }),
                   ),
-                const Divider(
-                  thickness: 2,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  if (desc)
                     Text(
-                      'Alternative prodotto',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      widget.product.description ?? 'nessuna desrizione',
+                      style: const TextStyle(
+                          color: Color.fromARGB(115, 9, 15, 71), fontSize: 12),
                     ),
-                  ],
-                ),
-                // ...farmaci.foods.values
-                //     .where((element) =>
-                //         element.mixtures == widget.product.mixtures)
-                //     .map(
-                //       (e) =>
-                //           // ignore: avoid_unnecessary_containers
-                //           ClipRRect(
-                //         borderRadius:
-                //             const BorderRadius.all(Radius.circular(11)),
-                //         child: Container(
-                //           width: 173,
-                //           height: 276,
-                //           child: Stack(
-                //             children: [
-                //               SizedBox(
-                //                 child: ClipRRect(
-                //                   borderRadius: const BorderRadius.only(
-                //                       bottomRight: Radius.circular(11.0),
-                //                       bottomLeft: Radius.circular(11)),
-                //                   child: Image.network(
-                //                     e.image!.url!,
-                //                     fit: BoxFit.cover,
-                //                   ),
-                //                 ),
-                //               ),
-                //               ShadowBox(
-                //                 color: Colors.white,
-                //                 topRightRadius: 0,
-                //                 topLeftRadius: 0,
-                //                 bottomRightRadius: 11,
-                //                 bottomLeftRadius: 11,
-                //                 child: ClipRRect(
-                //                   borderRadius: const BorderRadius.only(
-                //                     bottomLeft: Radius.circular(11.0),
-                //                     bottomRight: Radius.circular(11.0),
-                //                   ),
-                //                   child: Container(
-                //                     padding: const EdgeInsets.only(
-                //                         left: 15, top: 15),
-                //                     height: context.mqh * 0.1,
-                //                     color: Colors.white,
-                //                     child: Column(
-                //                       crossAxisAlignment:
-                //                           CrossAxisAlignment.start,
-                //                       children: [
-                //                         Text(
-                //                           widget.product.name!,
-                //                           style: const TextStyle(
-                //                               color: Color.fromARGB(
-                //                                   255, 9, 15, 71),
-                //                               fontSize: 14),
-                //                         ),
-                //                         Row(
-                //                           mainAxisAlignment:
-                //                               MainAxisAlignment.end,
-                //                           children: [
-                //                             ClipRRect(
-                //                               borderRadius:
-                //                                   const BorderRadius.only(
-                //                                       topLeft:
-                //                                           Radius.circular(20),
-                //                                       bottomLeft:
-                //                                           Radius.circular(20)),
-                //                               child: Container(
-                //                                 color: AppColors.primary,
-                //                                 width: 48,
-                //                                 height: 24,
-                //                                 child: Row(
-                //                                   mainAxisAlignment:
-                //                                       MainAxisAlignment.center,
-                //                                   children: [
-                //                                     Padding(
-                //                                       padding:
-                //                                           const EdgeInsets.only(
-                //                                               left: 4.0),
-                //                                       child: Text(
-                //                                           '${widget.product.price!}€',
-                //                                           style: context
-                //                                               .textTheme
-                //                                               .subtitle2
-                //                                               ?.copyWith(
-                //                                                   color: Colors
-                //                                                       .white,
-                //                                                   fontSize:
-                //                                                       14)),
-                //                                     )
-                //                                   ],
-                //                                 ),
-                //                               ),
-                //                             ),
-                //                           ],
-                //                         ),
-                //                         Padding(
-                //                           padding: const EdgeInsets.only(
-                //                               top: 8.0, right: 8),
-                //                           child: Row(
-                //                             crossAxisAlignment:
-                //                                 CrossAxisAlignment.start,
-                //                             mainAxisAlignment:
-                //                                 MainAxisAlignment.end,
-                //                             children: [
-                //                               Image(
-                //                                 image: fav.getFarmacoFavorite(
-                //                                             e) ==
-                //                                         null
-                //                                     ? const AssetImage(
-                //                                         'assets/immagini_pharma/Heart.png')
-                //                                     : const AssetImage(
-                //                                         'assets/immagini_pharma/fullHeart.png'),
-                //                               ),
-                //                             ],
-                //                           ),
-                //                         ),
-                //                       ],
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       ),
-                //     )
-                //     .toList(),
-              ],
+                  const Divider(
+                    thickness: 2,
+                  ),
+                  ListTile(
+                    title: const Text(
+                      'Foglietto illustrativo',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    trailing: Icon(
+                      desc
+                          ? Icons.keyboard_arrow_up
+                          : Icons.keyboard_arrow_down,
+                      size: 30,
+                    ),
+                    onTap: () => setState(() {
+                      foglietto = !foglietto;
+                    }),
+                  ),
+                  if (foglietto)
+                    Text(
+                      widget.product.ingredients ?? '',
+                      style: const TextStyle(
+                          color: Color.fromARGB(115, 9, 15, 71), fontSize: 12),
+                    ),
+                  const Divider(
+                    thickness: 2,
+                  ),
+                  const ListTile(
+                    title: Text(
+                      'Alternative prodotto',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SameCategoryProduct(
+                      categoryNumber: widget.product.id!,
+                      title: '',
+                      subTitle: '')
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
       bottomSheet: FooterActions(
         //TODO stringhe
@@ -490,6 +350,8 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
         // + (pietra?.price ?? 0) +
         // (materiale?.price ?? 0) * quantity)}',
         firstAction: () {
+          // TODO: FIX CATEGORIA ID NULL
+          logger.info(widget.product.category!.id);
           canAdd
               ? {
                   if (size != null) extras.add(size!),
@@ -529,7 +391,7 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
 
         hasNote: false,
       ),
-      bottomNavigationBar:  BottomNavigation(sel: SelectedBottom.home),
+      bottomNavigationBar: BottomNavigation(sel: SelectedBottom.home),
     );
   }
 }

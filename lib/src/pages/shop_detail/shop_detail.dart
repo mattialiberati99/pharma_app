@@ -177,6 +177,9 @@ class _ShopDetailState extends ConsumerState<ShopDetail> {
                       ),
                     ],
                   ),
+                const Divider(
+                  thickness: 2,
+                ),
                 ListTile(
                   title: const Text(
                     'Indirizzo',
@@ -201,6 +204,9 @@ class _ShopDetailState extends ConsumerState<ShopDetail> {
                       style: TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ),
+                const Divider(
+                  thickness: 2,
+                ),
                 ListTile(
                   title: const Text(
                     'Numero di telefono',

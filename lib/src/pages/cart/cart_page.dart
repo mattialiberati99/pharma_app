@@ -409,7 +409,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                             ),
                                           ),
                                           Text(
-                                            cartProv.total.toString(),
+                                            '${cartProv.sconto}€ ',
                                             style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 9, 15, 71),
@@ -436,7 +436,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                             ),
                                           ),
                                           Text(
-                                            (cartProv.sconto - cartProv.total)
+                                            '${(cartProv.total - cartProv.sconto)}€'
                                                 .toString(),
                                             style: const TextStyle(
                                               color: Color.fromARGB(
@@ -472,7 +472,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                             ),
                                           ),
                                           Text(
-                                            (cartProv.total).toString(),
+                                            '${(cartProv.total)}€',
                                             style: const TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 9, 15, 71),
