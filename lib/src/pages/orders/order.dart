@@ -56,10 +56,10 @@ class OrderP extends ConsumerWidget {
               ),
               Container(
                 margin: const EdgeInsets.only(left: 25, top: 25),
-                child: const Text(
-                  '2 articoli ordinati',
+                child: Text(
+                  '${orders.orders.length} articoli ordinati',
                   textAlign: TextAlign.start,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Color.fromARGB(115, 9, 15, 71),
                   ),

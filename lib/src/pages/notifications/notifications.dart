@@ -5,6 +5,7 @@ import 'package:pharma_app/src/pages/notifications/widgets/NotificationItemWidge
 
 import '../../components/EmptyNotificationsWidget.dart';
 import '../../components/PermissionDeniedWidget.dart';
+import '../../components/bottomNavigation.dart';
 import '../../components/custom_app_bar_notifiche.dart';
 import '../../models/route_argument.dart';
 import '../../providers/notification_provider.dart';
@@ -20,6 +21,7 @@ class NotificationsWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notifProv = ref.watch(notificationProvider);
     return Scaffold(
+      bottomNavigationBar: BottomNavigation(sel: SelectedBottom.home),
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: false,
       appBar: const CustomAppBarNotifiche(title: "Notifiche"),
@@ -30,19 +32,14 @@ class NotificationsWidget extends ConsumerWidget {
               child: notifProv.notifications.isEmpty
                   ? EmptyNotificationsWidget()
                   : ListView(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 5),
                       children: <Widget>[
-                        ListView.separated(
+                        ListView.builder(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           primary: false,
                           itemCount: notifProv.notifications.length,
-                          separatorBuilder: (context, index) {
-                            return const SizedBox(
-                              height: 20,
-                            );
-                          },
                           itemBuilder: (context, index) {
                             Model.Notification notification =
                                 notifProv.notifications.elementAt(index);

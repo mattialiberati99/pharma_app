@@ -44,7 +44,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: AppColors.primary,
         body: Container(
           height: 237,
-          margin: const EdgeInsets.only(top: 30),
+          margin: const EdgeInsets.only(top: 25),
           child: Column(
             textDirection: TextDirection.rtl,
             children: [
@@ -160,7 +160,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                             filled: true,
                             fillColor: Colors.white,
                             contentPadding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 16),
+                                vertical: 4, horizontal: 16),
                             focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: AppColors.gray4),
                                 borderRadius:

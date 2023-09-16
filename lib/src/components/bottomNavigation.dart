@@ -174,7 +174,7 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                       //final chatProv = ref.watch(chatProvider);
                       //Chat? chat = await chatProv.getChat(currentUser.value.id);
                       // ignore: use_build_context_synchronously
-                      Navigator.of(context).pushReplacementNamed(
+                      Navigator.of(context).pushNamed(
                         'Chat',
                       );
                     },

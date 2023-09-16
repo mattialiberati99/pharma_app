@@ -97,9 +97,8 @@ class _ChatState extends ConsumerState<ChatPage> {
             backgroundColor: Color.fromRGBO(244, 246, 245, 1),
             appBar: ChatAppBar(
               titleWidget: InkWell(
-                onTap: () => Navigator.of(context).pushReplacementNamed(
-                    'Restaurant',
-                    arguments: RouteArgument(id: chat!.shop!.id)),
+                onTap: () => Navigator.of(context)
+                    .pushReplacementNamed('Store', arguments: chat!.shop!),
                 child: Row(
                   children: <Widget>[
                     ClipRRect(

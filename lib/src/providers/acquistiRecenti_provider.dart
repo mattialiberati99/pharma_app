@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/farmaco.dart';
 
-final acquistiRecenti = ChangeNotifierProvider<AcquistiRecentiProvider>((ref) {
+final acquistiRecenti = FutureProvider<AcquistiRecentiProvider>((ref) async {
   return AcquistiRecentiProvider();
 });
 
@@ -45,5 +45,9 @@ class AcquistiRecentiProvider with ChangeNotifier {
       notifyListeners();
     }
     return myList;
+  }
+
+  int get length {
+    return acquistiRecenti.length;
   }
 }

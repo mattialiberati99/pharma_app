@@ -12,246 +12,224 @@ import 'package:pharma_app/src/providers/can_add_provider.dart';
 import 'package:pharma_app/src/providers/cart_provider.dart';
 import 'package:pharma_app/src/providers/categories_provider.dart';
 
+import '../../components/bottomNavigation.dart';
 import '../../helpers/app_config.dart';
 import '../../models/extra.dart';
 import '../../providers/products_provider.dart';
 
-class ShopDetail extends ConsumerWidget {
+final expandableTextStateProvider1 = StateProvider<bool>((ref) => false);
+final expandableTextStateProvider2 = StateProvider<bool>((ref) => false);
+final expandableTextStateProvider3 = StateProvider<bool>((ref) => false);
+
+class ShopDetail extends ConsumerStatefulWidget {
   final Shop shop;
 
   const ShopDetail({Key? key, required this.shop}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final cart = ref.watch(cartProvider);
+  ConsumerState<ConsumerStatefulWidget> createState() => _ShopDetailState();
+}
+
+class _ShopDetailState extends ConsumerState<ShopDetail> {
+  @override
+  Widget build(BuildContext context) {
+    bool isExpanded1 = ref.watch(expandableTextStateProvider1);
+    bool isExpanded2 = ref.watch(expandableTextStateProvider2);
+    bool isExpanded3 = ref.watch(expandableTextStateProvider3);
 
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        shop.image!.url!,
-                      )
-                      //AssetImage('assets/immagini/cover_dettaglio.png')
-                      )),
-              child: SizedBox(
-                width: context.mqw,
-                height: context.mqh * 0.4,
-              ),
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: context.mqh * 0.065,
-            child: const ShopBar(),
-          ),
-          Positioned(bottom: 0, child: ShopContent(shop: shop))
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () => Navigator.of(context).pop(),
+          color: Colors.black,
+        ),
+        title: const Text('Informazioni Farmacia',
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.black)),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed('Cart');
+            },
+            child: const Image(
+                image: AssetImage('assets/immagini_pharma/Icon_shop.png')),
+          )
         ],
       ),
-      bottomNavigationBar: FooterActions(
-        //TODO stringhe e totale dinamico
-        firstLabel: ref.watch(canAddProvider)
-            ? '${context.loc.action_btn_order} ${cart.total.toEUR()}'
-            : context.loc.action_order,
-        firstAction: () => ref.watch(canAddProvider)
-            ? Navigator.of(context).pushNamed('Cart')
-            : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content:
-                    Text('Non puoi ordinare da più negozi contemporaneamente'),
-                action: SnackBarAction(
-                  onPressed: () => Navigator.of(context).pushNamed('Cart'),
-                  label: 'Vai al carrello',
-                ),
-              )),
-        // onPressed: () {
-        //   if (taglia != null || food.taglie.isEmpty) {
-        //     List<Extra> cartExtras = [];
-        //     if (pietra != null) cartExtras.add(pietra!);
-        //     if (materiale != null) cartExtras.add(materiale!);
-        //     if (taglia != null) cartExtras.add(taglia!);
-        //     cartProv.add(food, quantity, cartExtras);
-        //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //       content:
-        //       Text(S.current.this_food_was_added_to_cart),
-        //       action: SnackBarAction(
-        //         onPressed: () =>
-        //             Navigator.of(context).pushNamed('Cart'),
-        //         label: S.current.cart.toUpperCase(),
-        //       ),
-        //     ));
-        //   } else {
-        //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //       content: Text(
-        //         S.current.select_taglia,
-        //       ),
-        //     ));
-        //   }
-        // },
-        hasSecond: false,
-        hasNote: true,
-      ),
-    );
-  }
-}
-
-class ShopContent extends ConsumerStatefulWidget {
-  const ShopContent({
-    Key? key,
-    required this.shop,
-  }) : super(key: key);
-
-  final Shop shop;
-
-  @override
-  ConsumerState<ShopContent> createState() => _ShopContentState();
-}
-
-class _ShopContentState extends ConsumerState<ShopContent>
-    with AutomaticKeepAliveClientMixin<ShopContent> {
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(
-    BuildContext context,
-  ) {
-    super.build(context);
-
-    final productsCategories =
-        ref.watch(categoriesOfShopProvider(widget.shop.id!));
-    final shopCategories = productsCategories.value;
-    final cart = ref.watch(cartProvider);
-
-    final canAdd = ref.watch(canAddProvider);
-
-    return AsyncValueWidget(
-        value: productsCategories,
-        data: (categories) {
-          return DefaultTabController(
-            length: categories.length,
-            child: ShadowBox(
-              topRightRadius: 30,
-              topLeftRadius: 30,
-              bottomRightRadius: 0,
-              bottomLeftRadius: 0,
-              color: Colors.white,
-              child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                      maxHeight: context.mqh * 0.80, maxWidth: context.mqw),
-                  child: SizedBox.expand(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: context.mqw * 0.08),
-                      child: Column(
-                        children: [
-                          ShopHeader(
-                            shop: widget.shop,
-                          ),
-                          TabBar(
-                            padding: EdgeInsets.zero,
-                            isScrollable: true,
-                            indicatorColor: AppColors.primary,
-                            labelStyle: context.textTheme.bodyText1,
-                            labelColor: AppColors.gray1,
-                            unselectedLabelColor: AppColors.gray4,
-                            tabs: [
-                              ...List.generate(
-                                categories.length,
-                                (index) => Tab(
-                                    text:
-                                        categories[index].name?.toUpperCase()),
+      bottomNavigationBar: BottomNavigation(sel: SelectedBottom.chat),
+      body: SizedBox(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Stack(
+                  alignment: AlignmentDirectional.bottomStart,
+                  children: [
+                    SizedBox(
+                      width: context.mqw,
+                      height: context.mqh * 0.35,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(14),
+                        ),
+                        child: Image.network(widget.shop.image!.url!,
+                            fit: BoxFit.cover),
+                      ),
+                    ),
+                    ShadowBox(
+                      color: Colors.white,
+                      topLeftRadius: 0,
+                      topRightRadius: 0,
+                      bottomLeftRadius: 14,
+                      bottomRightRadius: 14,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(14),
+                          bottomRight: Radius.circular(14),
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 15, top: 15),
+                          height: context.mqh * 0.1,
+                          color: Colors.white,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(widget.shop.name!,
+                                      style: const TextStyle(
+                                          color: Color.fromARGB(255, 9, 15, 71),
+                                          fontSize: 14))
+                                ],
                               )
                             ],
                           ),
-                          Expanded(
-                            child: Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                        top: BorderSide(
-                                            color: AppColors.gray5))),
-                                child: TabBarView(children: <Widget>[
-                                  ...List.generate(
-                                      shopCategories!.length,
-                                      (index) => AsyncValueWidget(
-                                          value: ref.watch(shopProductsProvider(
-                                              shopCategories[index].id!)),
-                                          data: (productList) {
-                                            return ListView.builder(
-                                              shrinkWrap: true,
-                                              physics: const ScrollPhysics(),
-                                              clipBehavior: Clip.none,
-                                              scrollDirection: Axis.vertical,
-                                              itemCount: productList.length,
-                                              itemBuilder: (_, index) {
-                                                return ConstrainedBox(
-                                                    constraints:
-                                                        const BoxConstraints(
-                                                      maxHeight: 234,
-                                                    ),
-                                                    child: ProductTile(
-                                                      product:
-                                                          productList[index],
-                                                      onAdd: () {
-                                                        List<Extra> cartExtras =
-                                                            [];
-                                                        canAdd
-                                                            ? cart.add(
-                                                                productList[
-                                                                    index],
-                                                                1,
-                                                                cartExtras)
-                                                            : ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                                    SnackBar(
-                                                                content: //TODO stringhe
-                                                                    Text(
-                                                                        'Non puoi ordinare da più negozi contemporaneamente'),
-                                                                action:
-                                                                    SnackBarAction(
-                                                                  onPressed: () => Navigator.of(
-                                                                          context)
-                                                                      .pushNamed(
-                                                                          'Cart'),
-                                                                  label:
-                                                                      'Vai al carrello',
-                                                                ),
-                                                              ));
-                                                        print(
-                                                            'Totale: ${cart.total}');
-                                                      },
-                                                      onRemove: () {
-                                                        List<Extra> cartExtras =
-                                                            [];
-                                                        if (cart.total != 0) {
-                                                          cart.decrease(
-                                                              productList[
-                                                                  index],
-                                                              cartExtras);
-                                                          print(
-                                                              'Totale: ${cart.total}');
-                                                        }
-                                                      },
-                                                    ));
-                                              },
-                                            );
-                                          }))
-                                ])),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  )),
+                  ],
+                ),
+                ListTile(
+                  title: const Text(
+                    'Orari',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Icon(
+                    isExpanded1
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                    size: 30,
+                  ),
+                  onTap: () {
+                    ref.read(expandableTextStateProvider1.notifier).state =
+                        !isExpanded1;
+                  },
+                ),
+                if (isExpanded1)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Lunedì: ${widget.shop.orario[0] == 'null-null' ? 'chiuso' : widget.shop.orario[0]}',
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      Text(
+                        'Martedì: ${widget.shop.orario[1] == 'null-null' ? 'chiuso' : widget.shop.orario[1]}',
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      Text(
+                        'Mercoledì: ${widget.shop.orario[2] == 'null-null' ? 'chiuso' : widget.shop.orario[2]}',
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      Text(
+                        'Giovedì: ${widget.shop.orario[3] == 'null-null' ? 'chiuso' : widget.shop.orario[3]}',
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      Text(
+                        'Venerdì: ${widget.shop.orario[4] == 'null-null' ? 'chiuso' : widget.shop.orario[4]}',
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      Text(
+                        'Sabato: ${widget.shop.orario[5] == 'null-null' ? 'chiuso' : widget.shop.orario[5]}',
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      Text(
+                        'Domenica: ${widget.shop.orario[6] == 'null-null' ? 'chiuso' : widget.shop.orario[6]}',
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ListTile(
+                  title: const Text(
+                    'Indirizzo',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Icon(
+                    isExpanded1
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                    size: 30,
+                  ),
+                  onTap: () {
+                    ref.read(expandableTextStateProvider2.notifier).state =
+                        !isExpanded2;
+                  },
+                ),
+                if (isExpanded2)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      widget.shop.address!,
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                  ),
+                ListTile(
+                  title: const Text(
+                    'Numero di telefono',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Icon(
+                    isExpanded3
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                    size: 30,
+                  ),
+                  onTap: () {
+                    ref.read(expandableTextStateProvider3.notifier).state =
+                        !isExpanded3;
+                  },
+                ),
+                if (isExpanded3)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      widget.shop.phone!,
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                  ),
+              ],
             ),
-          );
-        });
+          ),
+        ),
+      ),
+    );
   }
 }

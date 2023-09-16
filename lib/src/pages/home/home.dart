@@ -250,8 +250,8 @@ class _HomeState extends ConsumerState<Home> {
                   horizontal: context.mqw * 0.08,
                 ),
                 child: const SectionHorizontal(
-                  title: "Prodotti",
-                  subTitle: "filtrati per categoria",
+                  title: "Acquistati di recente",
+                  subTitle: "",
                 ),
               ),
               const SizedBox(

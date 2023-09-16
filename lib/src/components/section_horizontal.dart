@@ -21,8 +21,8 @@ class SectionHorizontal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chosen = ref.watch(farmaOfCategoryProvider('11'));
-    final chosen1 = ref.watch(acquistiRecenti);
+    //final chosen = ref.watch(farmaOfCategoryProvider('11'));
+    final chosen = ref.watch(acquistiRecenti);
     return Column(
       children: [
         Row(
@@ -53,11 +53,13 @@ class SectionHorizontal extends ConsumerWidget {
         //   maxWidth: MediaQuery.of(context).size.width,
         AsyncValueWidget(
             value: chosen,
-            
             loading: const CircularProgressIndicator(),
             data: (chosenShops) {
               /* final filtered =
                       ref.watch(shopsFilteredByDeliveryProvider(chosenShops)); */
+              if (chosenShops.length == 0) {
+                return Text('Nessun acquisto recente');
+              }
               return Container(
                 height: 250,
                 width: 300,
@@ -68,7 +70,7 @@ class SectionHorizontal extends ConsumerWidget {
                   itemBuilder: (_, index) {
                     print(index);
                     return FarmacoCardHorizontal(
-                      farmaco: chosenShops[index],
+                      farmaco: chosenShops.acquistiRecenti[index],
                     );
                   },
                 ),
