@@ -21,104 +21,113 @@ class ArmadiettoScreen extends ConsumerWidget {
       return Scaffold(
         body: Container(
           padding: const EdgeInsets.all(26),
-          child: Column(
+          child: ListView(
             children: [
-              const SizedBox(height: 15),
-              const Text(
-                'Farmaci Validi',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '0 totali',
-                style: TextStyle(
-                  color: Colors.black.withOpacity(0.3),
-                ),
-              ),
-              const SizedBox(height: 30),
-              const Center(
-                child: Image(
-                  image: AssetImage('assets/immagini_pharma/404.png'),
-                  width: 150,
-                  height: 130,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
                 children: [
-                  SizedBox(
-                    height: 50,
-                    width: 210,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                topLeft: Radius.circular(20)),
-                          ),
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (BuildContext context) {
-                            return Container(
-                              height: MediaQuery.of(context).size.height * 0.95,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  const SizedBox(height: 50),
-                                  const Text('Aggiungi il farmaco'),
-                                  const SizedBox(height: 20),
-                                  SearchBarFilter(
-                                    route: 'Reminder',
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 30, right: 30),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Text(
-                                          'Ricerce recenti',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        RichText(
-                                          text: TextSpan(
-                                            text: 'Reset',
-                                            style: TextStyle(color: Colors.red),
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () => print('ciao'),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                  // ElevatedButton(
-                                  //   child: const Text('Close BottomSheet'),
-                                  //   onPressed: () => Navigator.pop(context),
-                                  // ),
-                                ],
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Farmaci Validi',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    '0 totali',
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  const Center(
+                    child: Image(
+                      image: AssetImage('assets/immagini_pharma/404.png'),
+                      width: 150,
+                      height: 130,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 210,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(20),
+                                    topLeft: Radius.circular(20)),
                               ),
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.95,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      const SizedBox(height: 50),
+                                      const Text('Aggiungi il farmaco'),
+                                      const SizedBox(height: 20),
+                                      SearchBarFilter(
+                                        route: 'Reminder',
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 30, right: 30),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              'Ricerce recenti',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                text: 'Reset',
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap =
+                                                          () => print('ciao'),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                      // ElevatedButton(
+                                      //   child: const Text('Close BottomSheet'),
+                                      //   onPressed: () => Navigator.pop(context),
+                                      // ),
+                                    ],
+                                  ),
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 47, 171, 148),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 47, 171, 148),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
+                          child: const Text(
+                            'Aggiungi farmaco',
+                          ),
                         ),
                       ),
-                      child: const Text(
-                        'Aggiungi farmaco',
-                      ),
-                    ),
+                    ],
                   ),
                 ],
               ),

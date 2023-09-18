@@ -71,7 +71,7 @@ class _SearchBarTerapieState extends ConsumerState<SearchBarTerapie> {
               hintStyle: TextStyle(color: Color.fromARGB(255, 205, 207, 206)),
               prefixIcon: Icon(Icons.search),
               prefixIconColor: Color.fromARGB(255, 167, 166, 165)),
-          autofocus: true,
+          autofocus: false,
         ),
         suggestionsBoxVerticalOffset: 20,
         suggestionsBoxDecoration: SuggestionsBoxDecoration(

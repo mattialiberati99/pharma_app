@@ -18,7 +18,7 @@ class Screen2Terapie extends StatefulWidget {
 }
 
 class _Screen2TerapieState extends State<Screen2Terapie> {
-  bool noty = true;
+  bool noty = false;
   TextEditingController tx = TextEditingController();
 
   TextEditingController durata = TextEditingController();

@@ -17,6 +17,7 @@ import '../models/order.dart';
 import '../models/order_status.dart';
 import '../repository/cart_repository.dart';
 import '../repository/order_repository.dart' as orderRepo;
+import 'acquistiRecenti_provider.dart';
 
 final cartProvider = ChangeNotifierProvider<CartProvider>((ref) {
   return CartProvider();
@@ -28,6 +29,7 @@ class CartProvider with ChangeNotifier {
   CreditCard? paymentMethod;
   Coupon? coupon;
   bool loading = false;
+  AcquistiRecentiProvider? acquistiRecenti;
 
   CartProvider() {
     Future.delayed(Duration.zero, () async {
@@ -287,6 +289,7 @@ class CartProvider with ChangeNotifier {
   Future<List<Order>?> proceedOrder(BuildContext context) async {
     loading = true;
     notifyListeners();
+
     List<Order>? orders = [];
     try {
       orders = await addOrder();
@@ -295,6 +298,7 @@ class CartProvider with ChangeNotifier {
         coupon = null;
         paymentMethod = null;
         loading = false;
+        acquistiRecenti?.saveListaAcquistiRecenti(orders); // Acquisti Recenti
         notifyListeners();
         return orders;
       } else {

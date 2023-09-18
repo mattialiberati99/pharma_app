@@ -791,6 +791,10 @@ class _CheckState extends ConsumerState<Check> {
           if (c1) {
             pagaConCarta();
           }
+          else if(c2){
+            // TODO: PAYPAL
+            
+          }
           // Navigator.push(
           //     context,
           //     MaterialPageRoute(

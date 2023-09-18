@@ -42,9 +42,9 @@ class _CategorieState extends ConsumerState<Categorie> {
 
   @override
   Widget build(BuildContext context) {
-    final cart = ref.watch(cartProvider);
+    final cart = ref.read(cartProvider);
     final categor = ref
-        .watch(categoriesProvider); //.getFarmaOfCate(widget.nomeCategoria.id!);
+        .read(categoriesProvider); //.getFarmaOfCate(widget.nomeCategoria.id!);
     final fav = ref.watch(favoritesProvider);
     final scelti = ref.watch(farmaOfCategoryProvider(widget.nomeCategoria.id!));
 

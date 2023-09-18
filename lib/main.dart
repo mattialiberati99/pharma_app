@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:talker/talker.dart';
 import 'firebase_options.dart';
@@ -24,6 +25,7 @@ import 'package:timeago/timeago.dart' as timeago;
 final navigatorKey = GlobalKey<NavigatorState>();
 final logger = Talker();
 
+
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -46,6 +48,7 @@ void main() async {
     provisional: false,
     sound: true,
   );
+  
 
   print('User granted permission: ${settings.authorizationStatus}');
 

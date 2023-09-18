@@ -6,20 +6,24 @@ class CircularLoadingWidget extends StatefulWidget {
   final double height;
   final Color? color;
 
-  CircularLoadingWidget({Key? key, required this.height, this.color}) : super(key: key);
+  CircularLoadingWidget({Key? key, required this.height, this.color})
+      : super(key: key);
 
   @override
   _CircularLoadingWidgetState createState() => _CircularLoadingWidgetState();
 }
 
-class _CircularLoadingWidgetState extends State<CircularLoadingWidget> with SingleTickerProviderStateMixin {
+class _CircularLoadingWidgetState extends State<CircularLoadingWidget>
+    with SingleTickerProviderStateMixin {
   late Animation<double> animation;
   late AnimationController animationController;
 
   void initState() {
     super.initState();
-    animationController = AnimationController(duration: Duration(milliseconds: 300), vsync: this);
-    CurvedAnimation curve = CurvedAnimation(parent: animationController, curve: Curves.easeOut);
+    animationController =
+        AnimationController(duration: Duration(milliseconds: 300), vsync: this);
+    CurvedAnimation curve =
+        CurvedAnimation(parent: animationController, curve: Curves.easeOut);
     animation = Tween<double>(begin: widget.height, end: 0).animate(curve)
       ..addListener(() {
         if (mounted) {
@@ -48,7 +52,9 @@ class _CircularLoadingWidgetState extends State<CircularLoadingWidget> with Sing
     return SizedBox(
       height: animation.value,
       child: new Center(
-        child: new CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(widget.color??Theme.of(context).primaryColor)),
+        child: new CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(
+                widget.color ?? Theme.of(context).primaryColor)),
       ),
     );
   }

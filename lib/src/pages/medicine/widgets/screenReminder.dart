@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/medicina_terapia.dart';
+import 'package:pharma_app/src/pages/medicine/widgets/noti.dart';
 import 'package:pharma_app/src/providers/terapia_provider.dart';
 
 import '../../../helpers/app_config.dart';
@@ -25,7 +26,7 @@ class ScreenReminder extends ConsumerStatefulWidget {
 }
 
 class _ScreenReminderState extends ConsumerState<ScreenReminder> {
-  bool noty = true;
+  bool noty = false;
 
   int mese = 30;
 
@@ -1095,9 +1096,16 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
               ],
             ),
             ElevatedButton(
-              onPressed: () {
-                //  Navigator.of(context).pop();
-                //    _screenReminder(context, orarioSel, quantita.text, durata.text);
+              onPressed: () async {
+                for (int i = 0; i < widget.giorni.length; i++) {
+                  print(widget.giorni[i]);
+                }
+                // NOTIFICHE
+                /*   Noti().scheduleTerapiaNotification(
+                    title: 'Hai preso ${widget.quantita} dose di',
+                    body: '${widget.prodotto.name?.toUpperCase()} ?',
+                    scheduledNotificationDateTime:
+                        DateTime.now().add(Du); */
                 MedicinaTerapia medicina = MedicinaTerapia(
                     widget.prodotto,
                     widget.nomeTerapia,

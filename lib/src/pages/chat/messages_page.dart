@@ -6,12 +6,15 @@ import 'package:pharma_app/src/helpers/formatDateView.dart';
 import 'package:pharma_app/src/pages/chat/widgets/Avatar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../generated/l10n.dart';
 import '../../components/bottomNavigation.dart';
+import '../../dialogs/CustomDialog.dart';
 import '../../models/chat.dart';
 import '../../models/message_data.dart';
 import '../../models/route_argument.dart';
 import '../../providers/chat_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../repository/chat_repository.dart';
 
 class MessagesPage extends ConsumerStatefulWidget {
   @override
@@ -96,18 +99,31 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
           vertical: 4,
         ),
         child: const Icon(
-          Icons.delete,
+          Icons.delete_forever,
           color: Colors.white,
           size: 40,
         ),
       ),
       confirmDismiss: (DismissDirection direction) async {
-        //return showConfirmDialog(context);
+        return showDialog(
+                context: context,
+                builder: (_) => CustomDialog(
+                    title: S.current.delete_chat,
+                    description: S.current.eliminated_for_both))
+            .then((value) async {
+          if (value) {
+            var deleted = await deleteChat(chat.id);
+            if (deleted) {
+              Navigator.of(context).pop();
+            }
+          }
+        });
+        ;
       },
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
-          // onDismiss();
+          print('aaaaaaa');
         }
       },
       child: _MessageTile(
