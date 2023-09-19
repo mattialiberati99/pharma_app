@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../repository/notification_repository.dart';
 import '../models/notification.dart' as model;
 
-
-final notificationProvider = ChangeNotifierProvider<NotificationProvider>((ref) {
+final notificationProvider =
+    ChangeNotifierProvider<NotificationProvider>((ref) {
   return NotificationProvider();
 });
 
@@ -19,19 +19,27 @@ class NotificationProvider with ChangeNotifier {
     });
   }
 
-  setRead(model.Notification notification){
-    notification.read=true;
+  setRead(model.Notification notification) {
+    notification.read = true;
     markAsReadNotifications(notification);
     notifyListeners();
   }
 
-  delete(model.Notification notification){
+  delete(model.Notification notification) {
     notifications.remove(notification);
     removeNotification(notification);
     notifyListeners();
   }
 
-  get unread=>notifications.where((element) => element.read!);
+  deleteAll() {
+    for (model.Notification not in notifications) {
+      notifications.remove(not);
+      removeNotification(not);
+    }
+    notifyListeners();
+  }
+
+  get unread => notifications.where((element) => element.read!);
 
   Future<void> refreshNotifications() async {
     notifications.clear;

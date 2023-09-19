@@ -115,17 +115,13 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
             var deleted = await deleteChat(chat.id);
             if (deleted) {
               Navigator.of(context).pop();
+              chatProv.chats.remove(chat.id);
             }
           }
         });
         ;
       },
       direction: DismissDirection.endToStart,
-      onDismissed: (direction) {
-        if (direction == DismissDirection.endToStart) {
-          print('aaaaaaa');
-        }
-      },
       child: _MessageTile(
         chat: chat,
         messageData: MessageData(
