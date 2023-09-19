@@ -6,6 +6,7 @@ import 'package:pharma_app/src/pages/cart/check.dart';
 import 'package:pharma_app/src/providers/settings_provider.dart';
 import 'package:pharma_app/src/providers/user_provider.dart';
 
+import '../../main.dart';
 import '../models/address.dart';
 import '../models/cart.dart';
 import '../models/coupon.dart';
@@ -15,6 +16,7 @@ import '../models/extra.dart';
 import '../models/food_order.dart';
 import '../models/order.dart';
 import '../models/order_status.dart';
+import '../models/shop.dart';
 import '../repository/cart_repository.dart';
 import '../repository/order_repository.dart' as orderRepo;
 import 'acquistiRecenti_provider.dart';
@@ -157,6 +159,72 @@ class CartProvider with ChangeNotifier {
     }
     carts.clear();
     notifyListeners();
+  }
+
+  Future<List<Order>?> addPrenotazione(Shop farmacia) async {
+    Map<String, List<FarmacoOrder>> cartSplitPerShop = {};
+    List<Order> orders = [];
+    for (Cart cart in carts) {
+      try {
+        if (cartSplitPerShop[cart.product!.farmacia!.id!] != null) {
+          print("added");
+          cartSplitPerShop[cart.product!.farmacia!.id!]!.add(cart.foodOrder());
+        } else {
+          print("created");
+          cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
+        }
+      } catch (e) {
+        print(e);
+        print("Error Created");
+        cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
+      }
+      print("looop");
+    }
+    try {
+      for (MapEntry entry in cartSplitPerShop.entries) {
+        Order order = Order();
+        order.foodOrders = entry.value;
+        //_order.tax = checkout!.cart!.taxAmount;
+        //order.note = checkout.note;
+        //order.oraRitiro
+        logger.info(int.parse(farmacia.id!));
+        order.farmaciaId = int.tryParse(farmacia.id!);
+        order.consegna = DateTime.now();
+        //_order.importo = checkout.importo;
+        OrderStatus _orderStatus = OrderStatus();
+        _orderStatus.id = OrderStatus.received;
+        order.orderStatus = _orderStatus;
+        order.deliveryAddress = deliveryAddress;
+        order.sconto = sconto;
+        order.discountCode = coupon?.code ?? '';
+        try {
+          Order? newOrder = await orderRepo.addOrder(order);
+          if (newOrder != null) {
+            coupon = null;
+            paymentMethod = null;
+            loading = false;
+            notifyListeners();
+            orders.insert(0, newOrder);
+            notifyListeners();
+          } else {
+            loading = false;
+            notifyListeners();
+          }
+        } catch (e, stack) {
+          print("--------------------");
+          print(e.toString());
+          print(stack);
+
+          loading = false;
+          notifyListeners();
+        }
+      }
+    } catch (e, stack) {
+      print(e);
+      print(stack);
+      return null;
+    }
+    return orders;
   }
 
   Future<List<Order>?> addOrder() async {

@@ -389,9 +389,12 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                                                                   child:
                                                                       ElevatedButton(
                                                                     onPressed:
-                                                                        () {
-                                                                      // TODO STRIPE
-                                                                      
+                                                                        () async {
+                                                                      // TODO PRENOTAZIONE
+                                                                      await cartProv
+                                                                          .addPrenotazione(
+                                                                              farmacia);
+
                                                                       Navigator.of(
                                                                               context)
                                                                           .pop();
@@ -399,6 +402,8 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                                                                           context,
                                                                           MaterialPageRoute(
                                                                               builder: (context) => OrdineConfermato(timeinput.text, farmacia)));
+                                                                      cartProv
+                                                                          .clear();
                                                                     },
                                                                     style: ElevatedButton
                                                                         .styleFrom(

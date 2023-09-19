@@ -89,7 +89,7 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                   GestureDetector(
                     onTap: () {
                       widget.sel = SelectedBottom.ordini;
-                      Navigator.of(context).pushReplacementNamed('Ordini');
+                      Navigator.of(context).pushNamed('Ordini');
                     },
                     child: Image(
                         color: widget.sel == SelectedBottom.ordini

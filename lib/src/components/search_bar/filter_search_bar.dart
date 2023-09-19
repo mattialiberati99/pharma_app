@@ -5,6 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/models/farmaco.dart';
 import 'package:pharma_app/src/models/shop.dart';
+import 'package:pharma_app/src/providers/armadietto_research_provider.dart';
 
 import '../../../generated/l10n.dart';
 import '../../helpers/app_config.dart';
@@ -47,6 +48,7 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     final researchList = ref.watch(researchProvider);
+    final armadiettoResearchProv = ref.watch(armadiettoResearchProvider);
 
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
@@ -136,7 +138,10 @@ class _SearchBarFilterState extends ConsumerState<SearchBarFilter> {
           ),
         ),
         onSuggestionSelected: (suggestion) {
-          researchList.saveResearchItems(suggestion.text as String);
+          (widget.route == 'Reminder')
+              ? armadiettoResearchProv
+                  .saveResearchItems(suggestion.text as String)
+              : researchList.saveResearchItems(suggestion.text as String);
           Navigator.of(context).pushNamed(
             widget.route!,
             arguments: suggestion.data as Farmaco,

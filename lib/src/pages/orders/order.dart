@@ -65,72 +65,74 @@ class OrderP extends ConsumerWidget {
                   ),
                 ),
               ),
-              ...orders.orders.map(
-                (e) => Container(
-                  child: Column(children: [
-                    Row(
-                      children: [
-                        Container(
-                          color: Color.fromARGB(255, 242, 243, 243),
-                          child: Image(
-                              width: 77,
-                              height: 88,
-                              image: NetworkImage(
-                                  e.foodOrders.first.food!.image!.url!)),
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  e.foodOrders.first.food!.name!,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: const Image(
-                                      image: AssetImage(
-                                          'assets/immagini_pharma/delOrd.png'),
-                                    ))
-                              ],
-                            ),
-                            Text(
-                              e.foodOrders.first.food!.ingredients!,
-                              style: const TextStyle(
-                                color: Color.fromARGB(115, 9, 15, 71),
-                                fontSize: 12,
+              if (orders.orders.isEmpty)
+                ...orders.orders.map(
+                  (e) => Container(
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          Container(
+                            color: Color.fromARGB(255, 242, 243, 243),
+                            child: Image(
+                                width: 77,
+                                height: 88,
+                                image: NetworkImage(
+                                    e.foodOrders.first.food!.image!.url!)),
+                          ),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    e.foodOrders.first.food!.name!,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Image(
+                                        image: AssetImage(
+                                            'assets/immagini_pharma/delOrd.png'),
+                                      ))
+                                ],
                               ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  'Ordine n° ${e.id}',
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500),
+                              Text(
+                                e.foodOrders.first.food!.ingredients!,
+                                style: const TextStyle(
+                                  color: Color.fromARGB(115, 9, 15, 71),
+                                  fontSize: 12,
                                 ),
-                                Text(
-                                  e.orderStatus!.status! == 'In Consegna'
-                                      ? '${e.orderStatus!.status!}il: ${e.consegna!.toIso8601String()}'
-                                      : e.orderStatus!.status!,
-                                  style: const TextStyle(
-                                      color: AppColors.primary,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            )
-                          ],
-                        )
-                      ],
-                    )
-                  ]),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Ordine n° ${e.id}',
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    e.orderStatus!.status! == 'In Consegna'
+                                        ? '${e.orderStatus!.status!}il: ${e.consegna!.toIso8601String()}'
+                                        : e.orderStatus!.status!,
+                                    style: const TextStyle(
+                                        color: AppColors.primary,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              )
+                            ],
+                          )
+                        ],
+                      )
+                    ]),
+                  ),
                 ),
-              ),
+              const SizedBox(),
             ],
           ),
         ),

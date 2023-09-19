@@ -24,6 +24,8 @@ import '../../providers/selected_page_name_provider.dart';
 import '../../providers/user_provider.dart';
 import '../categorie+/categorie.dart';
 
+String locationText = "";
+
 class Home extends ConsumerStatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -34,8 +36,6 @@ class Home extends ConsumerStatefulWidget {
 class _HomeState extends ConsumerState<Home> {
   final searchController = TextEditingController(text: '');
   final _advancedDrawerController = AdvancedDrawerController();
-
-  String _locationText = "";
 
   late String? cuisineSelected;
   @override
@@ -115,7 +115,7 @@ class _HomeState extends ConsumerState<Home> {
           controller: searchController,
           advancedDrawerController: _advancedDrawerController,
           nome: currentUser.value.name ?? 'Pharma User',
-          indirizzo: _locationText,
+          indirizzo: locationText,
         ),
         body: SafeArea(
           child: ListView(
@@ -280,11 +280,11 @@ class _HomeState extends ConsumerState<Home> {
       String regionName = placemarks.first.administrativeArea ?? "Sconosciuto";
       String countryName = placemarks.first.country ?? "Sconosciuto";
       setState(() {
-        _locationText = "$cityName, $regionName, $countryName";
+        locationText = "$cityName, $regionName, $countryName";
       });
     } catch (e) {
       setState(() {
-        _locationText = "Impossibile ottenere posizione";
+        locationText = "Impossibile ottenere posizione";
       });
     }
   }

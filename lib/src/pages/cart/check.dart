@@ -16,13 +16,17 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 
+import '../../../main.dart';
 import '../../dialogs/CustomDialog.dart';
 import '../../dialogs/order_success_dialog.dart';
 import '../../helpers/app_config.dart';
 import '../../models/food_order.dart';
 import '../../models/order.dart';
+import '../../providers/can_add_provider.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/orders_provider.dart';
+import '../../providers/shops_provider.dart';
+import '../home/home.dart';
 
 class Check extends ConsumerStatefulWidget {
   const Check({Key? key}) : super(key: key);
@@ -160,8 +164,9 @@ class _CheckState extends ConsumerState<Check> {
   @override
   Widget build(BuildContext context) {
     final cartProv = ref.watch(cartProvider);
+    final shopId = ref.watch(currentShopIDProvider);
     final ordProv = ref.watch(ordersProvider);
-    final userAddrProv = ref.watch(userAddressesProvider);
+    final userAddrProv = ref.read(userAddressesProvider);
     return Scaffold(
       bottomSheet: Container(
         color: Colors.transparent,
@@ -311,10 +316,10 @@ class _CheckState extends ConsumerState<Check> {
                         const SizedBox(
                           height: 3,
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(left: 45.0),
                           child: Text(
-                            'Via Roma, Verona, Italia',
+                            locationText,
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Color.fromARGB(115, 9, 15, 71)),
@@ -365,7 +370,8 @@ class _CheckState extends ConsumerState<Check> {
                                 )
                               ],
                             ),
-                            Padding(
+                            // Matita Farmacia
+                            /*  Padding(
                               padding: const EdgeInsets.only(right: 20.0),
                               child: GestureDetector(
                                 onTap: () {},
@@ -373,13 +379,13 @@ class _CheckState extends ConsumerState<Check> {
                                     image: AssetImage(
                                         'assets/immagini_pharma/mod.png')),
                               ),
-                            )
+                            ) */
                           ],
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(left: 45.0),
                           child: Text(
-                            '3232343456',
+                            cartProv.carts.first.product!.farmacia!.phone!,
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Color.fromARGB(115, 9, 15, 71)),
@@ -391,7 +397,7 @@ class _CheckState extends ConsumerState<Check> {
                         Padding(
                           padding: EdgeInsets.only(left: 45.0),
                           child: Text(
-                            'Via Dalmazia, Bergamo, Italia',
+                            cartProv.carts.first.product!.farmacia!.address!,
                             style: const TextStyle(
                                 fontSize: 14,
                                 color: Color.fromARGB(115, 9, 15, 71)),
@@ -407,7 +413,9 @@ class _CheckState extends ConsumerState<Check> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      aggiungiIndirizzo();
+                    },
                     icon: const Icon(Icons.add),
                     label: const Text('Aggiungi indirizzo'),
                   ),
@@ -645,12 +653,12 @@ class _CheckState extends ConsumerState<Check> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: const [
                   Text(
                     'Metodo di pagamento',
                     style: TextStyle(
@@ -659,12 +667,18 @@ class _CheckState extends ConsumerState<Check> {
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.start,
                   ),
-                  TextButton.icon(
-                    onPressed: () {},
+                  /*     TextButton.icon(
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context, builder: (_) => CarteWidget());
+                    },
                     icon: const Icon(Icons.add),
                     label: const Text('Aggiungi carta'),
-                  ),
+                  ), */
                 ],
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Container(
                 height: 74,
@@ -790,10 +804,8 @@ class _CheckState extends ConsumerState<Check> {
         } else {
           if (c1) {
             pagaConCarta();
-          }
-          else if(c2){
+          } else if (c2) {
             // TODO: PAYPAL
-            
           }
           // Navigator.push(
           //     context,
@@ -948,6 +960,63 @@ class _CheckState extends ConsumerState<Check> {
                       minHeight: MediaQuery.of(context).size.height * 0.8),
                   child: const CarteWidget(),
                 ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void aggiungiIndirizzo() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: SingleChildScrollView(
+            reverse: true,
+            child: Container(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(
+                    'Aggiungi indirizzo',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'Nome'),
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.phone,
+                    decoration:
+                        InputDecoration(labelText: 'Numero di telefono'),
+                  ),
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'Indirizzo'),
+                  ),
+                  SizedBox(height: 20.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Gestisci qui l'azione di conferma
+                      Navigator.of(context).pop(); // Chiudi il bottom sheet
+                    },
+                    child: Text('Conferma'),
+                  ),
+                ],
               ),
             ),
           ),

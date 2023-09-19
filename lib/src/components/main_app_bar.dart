@@ -46,6 +46,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           height: 237,
           margin: const EdgeInsets.only(top: 25),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             textDirection: TextDirection.rtl,
             children: [
               Row(
