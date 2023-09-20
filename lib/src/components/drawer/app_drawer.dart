@@ -23,7 +23,7 @@ final _drawerItems = <String>[
   'Chat',
   'Notifiche',
   'Privacy & Policy',
-  'Impostazioni',
+  //'Impostazioni',
 ];
 
 final _drawerIcons = <String, String>{
@@ -34,7 +34,7 @@ final _drawerIcons = <String, String>{
   'Chat': AppAssets.chat,
   'Notifiche': AppAssets.noti,
   'Privacy & Policy': AppAssets.privacy2,
-  'Impostazioni': AppAssets.impo,
+  //'Impostazioni': AppAssets.impo,
 };
 
 // final selectedPageBuilderProvider = Provider<WidgetBuilder>((ref) {

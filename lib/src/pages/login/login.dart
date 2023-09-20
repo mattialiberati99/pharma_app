@@ -18,6 +18,7 @@ import '../../models/user.dart';
 import '../../providers/selected_page_name_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../repository/auth_service.dart';
+import '../../providers/user_provider.dart';
 
 class Login extends ConsumerStatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -79,8 +80,8 @@ class _LoginState extends ConsumerState<Login> {
                     ),
                   ),
                   const SizedBox(
-                    // height: 50,
-                  ),
+                      // height: 50,
+                      ),
                   Text(
                     'Accedi',
                     style: context.textTheme.subtitle1,
@@ -237,7 +238,10 @@ class _LoginState extends ConsumerState<Login> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // TODO PASSWORD DIMENTICATA
+                            userProv.resetPassword(context);
+                          },
                           child: Text(
                             'Password dimenticata?',
                             style: context.textTheme.subtitle2?.copyWith(

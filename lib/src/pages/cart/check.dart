@@ -6,10 +6,12 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:pharma_app/src/models/address.dart';
 import 'package:pharma_app/src/pages/cart/cart_page.dart';
 import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
 import 'package:pharma_app/src/pages/orders/widgets/ordinePagato.dart';
 import 'package:pharma_app/src/pages/payment_cards/gestisci_carte.dart';
+import 'package:pharma_app/src/providers/addresses_provider.dart';
 import 'package:pharma_app/src/providers/user_addresses_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -37,6 +39,8 @@ class Check extends ConsumerStatefulWidget {
 
 class _CheckState extends ConsumerState<Check> {
   File? _ricetta;
+  String my_address = locationText;
+  String address_number = '';
 
   var selectedOne = 0;
   bool first = false;
@@ -167,6 +171,7 @@ class _CheckState extends ConsumerState<Check> {
     final shopId = ref.watch(currentShopIDProvider);
     final ordProv = ref.watch(ordersProvider);
     final userAddrProv = ref.read(userAddressesProvider);
+
     return Scaffold(
       bottomSheet: Container(
         color: Colors.transparent,
@@ -302,7 +307,9 @@ class _CheckState extends ConsumerState<Check> {
                             Padding(
                               padding: const EdgeInsets.only(right: 20.0),
                               child: GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  scegliIndirizzo(context);
+                                },
                                 child: const Image(
                                     image: AssetImage(
                                         'assets/immagini_pharma/mod.png')),
@@ -319,7 +326,19 @@ class _CheckState extends ConsumerState<Check> {
                         Padding(
                           padding: EdgeInsets.only(left: 45.0),
                           child: Text(
-                            locationText,
+                            address_number,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Color.fromARGB(115, 9, 15, 71)),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 45.0),
+                          child: Text(
+                            my_address,
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Color.fromARGB(115, 9, 15, 71)),
@@ -969,6 +988,9 @@ class _CheckState extends ConsumerState<Check> {
   }
 
   void aggiungiIndirizzo() {
+    TextEditingController _nomeIndirizzoController = TextEditingController();
+    TextEditingController _numeroIndirizzoController = TextEditingController();
+    TextEditingController _addressIndirizzoController = TextEditingController();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -988,7 +1010,7 @@ class _CheckState extends ConsumerState<Check> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Aggiungi indirizzo',
                     style: TextStyle(
                       fontSize: 18.0,
@@ -998,20 +1020,26 @@ class _CheckState extends ConsumerState<Check> {
                   SizedBox(height: 20.0),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Nome'),
+                    controller: _nomeIndirizzoController,
                   ),
                   TextFormField(
                     keyboardType: TextInputType.phone,
                     decoration:
                         InputDecoration(labelText: 'Numero di telefono'),
+                    controller: _numeroIndirizzoController,
                   ),
                   SizedBox(height: 20.0),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Indirizzo'),
+                    controller: _addressIndirizzoController,
                   ),
                   SizedBox(height: 20.0),
                   ElevatedButton(
                     onPressed: () {
-                      // Gestisci qui l'azione di conferma
+                      saveIndirizzo(
+                          _nomeIndirizzoController.text,
+                          _numeroIndirizzoController.text,
+                          _addressIndirizzoController.text);
                       Navigator.of(context).pop(); // Chiudi il bottom sheet
                     },
                     child: Text('Conferma'),
@@ -1020,6 +1048,70 @@ class _CheckState extends ConsumerState<Check> {
               ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+  void saveIndirizzo(String nome, String numero, String indirizzo) {
+    Address address = Address();
+    address.id = nome;
+    address.phone = numero;
+    address.address = indirizzo;
+    print('Aggiungo indirizzo');
+    ref.watch(addressesProvider).addAddress(address);
+  }
+
+  void scegliIndirizzo(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        // Recupera la lista di indirizzi dal provider
+        final addressProvider = ref.watch(addressesProvider);
+        final indirizzi = addressProvider.addresses;
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Scegli l\'indirizzo da utilizzare',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: indirizzi.length,
+              itemBuilder: (context, index) {
+                final indirizzo = indirizzi[index];
+
+                return ListTile(
+                  title: Text(indirizzo.address!),
+                  onTap: () {
+                    // Cambia indirrizo
+                    setState(() {
+                      my_address = indirizzo.address!;
+                      indirizzo.phone != null
+                          ? address_number = indirizzo.phone!
+                          : address_number = '';
+                    });
+                    Navigator.pop(context);
+                  },
+                );
+              },
+            ),
+          ],
         );
       },
     );

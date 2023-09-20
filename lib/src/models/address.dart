@@ -6,6 +6,7 @@ class Address {
   String? id;
   String? description;
   String? address;
+  String? phone;
   double? latitude;
   double? longitude;
   bool? isDefault;
@@ -17,8 +18,11 @@ class Address {
   Address.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = jsonMap['id'].toString();
-      description = jsonMap['description'] != null ? jsonMap['description'].toString() : null;
+      description = jsonMap['description'] != null
+          ? jsonMap['description'].toString()
+          : null;
       address = jsonMap['address'];
+      phone = jsonMap['phone'];
       latitude = jsonMap['latitude'].toDouble();
       longitude = jsonMap['longitude'].toDouble();
       isDefault = jsonMap['is_default'] ?? false;
@@ -37,6 +41,7 @@ class Address {
     map["id"] = id;
     map["description"] = description;
     map["address"] = address;
+    map["phone"] = phone;
     map["latitude"] = latitude;
     map["longitude"] = longitude;
     map["is_default"] = isDefault;

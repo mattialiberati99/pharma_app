@@ -92,7 +92,7 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  void resetPassword(BuildContext context) {
+  resetPassword(BuildContext context) {
     FocusScope.of(context).unfocus();
     if (loginFormKey!.currentState!.validate()) {
       loginFormKey!.currentState!.save();

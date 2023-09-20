@@ -10,7 +10,6 @@ class Screen2Terapie extends StatefulWidget {
   Farmaco prodotto;
   String nomeTerapia;
 
-
   Screen2Terapie(this.prodotto, this.nomeTerapia);
 
   @override
@@ -120,10 +119,11 @@ class _Screen2TerapieState extends State<Screen2Terapie> {
                     borderSide: BorderSide(color: AppColors.gray4),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 //  hintText: 'Cerca prodotto',
-                suffixIcon: SizedBox(
+                // Barcode
+                /*  suffixIcon: SizedBox(
                     child: Image(
                   image: AssetImage('assets/immagini_pharma/barcode.png'),
-                )),
+                )), */
                 hintStyle: TextStyle(color: Color.fromARGB(255, 205, 207, 206)),
                 prefixIcon: Image(
                   image: AssetImage('assets/immagini_pharma/pillola.png'),

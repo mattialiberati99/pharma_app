@@ -194,6 +194,7 @@ class CartProvider with ChangeNotifier {
         OrderStatus _orderStatus = OrderStatus();
         _orderStatus.id = OrderStatus.received;
         order.orderStatus = _orderStatus;
+        order.active = false;
         order.deliveryAddress = deliveryAddress;
         order.sconto = sconto;
         order.discountCode = coupon?.code ?? '';

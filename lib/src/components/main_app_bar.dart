@@ -171,11 +171,13 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                             hintText: 'Cerca prodotto',
-                            suffixIcon: SizedBox(
-                                child: Image(
-                              image: AssetImage(
-                                  'assets/immagini_pharma/barcode.png'),
-                            )),
+                            // Barcode
+                            /*  suffixIcon: SizedBox(
+                              child: Image(
+                                image: AssetImage(
+                                    'assets/immagini_pharma/barcode.png'),
+                              ),
+                            ), */
                             hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 205, 207, 206)),
                             prefixIcon: Icon(Icons.search),
@@ -191,29 +193,29 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                   //       validator: (_) {},
                   //      hintText: "Cerca",
                   //      borderColor: AppColors.gray6,
-                  //      //TODO completare
                   //     suffixIcon: SvgPicture.asset(AppAssets.search), validate: true,
                   // ),
 
                   Container(
-                      margin: const EdgeInsets.only(left: 5),
-                      width: 40,
-                      height: 40,
-                      child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 47, 161, 148),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)))),
-                        child: const Image(
-                          width: 22,
-                          height: 22,
-                          image:
-                              AssetImage('assets/immagini_pharma/Vector.png'),
-                        ),
-                      )),
+                    margin: const EdgeInsets.only(left: 3),
+                    width: 20,
+                    height: 20,
+                    // Pulsante filtri
+                    /*   child: TextButton(
+                      onPressed: () {},
+                      style: TextButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 47, 161, 148),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)))),
+                      child: const Image(
+                        width: 22,
+                        height: 22,
+                        image: AssetImage('assets/immagini_pharma/Vector.png'),
+                      ),
+                    ), */
+                  ),
                 ],
               ),
             ],

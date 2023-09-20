@@ -64,10 +64,12 @@ class _SearchBarTerapieState extends ConsumerState<SearchBarTerapie> {
                   borderSide: BorderSide(color: AppColors.gray4),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               hintText: 'Cerca prodotto',
-              suffixIcon: SizedBox(
-                  child: Image(
-                image: AssetImage('assets/immagini_pharma/barcode.png'),
-              )),
+              // Barcode
+              /*  suffixIcon: SizedBox(
+                child: Image(
+                  image: AssetImage('assets/immagini_pharma/barcode.png'),
+                ),
+              ), */
               hintStyle: TextStyle(color: Color.fromARGB(255, 205, 207, 206)),
               prefixIcon: Icon(Icons.search),
               prefixIconColor: Color.fromARGB(255, 167, 166, 165)),
