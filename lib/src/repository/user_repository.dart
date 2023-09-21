@@ -19,20 +19,21 @@ import '../repository/user_repository.dart' as userRepo;
 
 Future<User> login(User user) async {
   final String url = '${GlobalConfiguration().getValue('api_base_url')}login';
-  final client = new http.Client();
+  final client = http.Client();
   final response = await client.post(
     Uri.parse(url),
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(user.toMap()),
   );
-  print(url);
-  print(json.encode(user.toMap()));
+  logger.info(url);
+  logger.info(json.encode(user.toMap()));
   if (response.statusCode == 200) {
-    print(response.body);
+    logger.info(response.body);
     return User.fromJSON(json.decode(response.body)['data']);
   } else {
-    print(CustomTrace(StackTrace.current, message: response.body).toString());
-    throw new Exception(response.body);
+    logger.error(
+        CustomTrace(StackTrace.current, message: response.body).toString());
+    throw Exception(response.body);
   }
 }
 
@@ -40,19 +41,20 @@ Future<User> loginSocial(User user, String token) async {
   final String url = '${GlobalConfiguration().getValue('api_base_url')}social';
   var map = user.toMap();
   map["remember_token"] = token;
-  final client = new http.Client();
+  final client = http.Client();
   final response = await client.post(
     Uri.parse(url),
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(map),
   );
-  print("loginSocial :: ${response.body}");
+  logger.info("loginSocial :: ${response.body}");
   if (response.statusCode == 200) {
     var decoded = json.decode(response.body);
     return User.fromJSON(decoded['data']);
   } else {
-    print(CustomTrace(StackTrace.current, message: response.body).toString());
-    throw new Exception(response.body);
+    logger.error(
+        CustomTrace(StackTrace.current, message: response.body).toString());
+    throw Exception(response.body);
   }
 }
 
@@ -66,9 +68,11 @@ Future<User> register(User user) async {
     body: json.encode(user.toMap()),
   );
   if (response.statusCode == 200) {
+    logger.info("Registrazione ok => ${user.toMap()}");
     return User.fromJSON(json.decode(response.body)['data']);
   } else {
-    print(CustomTrace(StackTrace.current, message: response.body).toString());
+    logger.error(
+        CustomTrace(StackTrace.current, message: response.body).toString());
     throw new Exception(response.body);
   }
 }
@@ -124,6 +128,7 @@ Future<User> loginAsUserToken(String token) async {
 Future<bool> sendVerificationMail() async {
   User _user = currentUser.value;
   final String _apiToken = 'api_token=${_user.apiToken}';
+  logger.info(_apiToken);
   //address.userId = _user.id;
   final String url =
       '${GlobalConfiguration().getValue('api_base_url')}send_validation_email?$_apiToken';

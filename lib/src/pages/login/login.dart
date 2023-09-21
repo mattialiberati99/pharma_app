@@ -259,7 +259,12 @@ class _LoginState extends ConsumerState<Login> {
                           width: 210,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () => userProv.login(context),
+                            onPressed: () {
+                              if (loginFormKey!.currentState!.validate()) {
+                                loginFormKey!.currentState!.save();
+                                userProv.login(context);
+                              }
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
                                   const Color.fromARGB(255, 47, 161, 148),

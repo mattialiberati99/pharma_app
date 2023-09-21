@@ -71,9 +71,13 @@ class UserProvider with ChangeNotifier {
     if (signupFormKey!.currentState!.validate()) {
       signupFormKey!.currentState!.save();
       currentUser.value.deviceToken = token;
-      print(token);
+      print('TOKEN:');
+      logger.info(token);
+
       userRepo.register(currentUser.value).then((User? value) {
         if (value != null && value.apiToken != null) {
+          currentUser.value = value;
+          saveUserToken();
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Registrazione effettuata con successo"),
           ));
@@ -87,7 +91,7 @@ class UserProvider with ChangeNotifier {
           ));
         }
       }).catchError((e) {
-        print(e);
+        logger.error("userRepository.register ERROR => $e");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(S.current.this_email_account_exists),
         ));

@@ -15,6 +15,7 @@ import 'package:pharma_app/src/providers/user_provider.dart';
 
 import '../../components/divider_label.dart';
 import '../../components/social_login_row.dart';
+import '../../dialogs/ConfirmDialog.dart';
 import '../../helpers/app_config.dart';
 import '../../helpers/validators.dart';
 
@@ -57,6 +58,24 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
       secondsRemaining = 30;
       enableResend = false;
     });
+  }
+
+  void resendEmail() async {
+    await sendVerificationMail();
+    if (mounted) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(const Duration(seconds: 1), () {
+            Navigator.of(context).pop(true);
+          });
+          return const ConfirmDialog(
+            title: 'Mail inviata',
+            icon: Icons.done,
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -147,7 +166,7 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () async {
-                                        await sendVerificationMail();
+                                        resendEmail();
                                         print('invia di nuovo');
                                         print(_otpCode);
                                         secondsRemaining = 3;
