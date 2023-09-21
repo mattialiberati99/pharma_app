@@ -16,10 +16,10 @@ class OrderStatus {
       print(CustomTrace(StackTrace.current, message: e.toString()));
     }
   }
-  static int received=1;
+  static int received = 1;
   static int preparing = 2;
   static int in_delivery = 3;
   static int delivered = 4;
-  static int annullato =5;
-  static int rimborsato =6;
+  static int annullato = 5;
+  static int rimborsato = 6;
 }

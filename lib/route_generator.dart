@@ -10,6 +10,7 @@ import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
 import 'package:pharma_app/src/pages/chat/chat_page.dart';
 import 'package:pharma_app/src/pages/contact_us/contact_us.dart';
 import 'package:pharma_app/src/pages/favorites/favorites.dart';
+import 'package:pharma_app/src/pages/login/forget_password.dart';
 import 'package:pharma_app/src/pages/login/otp_screen.dart';
 import 'package:pharma_app/src/pages/login/preSignUp.dart';
 import 'package:pharma_app/src/pages/login/success_verification_page.dart';
@@ -67,6 +68,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const PreSignUp());
       case 'Login':
         return MaterialPageRoute(builder: (_) => const Login());
+      case 'ForgetPassword':
+        return MaterialPageRoute(builder: (_) => ForgetPasswordWidget());
       case 'SignUp':
         return MaterialPageRoute(builder: (_) => const Signup());
       //case 'MainPage':

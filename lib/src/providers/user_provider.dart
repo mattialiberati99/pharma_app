@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart' as Auth;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart' as Apple;
 
 import '../../generated/l10n.dart';
+import '../../main.dart';
+import '../components/AppButton.dart';
+import '../dialogs/generic_dialog.dart';
+import '../helpers/app_config.dart';
+import '../models/driver.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
 ValueNotifier<User> currentUser = ValueNotifier(User());
+ValueNotifier<Driver?> currentDriver = ValueNotifier(null);
 
 final userProvider = ChangeNotifierProvider<UserProvider>((ref) {
   return UserProvider();
@@ -20,47 +27,43 @@ class UserProvider with ChangeNotifier {
   static final String afterLoginPage = 'Home';
   static final String afterRegisterPage = 'VerifyOtp';
 
-  GlobalKey<FormState>? loginFormKey;
   GlobalKey<FormState>? signupFormKey;
+  GlobalKey<FormState>? forgetPasswordFormKey;
 
   late FirebaseMessaging _firebaseMessaging;
   final Auth.FirebaseAuth _auth = Auth.FirebaseAuth.instance;
   late String token;
 
   UserProvider() {
-    loginFormKey = GlobalKey<FormState>();
     signupFormKey = GlobalKey<FormState>();
+    forgetPasswordFormKey = GlobalKey<FormState>();
     _firebaseMessaging = FirebaseMessaging.instance;
     _firebaseMessaging.getToken().then((String? _deviceToken) {
       currentUser.value.deviceToken = _deviceToken;
       token = _deviceToken!;
-      print(_deviceToken);
-      print("TOOKEEENNN");
+      logger.info('Device Token: $_deviceToken');
     }).catchError((e) {
-      print('Notification not configured');
+      logger.error('Notification not configured');
     });
   }
 
   login(BuildContext context) async {
-    if (loginFormKey!.currentState!.validate()) {
-      loginFormKey!.currentState!.save();
-      currentUser.value.deviceToken = token;
-      userRepo.login(currentUser.value).then((value) {
-        if (value.apiToken != null) {
-          currentUser.value = value;
-          saveUserToken();
-          Navigator.of(context).pushReplacementNamed(afterLoginPage);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(S.of(context).wrong_email_or_password),
-          ));
-        }
-      }).catchError((e) {
+    currentUser.value.deviceToken = token;
+    userRepo.login(currentUser.value).then((value) {
+      if (value.apiToken != null) {
+        currentUser.value = value;
+        saveUserToken();
+        Navigator.of(context).pushReplacementNamed(afterLoginPage);
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(S.of(context).this_account_not_exist),
+          content: Text(S.of(context).wrong_email_or_password),
         ));
-      });
-    }
+      }
+    }).catchError((e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(S.of(context).this_account_not_exist),
+      ));
+    });
   }
 
   void register(BuildContext context) async {
@@ -94,11 +97,20 @@ class UserProvider with ChangeNotifier {
 
   resetPassword(BuildContext context) {
     FocusScope.of(context).unfocus();
-    if (loginFormKey!.currentState!.validate()) {
-      loginFormKey!.currentState!.save();
+    if (forgetPasswordFormKey!.currentState!.validate()) {
+      forgetPasswordFormKey!.currentState!.save();
       userRepo.resetPassword(currentUser.value).then((value) {
         if (value == true) {
-          Navigator.of(context).pushReplacementNamed('VerifyCode');
+          AwesomeDialog(
+            context: context,
+            dialogType: DialogType.success,
+            animType: AnimType.topSlide,
+            title: "Reset password",
+            desc: "Controlla la tua email per resettare la password",
+            btnOkOnPress: () {
+              Navigator.of(context).pop();
+            },
+          ).show();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(S.current.error_verify_email_settings),

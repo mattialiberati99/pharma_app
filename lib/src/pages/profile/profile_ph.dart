@@ -89,7 +89,7 @@ class _ProfilePhState extends State<ProfilePh> {
                   ),
                   onSaved: (input) => currentUser.value.name = input,
                   validator: (input) {
-                    Validators.validateEmail(input, context);
+                    Validators.validateEmail(input);
                   },
                   //prefixIcon: Icon(Icons.email,color: Colors.white,),
                   textInputAction: TextInputAction.next,
@@ -138,7 +138,7 @@ class _ProfilePhState extends State<ProfilePh> {
                   ),
                   onSaved: (input) => currentUser.value.email = input,
                   validator: (input) {
-                    Validators.validateEmail(input, context);
+                    Validators.validateEmail(input);
                   },
                   //prefixIcon: Icon(Icons.email,color: Colors.white,),
                   textInputAction: TextInputAction.next,
@@ -200,7 +200,7 @@ class _ProfilePhState extends State<ProfilePh> {
                   ),
                   onSaved: (input) => currentUser.value.password = input,
                   validator: (input) {
-                    Validators.validateEmail(input, context);
+                    Validators.validateEmail(input);
                   },
                   //prefixIcon: Icon(Icons.email,color: Colors.white,),
                   textInputAction: TextInputAction.next,
@@ -247,7 +247,7 @@ class _ProfilePhState extends State<ProfilePh> {
                   ),
                   onSaved: (input) => currentUser.value.email = input,
                   validator: (input) {
-                    Validators.validateEmail(input, context);
+                    Validators.validateEmail(input);
                   },
                   //prefixIcon: Icon(Icons.email,color: Colors.white,),
                   textInputAction: TextInputAction.next,
@@ -298,7 +298,7 @@ class _ProfilePhState extends State<ProfilePh> {
                   ),
                   onSaved: (input) => currentUser.value.email = input,
                   validator: (input) {
-                    Validators.validateEmail(input, context);
+                    Validators.validateEmail(input);
                   },
                   //prefixIcon: Icon(Icons.email,color: Colors.white,),
                   textInputAction: TextInputAction.next,

@@ -110,7 +110,7 @@ class _SignupState extends ConsumerState<Signup> {
                       textInputType: TextInputType.emailAddress,
                       onSaved: (input) => currentUser.value.email = input,
                       validator: (input) =>
-                          Validators.validateEmail(input, context),
+                          Validators.validateEmail(input),
                       //prefixIcon: Icon(Icons.email,color: Colors.white,),
                       textInputAction: TextInputAction.next,
                     ),

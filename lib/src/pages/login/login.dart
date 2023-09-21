@@ -28,6 +28,7 @@ class Login extends ConsumerStatefulWidget {
 }
 
 class _LoginState extends ConsumerState<Login> {
+  GlobalKey<FormState>? loginFormKey = GlobalKey<FormState>();
   bool hidePassword = true;
 
   _aggiorna() {
@@ -63,7 +64,7 @@ class _LoginState extends ConsumerState<Login> {
         ),
         width: App(context).appWidth(100),
         child: Form(
-          key: userProv.loginFormKey,
+          key: loginFormKey,
           child: SingleChildScrollView(
             child: SafeArea(
               child: Column(
@@ -125,7 +126,7 @@ class _LoginState extends ConsumerState<Login> {
                           ),
                           onSaved: (input) => currentUser.value.email = input,
                           validator: (input) {
-                            Validators.validateEmail(input, context);
+                            Validators.validateEmail(input);
                             if (input != null) {
                               setState(() {
                                 em = true;
@@ -238,10 +239,8 @@ class _LoginState extends ConsumerState<Login> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                          onPressed: () {
-                            // TODO PASSWORD DIMENTICATA
-                            userProv.resetPassword(context);
-                          },
+                          onPressed: () =>
+                              Navigator.of(context).pushNamed('ForgetPassword'),
                           child: Text(
                             'Password dimenticata?',
                             style: context.textTheme.subtitle2?.copyWith(

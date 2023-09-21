@@ -130,6 +130,36 @@ class S {
     );
   }
 
+  /// `Invia link`
+  String get send_password_reset_link {
+    return Intl.message(
+      'Invia link',
+      name: 'send_password_reset_link',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mi ricordo la password, login`
+  String get i_remember_my_password_return_to_login {
+    return Intl.message(
+      'Mi ricordo la password, login',
+      name: 'i_remember_my_password_return_to_login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // `Email per resettare la password`
+  String get email_to_reset_password {
+    return Intl.message(
+      'Email per resettare la password',
+      name: 'email_to_reset_password',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Registrati`
   String get signup {
     return Intl.message(

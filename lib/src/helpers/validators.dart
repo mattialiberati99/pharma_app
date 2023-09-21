@@ -8,7 +8,7 @@ class Validators {
 
   static bool get validate => _validate.value;
 
-  static String? validateEmail(email, BuildContext context) {
+  /* static String? validateEmailContext(email, BuildContext context) {
     final emailRegExp = RegExp(r'^[\w-\.]+@[a-zA-Z0-9-]+\.[a-zA-Z]+');
 
     if (email == null || !emailRegExp.hasMatch(email)) {
@@ -18,6 +18,13 @@ class Validators {
       _validate.value = true;
       return null;
     }
+  } */
+
+  static String? validateEmail(input) {
+    RegExp regex = RegExp(r'[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!regex.hasMatch(input)) {
+      return S.current.should_be_a_valid_email;
+    } else {}
   }
 
   static String? validatePassword(input, BuildContext context) {

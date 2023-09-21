@@ -10,8 +10,12 @@ class AppButton extends StatelessWidget {
   final Function onPressed;
   final EdgeInsetsGeometry padding;
   final bool isExpanded;
-  final Color color;
+  final bool? hasShadow;
+  final Color? color;
+  final Color? gradient;
+  final Color? borderColor;
   final TextStyle? textStyle;
+  late BoxConstraints constraints;
 
   AppButton({
     required this.buttonText,
@@ -20,9 +24,28 @@ class AppButton extends StatelessWidget {
     this.isExpanded=false,
     this.hasSeparationBar=false,
     this.padding=const EdgeInsets.symmetric(horizontal: 30),
-    this.color=AppColors.mainBlack,
-    this.textStyle,
-  });
+    this.color=AppColors.primary,
+    this.gradient=AppColors.mainBlack,
+    this.textStyle, this.borderColor, this.hasShadow,
+  }){
+    this.constraints=!isExpanded ? const BoxConstraints(
+        maxWidth: 200.0, maxHeight: 55.0, minHeight: 55.0) : const BoxConstraints(
+        maxHeight: 55.0, minHeight: 55.0);
+  }
+
+    AppButton.tiny({
+    required this.buttonText,
+    required this.onPressed,
+    this.secondButtonText,
+    this.isExpanded=false,
+    this.hasSeparationBar=false,
+    this.padding=const EdgeInsets.symmetric(horizontal: 30),
+    this.color=AppColors.secondColor,
+    this.gradient=AppColors.secondDarkColor,
+    this.textStyle=ExtraTextStyles.smallWhite, this.borderColor, this.hasShadow,
+}){
+    this.constraints=BoxConstraints(minHeight: 30);
+  }
 
   List<Widget> singleOrMultiple(){
     List<Widget> children=[Text(

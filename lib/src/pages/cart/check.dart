@@ -818,19 +818,27 @@ class _CheckState extends ConsumerState<Check> {
   void gestisciPagamento() {
     if ((c1 || c2 || c3) && (first || scd)) {
       if (first) {
-        if (_ricetta == null) {
-          importaRicetta();
-        } else {
-          if (c1) {
-            pagaConCarta();
-          } else if (c2) {
-            // TODO: PAYPAL
+        if (dateinput.text != '' && timeinput.text != '') {
+          if (_ricetta == null) {
+            importaRicetta();
+          } else {
+            if (c1) {
+              pagaConCarta();
+            } else if (c2) {
+              // TODO: PAYPAL
+            }
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) =>
+            //             OrdinePagato(dateinput.text, timeinput.text)));
           }
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) =>
-          //             OrdinePagato(dateinput.text, timeinput.text)));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Seleziona la data di consegna!"),
+            ),
+          );
         }
       } else {
         Navigator.push(context,

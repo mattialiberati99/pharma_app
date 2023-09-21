@@ -160,81 +160,96 @@ class AppColors {
 }
 
 class ExtraTextStyles {
-  static final fontFamily = 'Nunito';
+  static const fontFamily = 'Montserrat-Regular';
+  static const fontFamilyRegular = 'Montserrat-Regular';
+  static const fontFamilySemiBold = 'Montserrat-SemiBold';
+  static const fontFamilyBold = 'Montserrat-Bold';
 
-  static final tinyBlack = TextStyle(
+  static const hugeFontSize = 32.0;
+  static const bigFontSize = 24.0;
+  static const largeFontSize = 18.0;
+  static const normalFontSize = 16.0;
+  static const mediumFontSize = 14.0;
+  static const smallFontSize = 12.0;
+  static const tinyFontSize = 10.0;
+
+  static const tinyBlack = TextStyle(
       fontSize: 10.0,
       color: Colors.black,
       fontWeight: FontWeight.w300,
       fontFamily: fontFamily);
-  static final smallBlack = TextStyle(
+  static const smallBlack = TextStyle(
       fontSize: 12.0,
       color: Colors.black,
       fontWeight: FontWeight.normal,
       fontFamily: fontFamily);
-  static final smallBlackBold = TextStyle(
+  static const smallBlackBold = TextStyle(
       fontSize: 12.0,
       color: Colors.black,
       fontWeight: FontWeight.bold,
       fontFamily: fontFamily);
-  static final mediumSmallBlackBold = TextStyle(
+  static const mediumPrimarySemiBold = TextStyle(
+      fontSize: mediumFontSize,
+      color: AppColors.primary,
+      fontFamily: fontFamilySemiBold);
+  static const mediumSmallBlackBold = TextStyle(
       fontSize: 14.0,
       color: Colors.black,
       fontWeight: FontWeight.bold,
       fontFamily: fontFamily);
-  static final normalBlack = TextStyle(
+  static const normalBlack = TextStyle(
       fontSize: 16.0,
       color: Colors.black,
       fontWeight: FontWeight.normal,
       fontFamily: fontFamily);
-  static final normalBlackBold = TextStyle(
+  static const normalBlackBold = TextStyle(
       fontSize: 16.0,
       color: Colors.black,
       fontWeight: FontWeight.bold,
       fontFamily: fontFamily);
-  static final bigBlack = TextStyle(
+  static const bigBlack = TextStyle(
       fontSize: 24.0,
       color: Colors.black,
       fontWeight: FontWeight.normal,
       fontFamily: fontFamily);
-  static final bigBlackBold = TextStyle(
+  static const bigBlackBold = TextStyle(
       fontSize: 24.0,
       color: Colors.black,
       fontWeight: FontWeight.bold,
       fontFamily: fontFamily);
-  static final hugeBlack = TextStyle(
+  static const hugeBlack = TextStyle(
       fontSize: 32.0,
       color: Colors.black,
       fontWeight: FontWeight.normal,
       fontFamily: fontFamily);
-  static final hugeBlackBold = TextStyle(
+  static const hugeBlackBold = TextStyle(
       fontSize: 32.0,
       color: Colors.black,
       fontWeight: FontWeight.bold,
       fontFamily: fontFamily);
 
-  static final tinyWhite = TextStyle(
+  static const tinyWhite = TextStyle(
       fontSize: 10.0,
       color: Colors.white,
       fontWeight: FontWeight.w300,
       fontFamily: fontFamily);
-  static final smallWhite = TextStyle(
+  static const smallWhite = TextStyle(
       fontSize: 12.0,
       color: Colors.white,
       fontWeight: FontWeight.normal,
       fontFamily: fontFamily);
-  static final normalWhite = TextStyle(
+  static const normalWhite = TextStyle(
       fontSize: 16.0,
       color: Colors.white,
       fontWeight: FontWeight.normal,
       fontFamily: fontFamily);
-  static final bigWhite = TextStyle(
+  static const bigWhite = TextStyle(
       fontSize: 24.0,
       color: Colors.white,
       fontWeight: FontWeight.normal,
       fontFamily: fontFamily,
       decoration: TextDecoration.none);
-  static final hugeWhite = TextStyle(
+  static const hugeWhite = TextStyle(
       fontSize: 32.0,
       color: Colors.white,
       fontWeight: FontWeight.bold,
@@ -260,6 +275,10 @@ class ExtraTextStyles {
       color: Colors.grey[600],
       fontWeight: FontWeight.bold,
       fontFamily: fontFamily);
+  static const mediumGrey = TextStyle(
+      fontSize: mediumFontSize,
+      color: AppColors.gray3,
+      fontFamily: fontFamilyRegular);
   static final bigGrey = TextStyle(
       fontSize: 24.0,
       color: Colors.grey[600],
@@ -273,6 +292,32 @@ class ExtraTextStyles {
   static final hugeGreyBold = TextStyle(
       fontSize: 32.0,
       color: Colors.grey[600],
+      fontWeight: FontWeight.bold,
+      fontFamily: fontFamily);
+  static smallColor(Color color) => TextStyle(
+      fontSize: 12.0,
+      color: color,
+      fontWeight: FontWeight.normal,
+      fontFamily: fontFamily);
+
+  static smallColorBold(Color color) =>
+      TextStyle(fontSize: 12.0, color: color, fontFamily: fontFamilyBold);
+
+  static mediumColor(Color color) => TextStyle(
+      fontSize: 14.0,
+      color: color,
+      fontWeight: FontWeight.normal,
+      fontFamily: fontFamily);
+
+  static mediumColorBold(Color color) => TextStyle(
+      fontSize: 14.0,
+      color: color,
+      fontWeight: FontWeight.bold,
+      fontFamily: fontFamily);
+
+  static normalColorBold(Color color) => TextStyle(
+      fontSize: normalFontSize,
+      color: color,
       fontWeight: FontWeight.bold,
       fontFamily: fontFamily);
 
@@ -416,21 +461,12 @@ class ExtraTextStyles {
       fontWeight: FontWeight.bold,
       fontFamily: fontFamily);
 
-  static smallColor(Color color) => TextStyle(
-      fontSize: 12.0,
-      color: color,
-      fontWeight: FontWeight.normal,
-      fontFamily: fontFamily);
   static normalColor(Color color) => TextStyle(
       fontSize: 16.0,
       color: color,
       fontWeight: FontWeight.normal,
       fontFamily: fontFamily);
-  static normalColorBold(Color color) => TextStyle(
-      fontSize: 16.0,
-      color: color,
-      fontWeight: FontWeight.bold,
-      fontFamily: fontFamily);
+
   static normalColorUnderlined(Color color) => TextStyle(
       fontSize: 16.0,
       color: color,
