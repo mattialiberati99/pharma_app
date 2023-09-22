@@ -16,6 +16,7 @@ import '../models/extra.dart';
 import '../models/food_order.dart';
 import '../models/order.dart';
 import '../models/order_status.dart';
+import '../models/payment.dart';
 import '../models/shop.dart';
 import '../repository/cart_repository.dart';
 import '../repository/order_repository.dart' as orderRepo;
@@ -183,6 +184,7 @@ class CartProvider with ChangeNotifier {
     try {
       for (MapEntry entry in cartSplitPerShop.entries) {
         Order order = Order();
+        Payment payment = Payment('Carta');
         order.foodOrders = entry.value;
         //_order.tax = checkout!.cart!.taxAmount;
         //order.note = checkout.note;
@@ -190,10 +192,13 @@ class CartProvider with ChangeNotifier {
         logger.info(int.parse(farmacia.id!));
         order.farmaciaId = int.tryParse(farmacia.id!);
         order.consegna = DateTime.now();
+        order.payment = payment;
+        //order.payment!.method = 'Carta';
+        logger.info(order.payment!.method.toString());
         //_order.importo = checkout.importo;
-        OrderStatus _orderStatus = OrderStatus();
-        _orderStatus.id = OrderStatus.received;
-        order.orderStatus = _orderStatus;
+        OrderStatus orderStatus = OrderStatus();
+        orderStatus.id = OrderStatus.received;
+        order.orderStatus = orderStatus;
         order.active = false;
         order.deliveryAddress = deliveryAddress;
         order.sconto = sconto;

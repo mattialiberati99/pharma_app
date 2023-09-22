@@ -13,6 +13,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:pharma_app/src/pages/cart/check.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../main.dart';
 import '../models/farmaco.dart';
 import '../models/food_order.dart';
 
@@ -517,7 +518,11 @@ class Helper {
 
   static void callFinalizeOrder(
       CartProvider cartProv, OrdersProvider orderProv, BuildContext context) {
-    finalizeOrder(cartProv, orderProv, context);
+    try {
+      finalizeOrder(cartProv, orderProv, context);
+    } catch (e) {
+      logger.error('Errore nel pagamento');
+    }
   }
 
   //

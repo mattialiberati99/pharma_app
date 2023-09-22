@@ -2,11 +2,13 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/medicina_terapia.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/noti.dart';
 import 'package:pharma_app/src/providers/terapia_provider.dart';
 
+import '../../../../main.dart';
 import '../../../helpers/app_config.dart';
 import '../../../models/farmaco.dart';
 
@@ -1098,14 +1100,11 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
             ElevatedButton(
               onPressed: () async {
                 for (int i = 0; i < widget.giorni.length; i++) {
-                  print(widget.giorni[i]);
+                  logger.info(widget.giorni[i]);
                 }
                 // NOTIFICHE
-                /*   Noti().scheduleTerapiaNotification(
-                    title: 'Hai preso ${widget.quantita} dose di',
-                    body: '${widget.prodotto.name?.toUpperCase()} ?',
-                    scheduledNotificationDateTime:
-                        DateTime.now().add(Du); */
+                await schedulerNotificheTerapia(widget.giorni);
+
                 MedicinaTerapia medicina = MedicinaTerapia(
                     widget.prodotto,
                     widget.nomeTerapia,
@@ -1150,5 +1149,23 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
         ),
       ),
     );
+  }
+
+  Future<void> schedulerNotificheTerapia(List<int> giorni) async {
+    for (int day in giorni) {
+      Noti().notificationDetails();
+
+      final now = DateTime.now();
+      final scheduledDate = DateTime(now.year, now.month, day, now.hour, 0, 0);
+
+      if (scheduledDate.isAfter(now)) {
+        Noti().scheduledTerapiaNoti(
+          id: day,
+          title: 'Hai preso ${widget.quantita} dose di',
+          body: '${widget.prodotto.name?.toUpperCase()} ?',
+          scheduledDate: scheduledDate,
+        );
+      }
+    }
   }
 }

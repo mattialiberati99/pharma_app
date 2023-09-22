@@ -816,8 +816,10 @@ class _CheckState extends ConsumerState<Check> {
   }
 
   void gestisciPagamento() {
+    String metodoScelto = '';
     if ((c1 || c2 || c3) && (first || scd)) {
       if (first) {
+        // Consegna a casa
         if (dateinput.text != '' && timeinput.text != '') {
           if (_ricetta == null) {
             importaRicetta();
@@ -826,12 +828,9 @@ class _CheckState extends ConsumerState<Check> {
               pagaConCarta();
             } else if (c2) {
               // TODO: PAYPAL
+            } else if (c3) {
+              // TODO CONTANTI
             }
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) =>
-            //             OrdinePagato(dateinput.text, timeinput.text)));
           }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -840,12 +839,24 @@ class _CheckState extends ConsumerState<Check> {
             ),
           );
         }
-      } else {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const MappaFarmacie()));
+      } else if (scd) {
+        // Salta la fila
+        if (c1) {
+          metodoScelto = 'Carta';
+        } else if (c2) {
+          metodoScelto = 'Paypal';
+          // TODO PAYPAL
+        } else if (c3) {
+          metodoScelto = 'Contanti';
+          // TODO CONTANTI
+        }
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MappaFarmacie(
+                      metodoScelto: metodoScelto,
+                    )));
       }
-    } else {
-      null;
     }
   }
 

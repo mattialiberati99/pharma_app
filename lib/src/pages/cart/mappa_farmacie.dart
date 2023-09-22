@@ -21,7 +21,8 @@ import '../../models/shop.dart';
 import '../../providers/shops_provider.dart';
 
 class MappaFarmacie extends ConsumerStatefulWidget {
-  const MappaFarmacie({super.key});
+  final String metodoScelto;
+  const MappaFarmacie({super.key, required this.metodoScelto});
 
   @override
   ConsumerState<MappaFarmacie> createState() => _MappaFarmacieState();
@@ -391,19 +392,18 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
                                                                     onPressed:
                                                                         () async {
                                                                       // TODO PRENOTAZIONE
-                                                                      await cartProv
-                                                                          .addPrenotazione(
-                                                                              farmacia);
+                                                                      if (widget
+                                                                              .metodoScelto ==
+                                                                          'Carta') {
+                                                                        await cartProv
+                                                                            .addPrenotazione(farmacia);
 
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                              builder: (context) => OrdineConfermato(timeinput.text, farmacia)));
-                                                                      cartProv
-                                                                          .clear();
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                        Navigator.push(
+                                                                            context,
+                                                                            MaterialPageRoute(builder: (context) => OrdineConfermato(timeinput.text, farmacia)));
+                                                                      }
                                                                     },
                                                                     style: ElevatedButton
                                                                         .styleFrom(

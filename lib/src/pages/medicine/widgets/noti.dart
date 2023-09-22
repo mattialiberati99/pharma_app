@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pharma_app/src/pages/medicine/terapie_screen.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -7,9 +8,9 @@ class Noti {
       FlutterLocalNotificationsPlugin();
 
   Future<void> initialize() async {
+    //_configureLocalTimeZone();
     const initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
-    tz.initializeTimeZones();
     var initializationSettingsIOS = DarwinInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
@@ -21,7 +22,29 @@ class Noti {
     await notificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse:
             (NotificationResponse notificationResponse) async {});
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
+
+  tz.TZDateTime _convertTime(int day, int hour, int minutes) {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduleDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      day,
+      hour,
+      minutes,
+    );
+    if (scheduleDate.isBefore(now)) {
+      scheduleDate = scheduleDate.add(const Duration(days: 1));
+    }
+    return scheduleDate;
+  }
+
+  /* Future<void> _configureLocalTimeZone() async {
+    tz.initializeTimeZones();
+    final String timeZone = await FlutterNativeTimezone.getLocalTimezone();
+  } */
 
   notificationDetails() {
     return const NotificationDetails(
@@ -37,19 +60,20 @@ class Noti {
         id, title, body, await notificationDetails());
   }
 
-  Future scheduleTerapiaNotification(
-      {int id = 0,
-      String? title,
-      String? body,
-      String? payLoad,
-      required DateTime scheduledNotificationDateTime}) async {
-    return notificationsPlugin.zonedSchedule(
-        id,
-        title,
-        body,
-        tz.TZDateTime.from(scheduledNotificationDateTime, tz.local),
-        await notificationDetails(),
+  Future scheduledTerapiaNoti(
+      {required int id,
+      required String title,
+      required String body,
+      required DateTime scheduledDate}) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(id, title, body,
+        tz.TZDateTime.from(scheduledDate, tz.local), notificationDetails(),
         uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime);
+            UILocalNotificationDateInterpretation.absoluteTime,
+        androidAllowWhileIdle: true,
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: 'It could be anything you pass');
   }
+
+  cancelAll() async => await flutterLocalNotificationsPlugin.cancelAll();
+  cancel(id) async => await flutterLocalNotificationsPlugin.cancel(id);
 }
