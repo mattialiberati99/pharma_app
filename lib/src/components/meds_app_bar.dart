@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../helpers/app_config.dart';
+import '../providers/notification_provider.dart';
 
-class MedsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  bool noty = false;
-
+class MedsAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(237);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notificationProv = ref.watch(notificationProvider);
     return ClipRRect(
       borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(22), bottomRight: Radius.circular(22)),
@@ -44,9 +45,11 @@ class MedsAppBar extends StatelessWidget implements PreferredSizeWidget {
                       Container(
                         margin: const EdgeInsets.only(right: 40),
                         child: GestureDetector(
-                          onTap: () =>
-                              Navigator.of(context).pushNamed('Notifiche'),
-                          child: noty
+                          onTap: () {
+                            Navigator.of(context).pushNamed('Notifiche');
+                            notificationProv.nuovaNotifica = false;
+                          },
+                          child: notificationProv.nuovaNotifica
                               ? const Image(
                                   width: 24,
                                   height: 24,

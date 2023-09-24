@@ -20,6 +20,7 @@ import '../../components/search_bar/home_search_bar.dart';
 import '../../components/section_horizontal.dart';
 import '../../helpers/app_config.dart';
 import '../../models/cuisine.dart';
+import '../../providers/notification_provider.dart';
 import '../../providers/selected_page_name_provider.dart';
 import '../../providers/user_provider.dart';
 import '../categorie+/categorie.dart';
@@ -63,12 +64,11 @@ class _HomeState extends ConsumerState<Home> {
     _advancedDrawerController.showDrawer();
   }
 
-  bool noty = true;
-
   @override
   Widget build(BuildContext context) {
     final categorie = ref.watch(categoriesProvider);
     final userProv = ref.watch(userProvider);
+    final notificationProv = ref.watch(notificationProvider);
 
     FlutterNativeSplash.remove();
 
@@ -90,27 +90,6 @@ class _HomeState extends ConsumerState<Home> {
       controller: _advancedDrawerController,
       child: Scaffold(
         bottomNavigationBar: BottomNavigation(sel: SelectedBottom.home),
-        //extendBody: ,
-        //appBar:
-        /*      Container(
-                      margin: const EdgeInsets.only(right: 40),
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: noty
-                            ? const Image(
-                                width: 24,
-                                height: 24,
-                                image: AssetImage(
-                                    'assets/immagini_pharma/icon_noti.png'))
-                            const Image(
-                                image: AssetImage(
-                                    'assets/immagini_pharma/bell.png')),
-                      )
-                    ),*/
-        // ],
-        // ),
-        //actions: []),
-
         appBar: MainAppBar(
           controller: searchController,
           advancedDrawerController: _advancedDrawerController,

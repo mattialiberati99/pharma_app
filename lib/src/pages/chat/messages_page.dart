@@ -5,6 +5,7 @@ import 'package:pharma_app/src/helpers/app_config.dart';
 import 'package:pharma_app/src/helpers/formatDateView.dart';
 import 'package:pharma_app/src/pages/chat/widgets/Avatar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pharma_app/src/providers/notification_provider.dart';
 
 import '../../../generated/l10n.dart';
 import '../../components/bottomNavigation.dart';
@@ -22,11 +23,11 @@ class MessagesPage extends ConsumerStatefulWidget {
 }
 
 class _MessagesPageState extends ConsumerState<MessagesPage> {
-  bool noty = false;
 
   @override
   Widget build(BuildContext context) {
     final chatProv = ref.watch(chatProvider);
+    final notificationProv = ref.watch(notificationProvider);
     return Scaffold(
       backgroundColor: Color.fromRGBO(244, 246, 245, 1),
       appBar: AppBar(
@@ -39,8 +40,11 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
         ),
         actions: [
           GestureDetector(
-            onTap: () => Navigator.of(context).pushNamed('Notifiche'),
-            child: noty
+            onTap: () {
+              Navigator.of(context).pushNamed('Notifiche');
+              notificationProv.nuovaNotifica = false;
+            },
+            child: notificationProv.nuovaNotifica
                 ? const ColorFiltered(
                     colorFilter:
                         ColorFilter.mode(Colors.black, BlendMode.srcIn),

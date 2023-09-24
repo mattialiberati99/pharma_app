@@ -73,7 +73,6 @@ dependencies:
   package_info: ^2.0.2
   timeago: ^3.3.0
   talker: ^3.1.1
-  flutter_slidable: ^3.0.0
   flutter_facebook_auth: ^5.0.11
 
   location: ^4.4.0

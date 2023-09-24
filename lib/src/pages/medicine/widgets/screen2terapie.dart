@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/models/farmaco.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/screenReminder.dart';
 
 import '../../../helpers/app_config.dart';
+import '../../../providers/notification_provider.dart';
 
-class Screen2Terapie extends StatefulWidget {
+class Screen2Terapie extends ConsumerStatefulWidget {
   Farmaco prodotto;
   String nomeTerapia;
 
   Screen2Terapie(this.prodotto, this.nomeTerapia);
 
   @override
-  State<Screen2Terapie> createState() => _Screen2TerapieState();
+  ConsumerState<Screen2Terapie> createState() => _Screen2TerapieState();
 }
 
-class _Screen2TerapieState extends State<Screen2Terapie> {
-  bool noty = false;
+class _Screen2TerapieState extends ConsumerState<Screen2Terapie> {
   TextEditingController tx = TextEditingController();
 
   TextEditingController durata = TextEditingController();
@@ -58,6 +59,7 @@ class _Screen2TerapieState extends State<Screen2Terapie> {
 
   @override
   Widget build(BuildContext context) {
+    final notificationProv = ref.watch(notificationProvider);
     return Container(
       margin: EdgeInsets.only(top: 20),
       height: MediaQuery.of(context).size.height * 0.92,
@@ -74,8 +76,11 @@ class _Screen2TerapieState extends State<Screen2Terapie> {
                   icon: Icon(Icons.arrow_back_ios)),
               Text('Aggiungi il farmaco'),
               GestureDetector(
-                onTap: () {},
-                child: noty
+                onTap: () {
+                  Navigator.of(context).pushNamed("Notifiche");
+                  notificationProv.nuovaNotifica = false;
+                },
+                child: notificationProv.nuovaNotifica
                     ? const Image(
                         width: 24,
                         height: 24,

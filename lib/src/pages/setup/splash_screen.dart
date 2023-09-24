@@ -36,12 +36,14 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
     Future.delayed(Duration.zero, () {
       initDynamicLinks();
       currentUser.addListener(() {
-        setState(() {
-          print("USER");
-          progress += 100;
-        });
-        if (progress >= 100) {
-          loadData();
+        if (mounted) {
+          setState(() {
+            print("USER");
+            progress += 100;
+          });
+          if (progress >= 100) {
+            loadData();
+          }
         }
       });
       setting.addListener(() {

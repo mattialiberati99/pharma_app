@@ -5,15 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/components/bottomNavigation.dart';
 import 'package:pharma_app/src/helpers/app_config.dart';
 import 'package:pharma_app/src/models/media.dart';
+import 'package:pharma_app/src/providers/notification_provider.dart';
 import 'package:pharma_app/src/providers/orders_provider.dart';
 
 // ignore: must_be_immutable
 class OrderP extends ConsumerWidget {
-  bool noti = false;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orders = ref.watch(ordersProvider);
+    final notificationProv = ref.watch(notificationProvider);
     return Scaffold(
       bottomNavigationBar: BottomNavigation(sel: SelectedBottom.ordini),
       body: SizedBox(
@@ -42,8 +43,9 @@ class OrderP extends ConsumerWidget {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacementNamed('Cart');
+                        notificationProv.nuovaNotifica = false;
                       },
-                      child: noti
+                      child: notificationProv.nuovaNotifica
                           ? const Image(
                               image: AssetImage(
                                   'assets/immagini_pharma/Icon_shop_noti.png'))

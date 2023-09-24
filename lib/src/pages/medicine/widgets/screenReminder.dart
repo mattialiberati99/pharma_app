@@ -11,6 +11,7 @@ import 'package:pharma_app/src/providers/terapia_provider.dart';
 import '../../../../main.dart';
 import '../../../helpers/app_config.dart';
 import '../../../models/farmaco.dart';
+import '../../../providers/notification_provider.dart';
 
 class ScreenReminder extends ConsumerStatefulWidget {
   Farmaco prodotto;
@@ -28,8 +29,6 @@ class ScreenReminder extends ConsumerStatefulWidget {
 }
 
 class _ScreenReminderState extends ConsumerState<ScreenReminder> {
-  bool noty = false;
-
   int mese = 30;
 
   @override
@@ -110,6 +109,7 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
   @override
   Widget build(BuildContext context) {
     final leMieMed = ref.read(terapiaProvider);
+    final notificationProv = ref.watch(notificationProvider);
 
     return Container(
       color: const Color.fromARGB(255, 249, 249, 249),
@@ -129,8 +129,11 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                     icon: Icon(Icons.arrow_back_ios)),
                 Text('Reminder'),
                 GestureDetector(
-                  onTap: () {},
-                  child: noty
+                  onTap: () {
+                    Navigator.of(context).pushNamed("Notifiche");
+                    notificationProv.nuovaNotifica = false;
+                  },
+                  child: notificationProv.nuovaNotifica
                       ? const Image(
                           color: AppColors.gray4,
                           width: 24,

@@ -5,13 +5,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pharma_app/src/components/button_menu.dart';
 import 'package:pharma_app/src/components/search_bar/home_search_bar.dart';
+import 'package:pharma_app/src/providers/notification_provider.dart';
 import 'package:pharma_app/src/providers/user_provider.dart';
 
 import '../app_assets.dart';
 import '../helpers/app_config.dart';
 import 'custom_toggle.dart';
 
-class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
+class MainAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final TextEditingController controller;
   final AdvancedDrawerController advancedDrawerController;
   MainAppBar(
@@ -30,13 +31,13 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(237);
 
-  bool noty = false;
   final String nome;
   final String indirizzo;
 
 //TODO migliorare
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notificationProv = ref.watch(notificationProvider);
     return ClipRRect(
       borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(22), bottomRight: Radius.circular(22)),
@@ -84,8 +85,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushNamed('Notifiche');
+                       notificationProv.nuovaNotifica = false;
                       },
-                      child: noty
+                      child: notificationProv.nuovaNotifica
                           ? const Image(
                               width: 24,
                               height: 24,
