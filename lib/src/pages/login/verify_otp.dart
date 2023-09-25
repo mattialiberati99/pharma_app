@@ -203,7 +203,10 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                                   Navigator.of(context).pushReplacementNamed(
                                       'SuccessVerificationPage');
                                 } else {
-                                  print("cathc1");
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text('Codice errato!'),
+                                  ));
                                 }
                               } catch (e) {
                                 print("cathc2");

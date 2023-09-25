@@ -123,6 +123,8 @@ class _HomeState extends ConsumerState<Home> {
                     height: 30,
                   ),
                   GestureDetector(
+                    onTap: () =>
+                        Navigator.of(context).pushNamed("Le Mie Medicine"),
                     child: const Image(
                       width: 362,
                       height: 100,
