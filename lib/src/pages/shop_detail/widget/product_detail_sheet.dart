@@ -29,6 +29,7 @@ import '../../../providers/shops_provider.dart';
 import '../../../repository/favorite_repository.dart';
 import '../../../repository/restaurant_repository.dart';
 import '../../product_detail/widgets/color_selector.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class ProductDetailSheet extends ConsumerStatefulWidget {
   final Farmaco product;
@@ -79,8 +80,9 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
     //types = widget.product.types.first;
     // print('Current Product Provider: ${ref.read(currentProductProvider)?.name}');
     // widget.product.extras.forEach((element) {print(element.color);});
-    final scount = (100.toDouble() * widget.product.price!) /
-        widget.product.discountPrice!;
+    final scount = ((widget.product.price! - widget.product.discountPrice!) /
+            widget.product.price!) *
+        100;
     final cart = ref.watch(cartProvider);
     final fav = ref.watch(favoritesProvider);
 
@@ -237,32 +239,33 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                           ),
                         ),
                       ),
-                      if (scount > 5)
-                        Positioned(
-                          top: 0,
-                          child: Stack(
-                            children: [
-                              const Image(
-                                image:
-                                    AssetImage('assets/immagini_pharma/sc.png'),
-                              ),
-                              Transform.rotate(
-                                angle: -math.pi / 4,
-                                child: Container(
-                                  margin:
-                                      const EdgeInsets.only(top: 15, left: 0),
-                                  child: Text(
-                                    "${scount.toInt()}% OFF",
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
+                      (scount > 5 && scount != 100)
+                          ? Positioned(
+                              top: 0,
+                              child: Stack(
+                                children: [
+                                  const Image(
+                                    image: AssetImage(
+                                        'assets/immagini_pharma/sc.png'),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                                  Transform.rotate(
+                                    angle: -math.pi / 4,
+                                    child: Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 15, left: 0),
+                                      child: Text(
+                                        "${scount.toInt()}% OFF",
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                   const SizedBox(
@@ -290,10 +293,10 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                     width: 40,
                   ),
                   if (desc)
-                    Text(
-                      widget.product.description ?? 'nessuna desrizione',
-                      style: const TextStyle(
-                          color: Color.fromARGB(115, 9, 15, 71), fontSize: 12),
+                    Html(
+                      data: widget.product.description ?? 'nessuna desrizione',
+                      /*   style: const TextStyle(
+                          color: Color.fromARGB(115, 9, 15, 71), fontSize: 12), */
                     ),
                   const Divider(
                     thickness: 2,
@@ -317,11 +320,8 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                     }),
                   ),
                   if (foglietto)
-                    Text(
-                      widget.product.ingredients ?? '',
-                      style: const TextStyle(
-                          color: Color.fromARGB(115, 9, 15, 71), fontSize: 12),
-                    ),
+                    Helper.applyHtml(widget.product.foglietto ??
+                        'nessun foglietto illustrativo'),
                   const Divider(
                     thickness: 2,
                   ),

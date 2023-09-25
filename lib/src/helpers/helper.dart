@@ -245,12 +245,11 @@ class Helper {
   }
 
   static Html applyHtml(
-    context,
     String html,
   ) {
     return Html(
       data: html,
-      onLinkTap: (String? url, context, map, element) {
+      onLinkTap: (String? url, map, element) {
         launchUrlString(url!);
       },
     );

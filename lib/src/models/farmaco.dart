@@ -21,6 +21,7 @@ class Farmaco {
   double? iva;
   Media? image;
   String? description;
+  String? foglietto;
   String? ingredients;
   String? weight;
   String? unit;
@@ -68,6 +69,7 @@ class Farmaco {
               : 0.0;
       iva = jsonMap['vat'] != null ? jsonMap['vat'].toDouble() : 22.0;
       description = jsonMap['description'];
+      foglietto = jsonMap['foglietto'];
       ingredients = jsonMap['ingredients'];
       weight = jsonMap['weight'] != null ? jsonMap['weight'].toString() : '';
       unit = jsonMap['unit'] != null ? jsonMap['unit'].toString() : '';
@@ -153,6 +155,7 @@ class Farmaco {
       discountPrice = 0.0;
       iva = 22.0;
       description = '';
+      foglietto = '';
       weight = '';
       ingredients = '';
       unit = '';
@@ -184,6 +187,7 @@ class Farmaco {
     map["discountPrice"] = discountPrice;
     map["vat"] = iva;
     map["description"] = description;
+    map['foglietto'] = foglietto;
     map["ingredients"] = ingredients;
     map["weight"] = weight;
     return map;

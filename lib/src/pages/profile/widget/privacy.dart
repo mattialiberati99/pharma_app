@@ -49,7 +49,7 @@ class _PrivacyState extends State<Privacy> {
         ),
         Expanded(
           child: SingleChildScrollView(
-            child: Helper.applyHtml(context, privacyText),
+            child: Helper.applyHtml(privacyText),
           ),
         ),
       ],
