@@ -82,19 +82,22 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
     // widget.product.extras.forEach((element) {print(element.color);});
     final scount = ((widget.product.price! - widget.product.discountPrice!) /
             widget.product.price!) *
-        100;
+        100.toDouble();
     final cart = ref.watch(cartProvider);
     final fav = ref.watch(favoritesProvider);
 
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
-            child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  left: 15,
+                  right: 15,
+                  top: 15,
+                  bottom: MediaQuery.of(context).size.height / 6),
               child: Column(
                 children: [
                   Row(
@@ -335,20 +338,20 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                     ),
                   ),
                   SameCategoryProduct(
-                      categoryNumber: widget.product.id!,
-                      title: '',
-                      subTitle: '')
+                    categoryNumber: widget.product.category!.id!,
+                    title: '',
+                    subTitle: '',
+                    excludedProductId: widget.product.id!,
+                  ),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomSheet: FooterActions(
-        //TODO stringhe
         firstLabel: 'Aggiungi al carrello',
-        // + (pietra?.price ?? 0) +
-        // (materiale?.price ?? 0) * quantity)}',
+
         firstAction: () {
           // TODO: FIX CATEGORIA ID NULL
           logger.info(widget.product.category!.id);

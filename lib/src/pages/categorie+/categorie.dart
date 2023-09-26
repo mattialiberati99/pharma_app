@@ -12,6 +12,7 @@ import 'package:pharma_app/src/providers/food_provider.dart';
 import 'package:pharma_app/src/repository/addresses_repository.dart';
 import 'dart:math' as math;
 
+import '../../../main.dart';
 import '../../components/shadow_box.dart';
 import '../../helpers/app_config.dart';
 import '../../models/farmaco.dart';
@@ -89,8 +90,8 @@ class _CategorieState extends ConsumerState<Categorie> {
                   AsyncValueWidget(
                     value: scelti,
                     data: (farma) => Text(
-                      farma.length.toString() + ' prodotti trovati',
-                      style: TextStyle(
+                      '${farma.length} prodotti trovati',
+                      style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: Color.fromARGB(255, 153, 153, 153)),
@@ -122,11 +123,16 @@ class _CategorieState extends ConsumerState<Categorie> {
                                   mainAxisSpacing: 20),
                           itemCount: farmaciX.length,
                           itemBuilder: (context, index) {
-                            final scount =
-                                (100.toDouble() * farmaciX[index].price!) /
-                                    farmaciX[index].discountPrice!;
+                            final scount = ((farmaciX[index].price! -
+                                        farmaciX[index].discountPrice!) /
+                                    farmaciX[index].price!) *
+                                100.toDouble();
+                            farmaciX[index].category = widget.nomeCategoria;
+
                             return FarmacoCategoria(
-                                scount: scount, farmaco: farmaciX[index]);
+                              scount: scount,
+                              farmaco: farmaciX[index],
+                            );
                           })),
                 );
               },
@@ -140,20 +146,23 @@ class _CategorieState extends ConsumerState<Categorie> {
 
 class FarmacoCategoria extends ConsumerWidget {
   final Farmaco farmaco;
+  final double scount;
+
   const FarmacoCategoria({
     super.key,
     required this.farmaco,
     required this.scount,
   });
 
-  final double scount;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final favorites = ref.watch(favoritesProvider);
+    final myFarmaco = farmaco;
+
     FarmacoFavorite? isFavorite = favorites.getFarmacoFavorite(farmaco);
     return GestureDetector(
       onTap: () {
+        logger.info(farmaco.category!.name);
         Navigator.of(context).pushNamed('Product', arguments: farmaco);
       },
       child: Container(
@@ -256,7 +265,7 @@ class FarmacoCategoria extends ConsumerWidget {
                 ),
               ),
             ),
-            if (scount > 5)
+            if (scount > 5 && scount != 100)
               Positioned(
                 top: 0,
                 child: Stack(

@@ -23,15 +23,14 @@ class AppCategory {
       var imageMedia =
           listMedia.where((element) => element['collection_name'] == 'image');
 
-      image = imageMedia.isNotEmpty
-          ? Media.fromJSON(imageMedia.first)
-          : new Media();
+      image =
+          imageMedia.isNotEmpty ? Media.fromJSON(imageMedia.first) : Media();
 
       var presentationMedia = listMedia
           .where((element) => element['collection_name'] == 'presentation');
       presentation = presentationMedia.isNotEmpty
           ? Media.fromJSON(presentationMedia.first)
-          : new Media();
+          : Media();
       otherCategories = jsonMap['related_ids'] != null &&
               (jsonMap['related_ids'] as List).length > 0
           ? jsonMap['related_ids']

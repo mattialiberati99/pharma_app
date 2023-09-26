@@ -35,6 +35,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
   Set<Marker> markers = Set();
   TextEditingController timeinput = TextEditingController();
   late TimeOfDay time;
+  late String _mapStyle;
 
   TextEditingController codiceFiscaleController = TextEditingController();
   TextEditingController telefonoController = TextEditingController();
@@ -52,6 +53,7 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
 
   void _onMapCreated(GoogleMapController _cntlr) {
     _googleMapController = _cntlr;
+    _googleMapController.setMapStyle(_mapStyle);
   }
 
   static Future<Uint8List> getBytesFromAsset(String path, int width) async {
@@ -66,6 +68,10 @@ class _MappaFarmacieState extends ConsumerState<MappaFarmacie> {
 
   @override
   void initState() {
+    rootBundle.loadString('assets/map_style.txt').then((value) {
+      _mapStyle = value;
+      _googleMapController.setMapStyle(_mapStyle);
+    });
     getPosition;
     getBytesFromAsset('assets/ico/marker_selected.png', 64).then((onValue) {
       selectedIcon = BitmapDescriptor.fromBytes(onValue);

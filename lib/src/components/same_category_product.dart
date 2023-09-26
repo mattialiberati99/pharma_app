@@ -12,19 +12,20 @@ import 'shop_card_horizontal.dart';
 class SameCategoryProduct extends ConsumerWidget {
   final String categoryNumber;
   final String title;
-
   final String subTitle;
+  final String excludedProductId; //ID del prodotto da escludere
 
   const SameCategoryProduct(
       {Key? key,
       required this.categoryNumber,
       required this.title,
-      required this.subTitle})
+      required this.subTitle,
+      required this.excludedProductId})
       : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chosen = ref.watch(farmaOfCategoryProvider('11'));
+    final chosen = ref.watch(farmaOfCategoryProvider(categoryNumber));
 
     return Column(
       children: [
@@ -47,36 +48,29 @@ class SameCategoryProduct extends ConsumerWidget {
             ),
           ],
         ),
-        const SizedBox(
-          height: 20,
-        ),
-
-        //TODO valutare su usare overflow o meno anche per il filtro e se mettere un padding
-        // child: OverflowBox(
-        //   maxWidth: MediaQuery.of(context).size.width,
         AsyncValueWidget(
             value: chosen,
             loading: const CircularProgressIndicator(),
             data: (chosenShops) {
-              /* final filtered =
-                      ref.watch(shopsFilteredByDeliveryProvider(chosenShops)); */
+              final filteredShops = chosenShops
+                  .where((product) => product.id != excludedProductId)
+                  .toList();
+
               return Container(
-                height: 250,
-                width: 300,
+                height: 171,
+                width: 174,
                 child: ListView.builder(
                   clipBehavior: Clip.none,
                   scrollDirection: Axis.horizontal,
-                  itemCount: chosenShops.length,
+                  itemCount: filteredShops.length,
                   itemBuilder: (_, index) {
-                    print(index);
                     return FarmacoCardHorizontal(
-                      farmaco: chosenShops[index],
+                      farmaco: filteredShops[index],
                     );
                   },
                 ),
               );
             }),
-        //) //overflow
       ],
     );
   }

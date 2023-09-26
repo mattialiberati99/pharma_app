@@ -28,16 +28,10 @@ class Farmaco {
   String? packageItemsCount;
   bool? featured;
   bool? deliverable;
-  @JsonKey(ignore: true)
   Shop? farmacia;
-  @JsonKey(ignore: true)
   AppCategory? category;
   @JsonKey(ignore: true)
-  List<Extra> types = []; // exta per i filtri nella pagina di ricerca
-/*   List<Extra> sizes = []; // extra per le taglie
-  List<Extra> colors = []; // extra per i colori
-  List<Extra> mixtures = []; // extra per le miscele, impasti, ecc
-  List<Extra> additions = [];  */ // extra per le aggiunte
+  List<Extra> types = [];
   @JsonKey(ignore: true)
   List<Extra> extras = []; // per gli ingredienti
   @JsonKey(ignore: true)
