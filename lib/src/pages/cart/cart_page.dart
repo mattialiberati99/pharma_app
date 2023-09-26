@@ -216,25 +216,27 @@ class _CartPageState extends ConsumerState<CartPage> {
                                     children: [
                                       Row(
                                         children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(10)),
-                                            child: Container(
-                                              color: const Color.fromARGB(
-                                                  255, 242, 243, 243),
-                                              child: Image(
-                                                  width: 77,
-                                                  height: 88,
-                                                  image: NetworkImage(
-                                                      //
-                                                      // .product!.image!.url!),
+                                          Expanded(
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(10)),
+                                              child: Container(
+                                                color: const Color.fromARGB(
+                                                    255, 242, 243, 243),
+                                                child: Image(
+                                                    width: 77,
+                                                    height: 88,
+                                                    image: NetworkImage(
+                                                        //
+                                                        // .product!.image!.url!),
 
-                                                      cartProv
-                                                          .carts[index]
-                                                          .product!
-                                                          .image!
-                                                          .url!)),
+                                                        cartProv
+                                                            .carts[index]
+                                                            .product!
+                                                            .image!
+                                                            .url!)),
+                                              ),
                                             ),
                                           ),
                                           Padding(
@@ -288,7 +290,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                     Row(
                                                       children: [
                                                         Text(
-                                                          '${cartProv.carts[index].product!.discountPrice! * cartProv.carts[index].quantity!}€',
+                                                          '${(cartProv.carts[index].product!.price! * cartProv.carts[index].quantity!).toStringAsFixed(2)}€',
                                                           style: const TextStyle(
                                                               color: Color
                                                                   .fromARGB(
@@ -421,7 +423,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                               ),
                                             ),
                                             Text(
-                                              '${cartProv.sconto}€ ',
+                                              '${cartProv.total.toStringAsFixed(2)}€ ',
                                               style: const TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 9, 15, 71),
@@ -448,7 +450,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                               ),
                                             ),
                                             Text(
-                                              '${(cartProv.total - cartProv.sconto)}€'
+                                              '${(cartProv.total - cartProv.sconto != cartProv.total) ? (cartProv.total - cartProv.sconto) : 0}€'
                                                   .toString(),
                                               style: const TextStyle(
                                                 color: Color.fromARGB(
@@ -484,7 +486,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                               ),
                                             ),
                                             Text(
-                                              '${(cartProv.total)}€',
+                                              '${(cartProv.total.toStringAsFixed(2))}€',
                                               style: const TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 9, 15, 71),
