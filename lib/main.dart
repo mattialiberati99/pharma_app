@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:sizer/sizer.dart';
 import 'package:talker/talker.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -25,7 +26,6 @@ import 'package:timeago/timeago.dart' as timeago;
 final navigatorKey = GlobalKey<NavigatorState>();
 final logger = Talker();
 
-
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -48,7 +48,6 @@ void main() async {
     provisional: false,
     sound: true,
   );
-  
 
   print('User granted permission: ${settings.authorizationStatus}');
 
@@ -106,21 +105,23 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //final selectedPageBuilder = ref.watch(selectedPageBuilderProvider);
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      title: 'Pharmalivero',
-      theme: themeData,
-      onGenerateRoute: RouteGenerator.generateRoute,
-      debugShowCheckedModeBanner: false,
-      initialRoute: 'Splash',
-      locale: const Locale.fromSubtags(languageCode: "it"),
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-    );
+    return Sizer(builder: (context, orientation, deviceType) {
+      return MaterialApp(
+        navigatorKey: navigatorKey,
+        title: 'Pharmalivero',
+        theme: themeData,
+        onGenerateRoute: RouteGenerator.generateRoute,
+        debugShowCheckedModeBanner: false,
+        initialRoute: 'Splash',
+        locale: const Locale.fromSubtags(languageCode: "it"),
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+      );
+    });
   }
 }

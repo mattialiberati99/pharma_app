@@ -94,6 +94,7 @@ dependencies:
   flutter_advanced_drawer: ^1.3.5
 
   awesome_dialog: ^3.0.2
+  sizer: ^2.0.15
 
   # Chat
   detectable_text_field: ^2.0.4

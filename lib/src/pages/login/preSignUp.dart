@@ -11,6 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/helpers/validators.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:pharma_app/src/models/media.dart';
+import 'package:sizer/sizer.dart';
 import '../../components/social_login_row.dart';
 import '../../providers/user_provider.dart';
 
@@ -126,8 +128,8 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                                           ? Color.fromARGB(255, 47, 161, 148)
                                           : Colors.white,
                                     ),
-                                    width: 63,
-                                    height: 63,
+                                    width: 15.w,
+                                    height: 7.h,
                                     child: const Image(
                                         color: Colors.black,
                                         image: AssetImage(
@@ -205,8 +207,8 @@ class _PreSignUpState extends ConsumerState<PreSignUp> {
                                                 255, 47, 161, 148)
                                             : Colors.white,
                                       ),
-                                      width: 63,
-                                      height: 63,
+                                      width: 15.w,
+                                      height: 7.h,
                                       child: const Image(
                                           image: AssetImage(
                                               'assets/immagini_pharma/icon_female.png')),
