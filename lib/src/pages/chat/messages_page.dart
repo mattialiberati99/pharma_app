@@ -23,7 +23,6 @@ class MessagesPage extends ConsumerStatefulWidget {
 }
 
 class _MessagesPageState extends ConsumerState<MessagesPage> {
-
   @override
   Widget build(BuildContext context) {
     final chatProv = ref.watch(chatProvider);
@@ -78,13 +77,26 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
               ),
             ),
             const SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: (_, i) => _delegate(
-                    chatProv.chats.values.elementAt(i), chatProv, context),
-                itemCount: chatProv.chats.length,
-              ),
-            ),
+            // Check if chats are != 0
+            chatProv.chats.length != 0
+                ? Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (_, i) => _delegate(
+                          chatProv.chats.values.elementAt(i),
+                          chatProv,
+                          context),
+                      itemCount: chatProv.chats.length,
+                    ),
+                  )
+                : const Text(
+                    "Nessuna chat disponibile al momento",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
           ],
         ),
       ),
