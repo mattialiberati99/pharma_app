@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
+import 'package:sizer/sizer.dart';
 
 import '../../../main.dart';
 import '../../dialogs/CustomDialog.dart';
@@ -242,7 +243,7 @@ class _CheckState extends ConsumerState<Check> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    '${cartProv.total}€',
+                    '${cartProv.total.toStringAsFixed(2)}€',
                     style: const TextStyle(
                         color: Color.fromARGB(255, 9, 15, 71),
                         fontSize: 20,
@@ -587,7 +588,7 @@ class _CheckState extends ConsumerState<Check> {
                     width: 10,
                   ),
                   SizedBox(
-                    width: 170,
+                    width: 41.w,
                     child: TextFormField(
                       style: TextStyle(
                         color: timeinput.text.isNotEmpty

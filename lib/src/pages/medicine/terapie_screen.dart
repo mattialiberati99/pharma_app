@@ -52,94 +52,107 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: MediaQuery.of(context).size.height * 0.92,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const SizedBox(height: 50),
-              const Text('Aggiungi il farmaco'),
-              const SizedBox(height: 20),
-              SearchBarTerapie(callback: selectProduct),
-              const SizedBox(height: 20),
-              selectedProduct != null
-                  ? Center(
-                      child: Column(
-                        children: [
-                          Image(
-                              image:
-                                  NetworkImage(selectedProduct!.image!.url!)),
-                          Stack(
-                            alignment: Alignment.center,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const SizedBox(height: 50),
+                  const Text('Aggiungi il farmaco'),
+                  const SizedBox(height: 20),
+                  SearchBarTerapie(callback: selectProduct),
+                  const SizedBox(height: 20),
+                  selectedProduct != null
+                      ? Center(
+                          child: Column(
                             children: [
-                              Container(
-                                alignment: Alignment.center,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.10,
-                                width: MediaQuery.of(context).size.width * 0.60,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white,
-                                ),
+                              Image(
+                                image:
+                                    NetworkImage(selectedProduct!.image!.url!),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              Stack(
+                                alignment: Alignment.center,
                                 children: [
-                                  Image(
-                                      image: NetworkImage(
-                                          selectedProduct!.image!.url!),
-                                      width: 50,
-                                      height: 50),
-                                  const SizedBox(width: 10),
-                                  Column(
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.10,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.60,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        selectedProduct != null
-                                            ? selectedProduct!.name!
-                                            : '',
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                      Image(
+                                          image: NetworkImage(
+                                              selectedProduct!.image!.url!),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.14,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.05),
+                                      const SizedBox(width: 10),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            selectedProduct != null
+                                                ? selectedProduct!.name!
+                                                : '',
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
+                                  ),
                                 ],
+                              ),
+                              const SizedBox(height: 10),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: SizedBox(
+                                  height: 50,
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      _screenTerapia(context, selectedProduct!);
+                                      //   Navigator.of(context)
+                                      //  .pop();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 47, 171, 148),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Avanti',
+                                    ),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: SizedBox(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  _screenTerapia(context, selectedProduct!);
-                                  //   Navigator.of(context)
-                                  //  .pop();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 47, 171, 148),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Avanti',
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : const Text(''),
+                        )
+                      : const Text(''),
+                ],
+              ),
             ],
           ),
         );

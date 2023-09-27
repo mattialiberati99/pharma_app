@@ -8,6 +8,7 @@ import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/models/route_argument.dart';
 import 'package:pharma_app/src/providers/chat_provider.dart';
 import 'package:pharma_app/src/providers/user_provider.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../app_assets.dart';
 import '../../helpers/app_config.dart';
@@ -147,12 +148,12 @@ class AppDrawer extends ConsumerWidget {
                                       arguments: RouteArgument(id: chat?.id))
                                   : Navigator.of(context).pushNamed(pageName);
                             }),
-                        const Positioned(
-                            left: 270,
+                        Positioned(
+                            left: 68.w,
                             bottom: 15,
                             child: Image(
-                              width: 23,
-                              height: 23,
+                              width: 3.w,
+                              height: 3.h,
                               image: AssetImage(
                                   'assets/immagini_pharma/right-arrow.png'),
                             )),

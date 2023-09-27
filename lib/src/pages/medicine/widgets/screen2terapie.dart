@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/models/farmaco.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/screenReminder.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../helpers/app_config.dart';
 import '../../../providers/notification_provider.dart';
@@ -210,7 +211,7 @@ class _Screen2TerapieState extends ConsumerState<Screen2Terapie> {
                 width: 10,
               ),
               SizedBox(
-                width: 170,
+                width: 44.w,
                 child: TextFormField(
                   style: TextStyle(
                     color: Colors.black,
@@ -284,27 +285,27 @@ class _Screen2TerapieState extends ConsumerState<Screen2Terapie> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(color: AppColors.gray5)),
-                height: 177,
-                width: 185,
+                height: 20.h,
+                width: 44.w,
                 child: Column(children: [
-                  const SizedBox(
-                    height: 30,
+                  SizedBox(
+                    height: 3.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Image(
+                    children: [
+                      const Image(
                           image:
                               AssetImage('assets/immagini_pharma/pranzi.png')),
                       SizedBox(
-                        width: 15,
+                        width: 4.w,
                       ),
-                      Image(
+                      const Image(
                           image: AssetImage('assets/immagini_pharma/piu.png')),
                       SizedBox(
-                        width: 15,
+                        width: 4.w,
                       ),
-                      Image(
+                      const Image(
                           image:
                               AssetImage('assets/immagini_pharma/piatto.png')),
                     ],
@@ -320,8 +321,8 @@ class _Screen2TerapieState extends ConsumerState<Screen2Terapie> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w600),
                       ),
-                      const SizedBox(
-                        width: 20,
+                      SizedBox(
+                        width: 2.w,
                       ),
                       Checkbox(
                           shape: RoundedRectangleBorder(
@@ -341,11 +342,11 @@ class _Screen2TerapieState extends ConsumerState<Screen2Terapie> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(color: AppColors.gray5)),
-                height: 177,
-                width: 185,
+                height: 20.h,
+                width: 44.w,
                 child: Column(children: [
-                  const SizedBox(
-                    height: 30,
+                  SizedBox(
+                    height: 3.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

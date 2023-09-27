@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/medicina_terapia.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/noti.dart';
 import 'package:pharma_app/src/providers/terapia_provider.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../../main.dart';
 import '../../../helpers/app_config.dart';
@@ -1055,8 +1056,8 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  width: 185,
-                  height: 38,
+                  width: 44.w,
+                  height: 4.h,
                   decoration: BoxDecoration(
                       border: Border.all(color: AppColors.gray5),
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -1106,7 +1107,9 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                   logger.info(widget.giorni[i]);
                 }
                 // NOTIFICHE
-                await schedulerNotificheTerapia(widget.giorni);
+                Noti()
+                    .showTerapiaNotification(title: 'ciao', body: 'ciao body');
+                //await schedulerNotificheTerapia(widget.giorni);
 
                 MedicinaTerapia medicina = MedicinaTerapia(
                     widget.prodotto,
