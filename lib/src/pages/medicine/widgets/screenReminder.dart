@@ -1,18 +1,17 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/medicina_terapia.dart';
-import 'package:pharma_app/src/pages/medicine/widgets/noti.dart';
 import 'package:pharma_app/src/providers/terapia_provider.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../main.dart';
 import '../../../helpers/app_config.dart';
 import '../../../models/farmaco.dart';
 import '../../../providers/notification_provider.dart';
+import '../../notifications/notification_service.dart';
 
 class ScreenReminder extends ConsumerStatefulWidget {
   Farmaco prodotto;
@@ -31,14 +30,12 @@ class ScreenReminder extends ConsumerStatefulWidget {
 
 class _ScreenReminderState extends ConsumerState<ScreenReminder> {
   int mese = 30;
+  late List<DateTime> dateNotifiche;
 
   @override
   void initState() {
-    // TODO: implement initState
-    // terProv = ref.watch()
-    //// quantita.text = '1 Compressa';
-    giorni();
     super.initState();
+    giorni();
   }
 
   giorni() {
@@ -1056,8 +1053,8 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  width: 44.w,
-                  height: 4.h,
+                  width: 185,
+                  height: 38,
                   decoration: BoxDecoration(
                       border: Border.all(color: AppColors.gray5),
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -1103,13 +1100,9 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
             ),
             ElevatedButton(
               onPressed: () async {
-                for (int i = 0; i < widget.giorni.length; i++) {
-                  logger.info(widget.giorni[i]);
-                }
                 // NOTIFICHE
-                Noti()
-                    .showTerapiaNotification(title: 'ciao', body: 'ciao body');
-                //await schedulerNotificheTerapia(widget.giorni);
+                dateNotifiche = convertGiorniInDate(widget.giorni);
+                sendNotifiche(dateNotifiche);
 
                 MedicinaTerapia medicina = MedicinaTerapia(
                     widget.prodotto,
@@ -1157,21 +1150,29 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
     );
   }
 
-  Future<void> schedulerNotificheTerapia(List<int> giorni) async {
-    for (int day in giorni) {
-      Noti().notificationDetails();
+  List<DateTime> convertGiorniInDate(List<int> giorni) {
+    DateTime dataCorrente = DateTime.now();
+    List<DateTime> dateConvertite = [];
+    List<String> timeParts = widget.orario.split(":");
+    int ora = int.parse(timeParts[0]);
+    int minuto = int.parse(timeParts[1]);
 
-      final now = DateTime.now();
-      final scheduledDate = DateTime(now.year, now.month, day, now.hour, 0, 0);
+    for (int giorno in giorni) {
+      DateTime dataDesiderata =
+          DateTime(dataCorrente.year, dataCorrente.month, giorno, ora, minuto);
+      dateConvertite.add(dataDesiderata);
+    }
+    return dateConvertite;
+  }
 
-      if (scheduledDate.isAfter(now)) {
-        Noti().scheduledTerapiaNoti(
-          id: day,
-          title: 'Hai preso ${widget.quantita} dose di',
-          body: '${widget.prodotto.name?.toUpperCase()} ?',
-          scheduledDate: scheduledDate,
-        );
-      }
+  void sendNotifiche(List<DateTime> dateNotifiche) async {
+    for (DateTime data in dateNotifiche) {
+      await NotificationService.showNotification(
+        title: "Hai preso le medicine?",
+        body: 'body',
+        scheduleTime: data,
+        category: NotificationCategory.Reminder,
+      );
     }
   }
 }

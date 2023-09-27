@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:sizer/sizer.dart';
 import 'package:talker/talker.dart';
@@ -23,6 +22,8 @@ import 'package:pharma_app/src/providers/settings_provider.dart';
 import 'generated/l10n.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import 'src/pages/notifications/notification_service.dart';
+
 final navigatorKey = GlobalKey<NavigatorState>();
 final logger = Talker();
 
@@ -36,6 +37,7 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await NotificationService.initializeNotification();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, badge: true, sound: true);
