@@ -1168,8 +1168,8 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
   void sendNotifiche(List<DateTime> dateNotifiche) async {
     for (DateTime data in dateNotifiche) {
       await NotificationService.showNotification(
-        title: "Hai preso le medicine?",
-        body: 'body',
+        title: "Hai preso ${widget.quantita} di",
+        body: '${widget.prodotto.name?.toUpperCase()} ?',
         scheduleTime: data,
         category: NotificationCategory.Reminder,
       );

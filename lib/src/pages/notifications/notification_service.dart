@@ -108,13 +108,9 @@ class NotificationService {
         bigPicture: bigPicture,
         wakeUpScreen: true,
         autoDismissible: false,
-        
       ),
       actionButtons: actionButtons,
-      
-      
       schedule: NotificationCalendar.fromDate(date: scheduleTime),
     );
-    
   }
 }
