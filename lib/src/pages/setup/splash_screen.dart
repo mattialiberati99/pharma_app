@@ -36,14 +36,12 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
     Future.delayed(Duration.zero, () {
       initDynamicLinks();
       currentUser.addListener(() {
-        if (mounted) {
-          setState(() {
-            print("USER");
-            progress += 100;
-          });
-          if (progress >= 100) {
-            loadData();
-          }
+        setState(() {
+          print("USER");
+          progress += 50;
+        });
+        if (progress >= 100) {
+          loadData();
         }
       });
       setting.addListener(() {
@@ -87,8 +85,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   void didChangeDependencies() {
-    print("didChangeDependencies");
-    ref.read(userProvider).loadUserFromSavedToken();
+    ref.watch(userProvider).loadUserFromSavedToken();
     initSettings();
     super.didChangeDependencies();
   }
@@ -99,7 +96,6 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     dynamicLinks.onLink.listen((PendingDynamicLinkData dynamicLinkData) {
       final Uri deepLink = dynamicLinkData.link;
-      print(deepLink);
       if (deepLink != null) {
         _latestLink = deepLink.path;
         prefs.setString('link', _latestLink);

@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/pages/profile/widget/pickImage.dart';
 import 'package:pharma_app/src/providers/cart_provider.dart';
+import '../../../../main.dart';
+import '../../../repository/user_repository.dart' as userRepo;
 
 import '../../../helpers/app_config.dart';
 import '../../../providers/user_provider.dart';
@@ -28,7 +30,11 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
     advancedDrawerController.showDrawer();
   }
 
-  void _pick(File image) {}
+  void _pick(File image) {
+    /* currentUser.value.imagePath = image.path;
+    logger.info(image.path);
+    userRepo.addUserImage(); */
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +57,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                     valueListenable: advancedDrawerController,
                     builder: (_, value, __) {
                       return AnimatedSwitcher(
-                        duration: Duration(milliseconds: 250),
+                        duration: const Duration(milliseconds: 250),
                         child: value.visible
                             ? Image(
                                 image: const AssetImage(
@@ -88,13 +94,13 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            currentUser.value.name ?? 'Tac User',
-                            style: context.textTheme.subtitle1
+                            currentUser.value.name ?? 'Pharma User',
+                            style: context.textTheme.titleMedium
                                 ?.copyWith(fontSize: 20, color: Colors.white),
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       PickImage(_pick),

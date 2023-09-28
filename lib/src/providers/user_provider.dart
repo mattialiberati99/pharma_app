@@ -154,15 +154,17 @@ class UserProvider with ChangeNotifier {
 
   signInWithFacebook(BuildContext context) async {
     try {
-      Auth.UserCredential userCredential;
-      final FacebookAuth facebookAuth = FacebookAuth.instance;
-      final facebookLoginResult = await facebookAuth.login();
-      final userData = await FacebookAuth.instance.getUserData();
+      final LoginResult facebookLoginResult = await FacebookAuth.instance
+          .login(permissions: (['email', 'public_profile']));
+      final token = facebookLoginResult.accessToken!.token;
+      print(
+          'Facebook token userID : ${facebookLoginResult.accessToken!.grantedPermissions}');
 
-      final Auth.OAuthCredential facebookAuthCredential =
+      final Auth.AuthCredential facebookAuthCredential =
           Auth.FacebookAuthProvider.credential(
               facebookLoginResult.accessToken!.token);
-      userCredential = await _auth.signInWithCredential(facebookAuthCredential);
+      final userCredential =
+          await _auth.signInWithCredential(facebookAuthCredential);
       final authUser = userCredential.user;
 
       currentUser.value.name = authUser?.displayName ?? "username";

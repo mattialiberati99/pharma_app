@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:pharma_app/src/pages/profile/widget/profile_app_bar.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../components/bottomNavigation.dart';
 import '../../components/drawer/app_drawer.dart';
@@ -59,8 +60,8 @@ class _ProfilePhState extends State<ProfilePh> {
                 height: 5,
               ),
               SizedBox(
-                width: 327,
-                height: 56,
+                width: 78.w,
+                height: 6.h,
                 child: TextFormField(
                   initialValue: currentUser.value.name,
                   decoration: const InputDecoration(
@@ -109,8 +110,8 @@ class _ProfilePhState extends State<ProfilePh> {
                 height: 5,
               ),
               SizedBox(
-                width: 327,
-                height: 56,
+                width: 78.w,
+                height: 6.h,
                 child: TextFormField(
                   initialValue: currentUser.value.email,
                   decoration: const InputDecoration(
@@ -158,8 +159,8 @@ class _ProfilePhState extends State<ProfilePh> {
                 height: 5,
               ),
               SizedBox(
-                width: 327,
-                height: 56,
+                width: 78.w,
+                height: 6.h,
                 child: TextFormField(
                   initialValue: currentUser.value.password,
                   obscureText: hide ? true : false,
@@ -220,7 +221,8 @@ class _ProfilePhState extends State<ProfilePh> {
                 height: 5,
               ),
               SizedBox(
-                width: 327,
+                width: 78.w,
+                height: 6.h,
                 child: TextFormField(
                   initialValue: currentUser.value.name,
                   decoration: const InputDecoration(
@@ -267,8 +269,8 @@ class _ProfilePhState extends State<ProfilePh> {
                 height: 5,
               ),
               SizedBox(
-                width: 327,
-                height: 56,
+                width: 78.w,
+                height: 6.h,
                 child: TextFormField(
                   initialValue: currentUser.value.name,
                   decoration: const InputDecoration(

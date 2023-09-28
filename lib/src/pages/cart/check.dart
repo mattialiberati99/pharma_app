@@ -39,7 +39,7 @@ class Check extends ConsumerStatefulWidget {
 }
 
 class _CheckState extends ConsumerState<Check> {
-  File? _ricetta;
+  //File? _ricetta;
   String my_address = locationText;
   String address_number = '';
 
@@ -132,7 +132,8 @@ class _CheckState extends ConsumerState<Check> {
   late DateTime data;
   late TimeOfDay time;
 
-  _getImage(ImageSource source) async {
+// RICETTA MEDICA
+/*   _getImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source);
     setState(() {
@@ -142,9 +143,9 @@ class _CheckState extends ConsumerState<Check> {
         });
       }
     });
-  }
+  } */
 
-  _getDocument() async {
+/*   _getDocument() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: [
@@ -164,7 +165,7 @@ class _CheckState extends ConsumerState<Check> {
     }
     Navigator.of(context, rootNavigator: true).pop('dialog');
     print(_ricetta!.path);
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -445,7 +446,7 @@ class _CheckState extends ConsumerState<Check> {
                 height: 5,
               ),
 
-              _ricetta != null
+              /*  _ricetta != null
                   ? ClipRRect(
                       child: Container(
                           decoration: BoxDecoration(
@@ -476,7 +477,7 @@ class _CheckState extends ConsumerState<Check> {
                             ),
                           )),
                     )
-                  : const Text(''),
+                  : const Text(''), */
               const SizedBox(
                 height: 15,
               ),
@@ -822,17 +823,17 @@ class _CheckState extends ConsumerState<Check> {
       if (first) {
         // Consegna a casa
         if (dateinput.text != '' && timeinput.text != '') {
-          if (_ricetta == null) {
+          /*  if (_ricetta == null) {
             importaRicetta();
-          } else {
-            if (c1) {
-              pagaConCarta();
-            } else if (c2) {
-              // TODO: PAYPAL
-            } else if (c3) {
-              // TODO CONTANTI
-            }
+          } else { */
+          if (c1) {
+            pagaConCarta();
+          } else if (c2) {
+            // TODO: PAYPAL
+          } else if (c3) {
+            // TODO CONTANTI
           }
+          //}
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -911,7 +912,7 @@ class _CheckState extends ConsumerState<Check> {
                             ),
                           ),
                           // TODO FINIRE IMPORTAZIONE RICETTE
-                          Positioned(
+                          /*   Positioned(
                             top: 160,
                             child: SizedBox(
                               height: 50,
@@ -933,8 +934,8 @@ class _CheckState extends ConsumerState<Check> {
                                 ),
                               ),
                             ),
-                          ),
-                          Positioned(
+                          ), */
+                          /*  Positioned(
                             top: 225,
                             child: SizedBox(
                               height: 50,
@@ -963,7 +964,7 @@ class _CheckState extends ConsumerState<Check> {
                                 ),
                               ),
                             ),
-                          ),
+                          ), */
                         ],
                       )
                     ],
