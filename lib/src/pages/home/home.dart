@@ -14,6 +14,7 @@ import 'package:pharma_app/src/pages/home/widgets/home_cuisine_filter.dart';
 import 'package:pharma_app/src/providers/categories_provider.dart';
 import 'package:pharma_app/src/providers/home_cuisines_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../components/main_app_bar.dart';
 import '../../components/search_bar/home_search_bar.dart';
@@ -125,10 +126,11 @@ class _HomeState extends ConsumerState<Home> {
                   GestureDetector(
                     onTap: () =>
                         Navigator.of(context).pushNamed("Le Mie Medicine"),
-                    child: const Image(
-                      width: 362,
-                      height: 100,
-                      image: AssetImage('assets/immagini_pharma/Banner.png'),
+                    child: Image(
+                      width: 87.4.w,
+                      height: 11.1.h,
+                      image:
+                          const AssetImage('assets/immagini_pharma/Banner.png'),
                     ),
                   ),
                 ],
@@ -153,7 +155,7 @@ class _HomeState extends ConsumerState<Home> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 30, top: 20),
+                        margin: const EdgeInsets.only(left: 30, top: 20),
                         width: context.mqw * 0.9,
                         height: 100,
                         child: ListView.builder(
@@ -211,18 +213,6 @@ class _HomeState extends ConsumerState<Home> {
                   ),
                 ],
               ),
-
-              /* return HomeCuisineFilter(
-                    cuisineSelected: cuisineSelected,
-                    onCuisineSelected: (Cuisine cuisine) {
-                      print('CuisineID: ${cuisine.id} - ${cuisine.name}');
-                      setState(() {
-                        cuisineSelected = cuisine.id;
-                      });
-                      ref.read(homeSelectedCuisineProvider.notifier).state =
-                          cuisineSelected!;
-                    });*/
-
               const SizedBox(
                 height: 35,
               ),

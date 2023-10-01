@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:location/location.dart';
 
 import '../../../generated/l10n.dart';
+import '../../../main.dart';
 import '../../components/AppButton.dart';
 import '../../dialogs/ConfirmDialog.dart';
 import '../../helpers/custom_trace.dart';
@@ -30,24 +31,27 @@ class SplashScreen extends ConsumerStatefulWidget {
 class SplashScreenState extends ConsumerState<SplashScreen> {
   String _latestLink = 'Unknown';
   int progress = 0;
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
       initDynamicLinks();
       currentUser.addListener(() {
-        setState(() {
-          print("USER");
-          progress += 50;
-        });
-        if (progress >= 100) {
-          loadData();
+        if (mounted) {
+          setState(() {
+            logger.info('=> SPLASH currentUser.addListener');
+            progress += 50;
+          });
+          if (progress >= 100) {
+            loadData();
+          }
         }
       });
       setting.addListener(() {
         if (setting.value.appName != null) {
           setState(() {
-            print("SETTING");
+            logger.info("SPLASH setting.addListener");
             progress += 50;
           });
         }
@@ -119,12 +123,12 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   void loadData() async {
     try {
       String loc = Localizations.localeOf(context).languageCode;
-      print(loc);
+      logger.info(loc);
       Locale locale =
           Locale(await ref.watch(languageProvider).getDefaultLanguage(loc));
       S.delegate.load(locale);
     } catch (e) {
-      print(e);
+      logger.error('loadData:Localization Error: $e');
     }
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     int buildNumber = int.parse(packageInfo.buildNumber);
@@ -173,12 +177,6 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: const <Widget>[
-              /*SizedBox(height: 50),
-              Image.asset(
-                'assets/img/italian_text.png',
-                width: 200,
-                fit: BoxFit.cover,
-              ),*/
               SizedBox(height: 450),
               CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

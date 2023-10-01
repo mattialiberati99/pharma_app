@@ -600,6 +600,11 @@ class S {
     );
   }
 
+  String get dialog_subtitle_address {
+    return Intl.message('Sei sicuro di voeler eliminare questo indirizzo?',
+        name: 'dialog_subtitle_address', desc: '', args: []);
+  }
+
   /// `Sei sicuro di voler eliminare questa carta di credito?`
   String get dialog_subtitle_card {
     return Intl.message(
@@ -895,6 +900,16 @@ class S {
     return Intl.message(
       'Non hai nessuna notifica',
       name: 'dont_have_any_item_in_the_notification_list',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PayPal Payment`
+  String get paypal_payment {
+    return Intl.message(
+      'PayPal Payment',
+      name: 'paypal_payment',
       desc: '',
       args: [],
     );

@@ -264,7 +264,7 @@ class CartProvider with ChangeNotifier {
         _order.farmaciaId = int.tryParse(entry.value.first.food!.farmacia!.id);
         _order.consegna = DateTime.now().add(
             Duration(days: entry.value.first.food!.farmacia!.giorni_consegna!));
-        //_order.importo = checkout.importo;
+        _order.importo = total.toStringAsFixed(2);
         OrderStatus _orderStatus = OrderStatus();
         _orderStatus.id = OrderStatus.received;
         _order.orderStatus = _orderStatus;

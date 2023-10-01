@@ -9,6 +9,7 @@ import 'package:pharma_app/src/components/drawer/widgets/drawer_item.dart';
 import 'package:pharma_app/src/helpers/app_config.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sizer/sizer.dart';
 
 import '../models/chat.dart';
 import '../models/route_argument.dart';
@@ -64,13 +65,13 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(22), topRight: Radius.circular(22)),
           ),
-          height: 89,
+          height: 9.9.h,
           child: ClipRRect(
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(22), topRight: Radius.circular(22)),
             child: Scaffold(
                 body: Container(
-              height: 89,
+              height: 9.9.h,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

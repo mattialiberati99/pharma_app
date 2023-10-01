@@ -104,6 +104,21 @@ class Order {
     return map;
   }
 
+  String toPaypalMap() {
+    String params = "";
+    params += "user_id=${user?.id}";
+    params += "&order_status_id=${orderStatus?.id}";
+    params += "&delivery_fee=$deliveryFee";
+    if (!deliveryAddress!.isUnknown()) {
+      params += "&delivery_address_id= ${deliveryAddress?.id}";
+    }
+    params += "&importo=$importo";
+    params += "&orario=$oraRitiro";
+    params += "&note=$note";
+    params += "&sconto=$sconto";
+    return params;
+  }
+
   Map cancelMap() {
     var map = new Map<String, dynamic>();
     map["id"] = id;

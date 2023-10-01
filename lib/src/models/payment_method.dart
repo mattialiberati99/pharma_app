@@ -21,15 +21,15 @@ class PaymentMethodList {
 
   PaymentMethodList(BuildContext _context) {
     this._paymentsList = [
-      new PaymentMethod("visacard", S.of(_context).visa_card, S.of(_context).click_to_pay_with_your_visa_card, "/Checkout", "assets/img/visacard.png",
+      PaymentMethod("visacard", S.of(_context).visa_card, S.of(_context).click_to_pay_with_your_visa_card, "/Checkout", "assets/img/visacard.png",
           isDefault: true),
-      new PaymentMethod("paypal", S.of(_context).paypal, S.of(_context).click_to_pay_with_your_paypal_account, "/PayPal", "assets/img/paypal.png"),
+      PaymentMethod("paypal", S.of(_context).paypal, S.of(_context).click_to_pay_with_your_paypal_account, "/PayPal", "assets/img/paypal.png"),
     ];
     this._cashList = [
-      new PaymentMethod("cod", S.of(_context).cash_on_delivery, S.of(_context).click_to_pay_cash_on_delivery, "/CashOnDelivery", "assets/img/cash.png"),
+      PaymentMethod("cod", S.of(_context).cash_on_delivery, S.of(_context).click_to_pay_cash_on_delivery, "/CashOnDelivery", "assets/img/cash.png"),
     ];
     this._pickupList = [
-      new PaymentMethod("pop", S.of(_context).pay_on_pickup, S.of(_context).click_to_pay_on_pickup, "/PayOnPickup", "assets/img/pay_pickup.png"),
+      PaymentMethod("pop", S.of(_context).pay_on_pickup, S.of(_context).click_to_pay_on_pickup, "/PayOnPickup", "assets/img/pay_pickup.png"),
     ];
   }
 
@@ -46,13 +46,13 @@ class PrenotazioneMethodList {
 
   PrenotazioneMethodList(BuildContext _context) {
     this._paymentsList = [
-      new PaymentMethod(
+      PaymentMethod(
           "visacard", S.of(_context).visa_card, S.of(_context).click_to_pay_with_your_visa_card, "CheckoutPrenotazione", "assets/img/visacard.png",
           isDefault: true),
-      new PaymentMethod("paypal", S.of(_context).paypal, S.of(_context).click_to_pay_with_your_paypal_account, "/PayPal", "assets/img/paypal.png"),
+      PaymentMethod("paypal", S.of(_context).paypal, S.of(_context).click_to_pay_with_your_paypal_account, "/PayPal", "assets/img/paypal.png"),
     ];
     this._cashList = [
-      new PaymentMethod("cod", S.of(_context).in_struttura, S.of(_context).click_to_pay_cash_on_delivery, "InStruttura", "assets/img/cash.png"),
+      PaymentMethod("cod", S.of(_context).in_struttura, S.of(_context).click_to_pay_cash_on_delivery, "InStruttura", "assets/img/cash.png"),
     ];
   }
 

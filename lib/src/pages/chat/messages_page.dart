@@ -78,7 +78,7 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
             ),
             const SizedBox(height: 20),
             // Check if chats are != 0
-            chatProv.chats.length != 0
+            chatProv.chats.isNotEmpty
                 ? Expanded(
                     child: ListView.builder(
                       itemBuilder: (_, i) => _delegate(

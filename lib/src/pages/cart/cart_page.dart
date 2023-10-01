@@ -25,7 +25,6 @@ import '../../models/order.dart';
 import '../../providers/cart_provider.dart';
 import '../../repository/paymentCards_repository.dart';
 import '../payment_methods/payment_methods.dart';
-import 'checkout.dart';
 
 class CartPage extends ConsumerStatefulWidget {
   const CartPage({Key? key}) : super(key: key);

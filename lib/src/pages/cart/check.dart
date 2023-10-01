@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/models/address.dart';
 import 'package:pharma_app/src/pages/cart/cart_page.dart';
 import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
@@ -20,6 +21,7 @@ import 'package:path/path.dart' as p;
 import 'package:sizer/sizer.dart';
 
 import '../../../main.dart';
+import '../../components/shadow_box.dart';
 import '../../dialogs/CustomDialog.dart';
 import '../../dialogs/order_success_dialog.dart';
 import '../../helpers/app_config.dart';
@@ -173,6 +175,7 @@ class _CheckState extends ConsumerState<Check> {
     final shopId = ref.watch(currentShopIDProvider);
     final ordProv = ref.watch(ordersProvider);
     final userAddrProv = ref.read(userAddressesProvider);
+    final addrProv = ref.watch(addressesProvider);
 
     return Scaffold(
       bottomSheet: Container(
@@ -192,7 +195,7 @@ class _CheckState extends ConsumerState<Check> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                gestisciPagamento();
+                gestisciPagamento(cartProv);
               },
             ),
           ],
@@ -310,7 +313,7 @@ class _CheckState extends ConsumerState<Check> {
                               padding: const EdgeInsets.only(right: 20.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  scegliIndirizzo(context);
+                                  scegliIndirizzo(context, addrProv);
                                 },
                                 child: const Image(
                                     image: AssetImage(
@@ -435,7 +438,7 @@ class _CheckState extends ConsumerState<Check> {
                 children: [
                   TextButton.icon(
                     onPressed: () {
-                      aggiungiIndirizzo();
+                      aggiungiIndirizzo(addrProv);
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Aggiungi indirizzo'),
@@ -817,7 +820,7 @@ class _CheckState extends ConsumerState<Check> {
     );
   }
 
-  void gestisciPagamento() {
+  void gestisciPagamento(cartProv) {
     String metodoScelto = '';
     if ((c1 || c2 || c3) && (first || scd)) {
       if (first) {
@@ -829,7 +832,8 @@ class _CheckState extends ConsumerState<Check> {
           if (c1) {
             pagaConCarta();
           } else if (c2) {
-            // TODO: PAYPAL
+            cartProv.deliveryAddress!.address = my_address;
+            Navigator.of(context).pushReplacementNamed('PayPal');
           } else if (c3) {
             // TODO CONTANTI
           }
@@ -1008,10 +1012,11 @@ class _CheckState extends ConsumerState<Check> {
     );
   }
 
-  void aggiungiIndirizzo() {
+  void aggiungiIndirizzo(addrProv) async {
     TextEditingController _nomeIndirizzoController = TextEditingController();
     TextEditingController _numeroIndirizzoController = TextEditingController();
     TextEditingController _addressIndirizzoController = TextEditingController();
+    bool isSaving = false;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1056,14 +1061,26 @@ class _CheckState extends ConsumerState<Check> {
                   ),
                   SizedBox(height: 20.0),
                   ElevatedButton(
-                    onPressed: () {
-                      saveIndirizzo(
-                          _nomeIndirizzoController.text,
-                          _numeroIndirizzoController.text,
-                          _addressIndirizzoController.text);
-                      Navigator.of(context).pop(); // Chiudi il bottom sheet
-                    },
-                    child: Text('Conferma'),
+                    onPressed: isSaving
+                        ? null
+                        : () async {
+                            setState(() {
+                              isSaving = true;
+                            });
+                            await saveIndirizzo(
+                                _nomeIndirizzoController.text,
+                                _numeroIndirizzoController.text,
+                                _addressIndirizzoController.text,
+                                addrProv);
+                            setState(() {
+                              isSaving = false;
+                            });
+                            Navigator.of(context)
+                                .pop(); // Chiudi il bottom sheet
+                          },
+                    child: isSaving
+                        ? const CircularProgressIndicator()
+                        : const Text('Conferma'),
                   ),
                 ],
               ),
@@ -1074,19 +1091,23 @@ class _CheckState extends ConsumerState<Check> {
     );
   }
 
-  void saveIndirizzo(String nome, String numero, String indirizzo) {
+  Future<void> saveIndirizzo(String nome, String numero, String indirizzo,
+      AddressesProvider addrProv) async {
     Address address = Address();
     address.id = nome;
     address.phone = numero;
     address.address = indirizzo;
-    print('Aggiungo indirizzo');
-    ref.watch(addressesProvider).addAddress(address);
+    addrProv.addAddress(address);
+    //addrProv.addresses.add(address);
+    for (int i = 0; i < addrProv.addresses.length; i++) {
+      logger.info(addrProv.addresses[i].toMap());
+    }
   }
 
-  void scegliIndirizzo(BuildContext context) {
+  void scegliIndirizzo(BuildContext context, AddressesProvider addrProv) {
     showModalBottomSheet(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0),
           topRight: Radius.circular(16.0),
@@ -1094,14 +1115,12 @@ class _CheckState extends ConsumerState<Check> {
       ),
       builder: (BuildContext context) {
         // Recupera la lista di indirizzi dal provider
-        final addressProvider = ref.watch(addressesProvider);
-        final indirizzi = addressProvider.addresses;
 
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 'Scegli l\'indirizzo da utilizzare',
                 style: TextStyle(
@@ -1113,24 +1132,92 @@ class _CheckState extends ConsumerState<Check> {
             ),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: indirizzi.length,
+              itemCount: addrProv.addresses.length,
               itemBuilder: (context, index) {
-                final indirizzo = indirizzi[index];
+                final indirizzo = addrProv.addresses[index];
+                logger.info(indirizzo.toMap());
 
-                return ListTile(
-                  title: Text(indirizzo.address!),
-                  onTap: () {
-                    // Cambia indirrizo
-                    setState(() {
-                      my_address = indirizzo.address!;
-                      indirizzo.phone != null
-                          ? address_number = indirizzo.phone!
-                          : address_number = '';
-                    });
-                    Navigator.pop(context);
+                return Dismissible(
+                  key: ValueKey(indirizzo.id),
+                  background: Container(
+                    color: Theme.of(context).colorScheme.error,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 4,
+                    ),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                      size: 40,
+                    ),
+                  ),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) {
+                    // Elimina indirizzo
+                    addrProv.removeAddress(indirizzo);
+                    addrProv.addresses.remove(indirizzo);
                   },
+                  child: ListTile(
+                    title: Text(indirizzo.address!),
+                    onTap: () {
+                      // Cambia indirrizo
+                      setState(() {
+                        my_address = indirizzo.address!;
+                        indirizzo.phone != null
+                            ? address_number = indirizzo.phone!
+                            : address_number = '';
+                      });
+
+                      Navigator.of(context).pop();
+                    },
+                  ),
                 );
               },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<bool?> showConfirmDialog(
+    BuildContext context, {
+    String? title,
+    String? subTitle,
+    String? confirmText,
+    String? cancelText,
+  }) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(
+            title ?? context.loc.dialog_title,
+            textAlign: TextAlign.center,
+          ),
+          content: Text(
+            subTitle ?? context.loc.dialog_subtitle_address,
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(
+                confirmText ?? context.loc.dialog_delete,
+                textAlign: TextAlign.center,
+                style: context.textTheme.subtitle2
+                    ?.copyWith(color: context.colorScheme.error),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(cancelText ?? context.loc.dialog_cancel,
+                  style: context.textTheme.subtitle2
+                      ?.copyWith(color: context.colorScheme.secondary)),
             ),
           ],
         );
