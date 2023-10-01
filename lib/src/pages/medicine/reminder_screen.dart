@@ -220,6 +220,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                             title: "Medicina Aggiunta",
                             desc:
                                 "Medicina aggiunta correttamente all'armadietto!",
+                              
                             btnOkOnPress: () {
                               Navigator.of(context)
                                   .pushReplacementNamed('Le Mie Medicine');

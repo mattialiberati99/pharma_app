@@ -1077,6 +1077,12 @@ class _CheckState extends ConsumerState<Check> {
                             });
                             Navigator.of(context)
                                 .pop(); // Chiudi il bottom sheet
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    "Indirizzo salvato con successo: clicca sulla matita per modificare il tuo indirizzo corrente"),
+                              ),
+                            );
                           },
                     child: isSaving
                         ? const CircularProgressIndicator()
@@ -1104,7 +1110,7 @@ class _CheckState extends ConsumerState<Check> {
     }
   }
 
-  void scegliIndirizzo(BuildContext context, AddressesProvider addrProv) {
+  scegliIndirizzo(BuildContext context, AddressesProvider addrProv) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
