@@ -81,7 +81,7 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
               children: [
                 IconButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacementNamed('Home');
                     },
                     icon: const Icon(
                       Icons.arrow_back_ios_new,
@@ -208,7 +208,7 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                         ),
                         Row(children: [
                           Text(
-                            '${cartProv.carts[index].product!.discountPrice! * cartProv.carts[index].quantity!}€',
+                            '${cartProv.carts[index].product!.price! * cartProv.carts[index].quantity!}€',
                             style: const TextStyle(
                                 color: Color.fromARGB(255, 9, 15, 71),
                                 fontSize: 14,
@@ -249,7 +249,7 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                         color: Color.fromARGB(255, 167, 166, 165),
                       ),
                       Text(
-                        'Indirizzo di casa',
+                        cartProv.deliveryAddress!.address ?? 'Casa',
                         style: TextStyle(
                           color: Color.fromARGB(255, 167, 166, 165),
                         ),
@@ -294,7 +294,7 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                               fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          cartProv.sconto.toString() + '€',
+                          '${cartProv.total}€',
                           style: const TextStyle(
                               color: Color.fromARGB(255, 9, 15, 71),
                               fontSize: 20,

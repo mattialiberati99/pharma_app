@@ -233,6 +233,69 @@ class CartProvider with ChangeNotifier {
     return orders;
   }
 
+  Future<List<Order>?> addOrderContanti() async {
+    print("adding order");
+    Map<String, List<FarmacoOrder>> cartSplitPerShop = {};
+    List<Order> orders = [];
+    for (Cart cart in carts) {
+      try {
+        if (cartSplitPerShop[cart.product!.farmacia!.id!] != null) {
+          print("added");
+          cartSplitPerShop[cart.product!.farmacia!.id!]!.add(cart.foodOrder());
+        } else {
+          print("created");
+          cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
+        }
+      } catch (e) {
+        print(e);
+        print("Error Created");
+        cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
+      }
+      print("looop");
+    }
+    print(cartSplitPerShop.length);
+    //Creiamo multipli ordini per i vari negozi coinvolti
+    try {
+      for (MapEntry entry in cartSplitPerShop.entries) {
+        Order _order = Order();
+        _order.foodOrders = entry.value;
+        //_order.tax = checkout!.cart!.taxAmount;
+        //_order.note = checkout.note;
+        _order.farmaciaId = int.tryParse(entry.value.first.food!.farmacia!.id);
+        _order.consegna = DateTime.now().add(
+            Duration(days: entry.value.first.food!.farmacia!.giorni_consegna!));
+        _order.importo = total.toStringAsFixed(2);
+        OrderStatus _orderStatus = OrderStatus();
+        _orderStatus.id = OrderStatus.received;
+        _orderStatus.status = 'Contanti';
+        _order.orderStatus = _orderStatus;
+        _order.deliveryAddress = deliveryAddress;
+        _order.sconto = sconto;
+        _order.discountCode = coupon?.code ?? '';
+
+        Order? newOrder = await orderRepo.addOrder(
+          _order,
+        );
+        if (newOrder != null) {
+          coupon = null;
+          paymentMethod = null;
+          loading = false;
+          notifyListeners();
+          orders.insert(0, newOrder);
+          notifyListeners();
+        } else {
+          loading = false;
+          notifyListeners();
+        }
+      }
+    } catch (e, stack) {
+      print(e);
+      print(stack);
+      return null;
+    }
+    return orders;
+  }
+
   Future<List<Order>?> addOrder() async {
     print("adding order");
     Map<String, List<FarmacoOrder>> cartSplitPerShop = {};
@@ -360,14 +423,17 @@ class CartProvider with ChangeNotifier {
     return orders;
   }
 
-  Future<List<Order>?> proceedOrder(BuildContext context) async {
+  Future<List<Order>?> proceedOrder(BuildContext context, String method) async {
     loading = true;
     notifyListeners();
 
     List<Order>? orders = [];
     try {
-      orders = await addOrder();
-
+      if (method == 'carta') {
+        orders = await addOrder();
+      } else if (method == 'contanti') {
+        orders = await addOrderContanti();
+      }
       if (orders != null && orders.isNotEmpty) {
         coupon = null;
         paymentMethod = null;

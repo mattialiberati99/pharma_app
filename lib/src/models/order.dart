@@ -109,9 +109,9 @@ class Order {
     params += "user_id=${user?.id}";
     params += "&order_status_id=${orderStatus?.id}";
     params += "&delivery_fee=$deliveryFee";
-    if (!deliveryAddress!.isUnknown()) {
+   /*  if (!deliveryAddress!.isUnknown()) {
       params += "&delivery_address_id= ${deliveryAddress?.id}";
-    }
+    } */
     params += "&importo=$importo";
     params += "&orario=$oraRitiro";
     params += "&note=$note";

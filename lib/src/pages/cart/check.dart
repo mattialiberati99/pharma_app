@@ -25,6 +25,7 @@ import '../../components/shadow_box.dart';
 import '../../dialogs/CustomDialog.dart';
 import '../../dialogs/order_success_dialog.dart';
 import '../../helpers/app_config.dart';
+import '../../helpers/helper.dart';
 import '../../models/food_order.dart';
 import '../../models/order.dart';
 import '../../providers/can_add_provider.dart';
@@ -177,6 +178,8 @@ class _CheckState extends ConsumerState<Check> {
     final userAddrProv = ref.read(userAddressesProvider);
     final addrProv = ref.watch(addressesProvider);
 
+    my_address = addrProv.addresses.first.address ?? locationText;
+
     return Scaffold(
       bottomSheet: Container(
         color: Colors.transparent,
@@ -195,7 +198,7 @@ class _CheckState extends ConsumerState<Check> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                gestisciPagamento(cartProv);
+                gestisciPagamento(cartProv, ordProv);
               },
             ),
           ],
@@ -820,7 +823,7 @@ class _CheckState extends ConsumerState<Check> {
     );
   }
 
-  void gestisciPagamento(cartProv) {
+  void gestisciPagamento(cartProv, ordProv) {
     String metodoScelto = '';
     if ((c1 || c2 || c3) && (first || scd)) {
       if (first) {
@@ -835,7 +838,7 @@ class _CheckState extends ConsumerState<Check> {
             cartProv.deliveryAddress!.address = my_address;
             Navigator.of(context).pushReplacementNamed('PayPal');
           } else if (c3) {
-            // TODO CONTANTI
+            pagaContanti(cartProv, ordProv, context);
           }
           //}
         } else {
@@ -1010,6 +1013,40 @@ class _CheckState extends ConsumerState<Check> {
         );
       },
     );
+  }
+
+  void pagaContanti(
+      CartProvider cartProv, OrdersProvider ordProv, BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Conferma Acquisto in Contanti'),
+            content:
+                Text('Sei sicuro di voler confermare l\'acquisto in contati?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Annulla'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await Helper.callFinalizeOrder(
+                      cartProv, ordProv, context, 'contanti');
+                  await Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          OrdinePagato(data.toString(), time.toString()),
+                    ),
+                  );
+                  cartProv.carts.clear();
+                },
+                child: Text('Conferma'),
+              ),
+            ],
+          );
+        });
   }
 
   void aggiungiIndirizzo(addrProv) async {
@@ -1232,9 +1269,9 @@ class _CheckState extends ConsumerState<Check> {
   }
 }
 
-finalizeOrder(CartProvider cartProv, OrdersProvider orderProv,
-    BuildContext context) async {
-  List<Order>? orders = await cartProv.proceedOrder(context);
+Future<void> finalizeOrder(CartProvider cartProv, OrdersProvider orderProv,
+    BuildContext context, String method) async {
+  List<Order>? orders = await cartProv.proceedOrder(context, method);
   if (orders != null && context.mounted) {
     orderProv.orders.insertAll(0, orders);
     cartProv.carts.clear();

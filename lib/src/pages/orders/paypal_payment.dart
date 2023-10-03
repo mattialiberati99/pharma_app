@@ -14,6 +14,7 @@ import '../../../main.dart';
 import '../../models/order.dart';
 import '../../models/order_status.dart';
 import '../../providers/cart_provider.dart';
+import '../../providers/paypal_provider.dart';
 import '../../providers/user_provider.dart';
 
 class PayPalPaymentWidget extends ConsumerStatefulWidget {
@@ -25,54 +26,20 @@ class PayPalPaymentWidget extends ConsumerStatefulWidget {
 }
 
 class _PayPalPaymentWidgetState extends ConsumerState<PayPalPaymentWidget> {
-  late String selectedUrl;
-  double value = 0.0;
-  bool _canRedirect = true;
-  bool _isLoading = true;
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
-  late WebViewController controllerGlobal;
-  late Order _order = Order();
-
+  late String _apiToken;
   @override
   void initState() {
-    super.initState();
-    final String _apiToken = 'api_token=${currentUser.value.apiToken}';
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _asyncMethod().then((order) {
-        _order = order;
-      }).catchError((error) {
-        logger.error("Error fetching order: $error");
-      });
-    });
-
-    selectedUrl =
-        '${GlobalConfiguration().getValue('base_url')}payments/paypal/express-checkout?$_apiToken&${_order.toPaypalMap()}';
-  }
-
-  Future<Order> _asyncMethod() async {
-    final cartProv = ref.read(cartProvider);
-    Order _order = Order();
-    _order.foodOrders = <FarmacoOrder>[];
-    // fixare data consegna
-    _order.consegna = DateTime.now();
-    _order.importo = cartProv.total.toStringAsFixed(2);
-    _order.user = currentUser.value;
-    _order.note = 'note';
-    _order.farmaciaId =
-        int.tryParse(cartProv.carts.first.product!.farmacia!.id!);
-    OrderStatus _orderStatus = OrderStatus();
-    _orderStatus.id = OrderStatus.received;
-    _order.orderStatus = _orderStatus;
-    _order.deliveryAddress = cartProv.deliveryAddress;
-    _order.sconto = cartProv.sconto;
-    return _order;
+    _apiToken = 'api_token=${currentUser.value.apiToken}';
   }
 
   @override
   Widget build(BuildContext context) {
+    final paypalProv = ref.watch(paypalProvider);
+    paypalProv.url =
+        '${GlobalConfiguration().getValue('base_url')}payments/paypal/express-checkout?$_apiToken&${paypalProv.order.toPaypalMap()}';
+    logger.info(paypalProv.url);
     return Scaffold(
+      //key: paypalProv.scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -86,67 +53,42 @@ class _PayPalPaymentWidgetState extends ConsumerState<PayPalPaymentWidget> {
       body: Stack(
         children: [
           WebView(
-            initialUrl: selectedUrl,
+            initialUrl: paypalProv.url,
             javascriptMode: JavascriptMode.unrestricted,
-            gestureNavigationEnabled: true,
-            onWebViewCreated: (WebViewController webViewController) {
-              _controller.future.then((value) => controllerGlobal = value);
-              _controller.complete(webViewController);
-              //_controller.future.catchError(onError);
-            },
-            onProgress: (int progress) {
-              print("WebView is loading (progress: $progress%)");
+            onWebViewCreated: (WebViewController controller) {
+              paypalProv.webView = controller;
             },
             onPageStarted: (String url) {
               print("Page started loading: $url");
               setState(() {
-                _isLoading = true;
+                paypalProv.url = url;
               });
-              print("printing urls " + url.toString());
-              _redirect(url);
+              if (url ==
+                  "${GlobalConfiguration().getValue('base_url')}payments/paypal") {
+                Navigator.of(context).pushReplacementNamed(
+                  'OrderSuccess',
+                );
+              }
             },
             onPageFinished: (String url) {
-              print('Page finished loading: $url');
               setState(() {
-                _isLoading = false;
+                paypalProv.progress = 1;
               });
-              _redirect(url);
             },
           ),
-          _isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).primaryColor),
+          paypalProv.progress < 1
+              ? SizedBox(
+                  height: 3,
+                  child: LinearProgressIndicator(
+                    backgroundColor: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.2),
                   ),
                 )
               : const SizedBox.shrink(),
         ],
       ),
     );
-  }
-
-  void _redirect(String url) {
-    print("redirect");
-    if (_canRedirect) {
-      bool _isSuccess = url.contains('success') &&
-          url.contains("${GlobalConfiguration().getValue('base_url')}");
-      bool _isFailed = url.contains('fail') &&
-          url.contains("${GlobalConfiguration().getValue('base_url')}");
-      bool _isCancel = url.contains('cancel') &&
-          url.contains("${GlobalConfiguration().getValue('base_url')}");
-      if (_isSuccess || _isFailed || _isCancel) {
-        _canRedirect = false;
-      }
-      if (_isSuccess) {
-        Navigator.of(context).pushReplacementNamed(
-          '/OrderSuccess',
-        );
-      } else if (_isFailed || _isCancel) {
-        print("failed");
-      } else {
-        print("Encountered problem");
-      }
-    }
   }
 }

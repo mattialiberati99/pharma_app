@@ -508,7 +508,7 @@ class _CartPageState extends ConsumerState<CartPage> {
 
   finalizeOrder(CartProvider cartProv, OrdersProvider orderProv,
       BuildContext context) async {
-    List<Order>? orders = await cartProv.proceedOrder(context);
+    List<Order>? orders = await cartProv.proceedOrder(context, 'carta');
     if (orders != null && orders.isNotEmpty) {
       orderProv.orders.insertAll(0, orders);
       showDialog(

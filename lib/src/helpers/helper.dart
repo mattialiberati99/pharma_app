@@ -504,7 +504,7 @@ class Helper {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      callFinalizeOrder(cartProv, orderProv, context);
+                      callFinalizeOrder(cartProv, orderProv, context, 'method');
                       // TODO ACQUISTI
                     },
                     child: Text('Paga'))
@@ -515,10 +515,10 @@ class Helper {
     }
   }
 
-  static void callFinalizeOrder(
-      CartProvider cartProv, OrdersProvider orderProv, BuildContext context) {
+  static Future<void> callFinalizeOrder(
+      CartProvider cartProv, OrdersProvider ordProv, BuildContext context, String method) async{
     try {
-      finalizeOrder(cartProv, orderProv, context);
+      await finalizeOrder(cartProv, ordProv, context, method);
     } catch (e) {
       logger.error('Errore nel pagamento');
     }
