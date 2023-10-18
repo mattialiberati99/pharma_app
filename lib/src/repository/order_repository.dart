@@ -201,7 +201,7 @@ Future<Order?> addOrder(Order order,
   if (_user.apiToken == null) {
     return null;
   }
-  order.payment = Payment('contanti');
+  order.payment = Payment('Contanti');
   final String url = '${GlobalConfiguration().getValue('api_base_url')}orders';
   Map<String, dynamic> _queryParams = {};
   _queryParams['api_token'] = _user.apiToken;

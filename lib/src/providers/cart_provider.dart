@@ -259,20 +259,20 @@ class CartProvider with ChangeNotifier {
       for (MapEntry entry in cartSplitPerShop.entries) {
         Order _order = Order();
         _order.foodOrders = entry.value;
+        _order.deliveryFee = delivery_fee;
         //_order.tax = checkout!.cart!.taxAmount;
         //_order.note = checkout.note;
         _order.farmaciaId = int.tryParse(entry.value.first.food!.farmacia!.id);
         _order.consegna = DateTime.now().add(
             Duration(days: entry.value.first.food!.farmacia!.giorni_consegna!));
         _order.importo = total.toStringAsFixed(2);
+
         OrderStatus _orderStatus = OrderStatus();
         _orderStatus.id = OrderStatus.received;
-        _orderStatus.status = 'Contanti';
         _order.orderStatus = _orderStatus;
         _order.deliveryAddress = deliveryAddress;
         _order.sconto = sconto;
         _order.discountCode = coupon?.code ?? '';
-
         Order? newOrder = await orderRepo.addOrder(
           _order,
         );

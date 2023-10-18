@@ -50,7 +50,7 @@ class Aestetic extends StatelessWidget {
       ),
       body: Container(
         child: Column(
-          children: [
+          children: const [
             Image(
                 image: AssetImage(
                     'assets/immagini_pharma/illustration_delivery.png')),

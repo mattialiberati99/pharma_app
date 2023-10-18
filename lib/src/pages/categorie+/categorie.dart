@@ -10,6 +10,7 @@ import 'package:pharma_app/src/providers/categories_provider.dart';
 import 'package:pharma_app/src/providers/favorites_provider.dart';
 import 'package:pharma_app/src/providers/food_provider.dart';
 import 'package:pharma_app/src/repository/addresses_repository.dart';
+import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
 
 import '../../../main.dart';
@@ -64,7 +65,8 @@ class _CategorieState extends ConsumerState<Categorie> {
                     icon: Icon(Icons.arrow_back_ios)),
                 Text(
                   widget.nomeCategoria.name!,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  style:
+                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -80,8 +82,8 @@ class _CategorieState extends ConsumerState<Categorie> {
                 )
               ],
             ),
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 2.2.h,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
@@ -100,8 +102,8 @@ class _CategorieState extends ConsumerState<Categorie> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 2.2.h,
             ),
             AsyncValueWidget(
               loading: const CircularProgressIndicator(),
@@ -171,8 +173,8 @@ class FarmacoCategoria extends ConsumerWidget {
           alignment: AlignmentDirectional.bottomStart,
           children: [
             SizedBox(
-              width: 174,
-              height: 276,
+              width: 42.w,
+              height: 31.h,
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(
                   Radius.circular(14.0),
@@ -203,6 +205,7 @@ class FarmacoCategoria extends ConsumerWidget {
                       children: [
                         Text(
                           farmaco.name!,
+                          maxLines: 2,
                           style: const TextStyle(
                               color: Color.fromARGB(255, 9, 15, 71),
                               fontSize: 14),
@@ -216,15 +219,15 @@ class FarmacoCategoria extends ConsumerWidget {
                                   bottomLeft: Radius.circular(20)),
                               child: Container(
                                 color: AppColors.primary,
-                                width: 48,
-                                height: 24,
+                                width: 11.6.w,
+                                height: 2.7.h,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(left: 4.0),
                                       child: Text('${farmaco.price!}€',
-                                          style: context.textTheme.subtitle2
+                                          style: context.textTheme.titleSmall
                                               ?.copyWith(
                                                   color: Colors.white,
                                                   fontSize: 14)),

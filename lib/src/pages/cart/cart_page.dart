@@ -120,8 +120,8 @@ class _CartPageState extends ConsumerState<CartPage> {
                       'Acquista',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      await Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Check()));

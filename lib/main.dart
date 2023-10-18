@@ -61,20 +61,22 @@ void main() async {
         print("nananananoooo");
       } else {
         showDialog(
-            context: navigatorKey.currentContext!,
-            builder: (_) => ConfirmDialog(
-                title: message.notification!.title!,
-                description: message.notification!.body!,
-                action: AppButton(
-                  buttonText: message.data['button_text'] ?? "Controlla",
-                  onPressed: () {
-                    Navigator.of(navigatorKey.currentContext!).pushNamed(
-                        message.data['screen'],
-                        arguments: RouteArgument(
-                            id: message.data['id'],
-                            showFull: message.data['full'] ?? false));
-                  },
-                )));
+          context: navigatorKey.currentContext!,
+          builder: (_) => ConfirmDialog(
+            title: message.notification!.title!,
+            description: message.notification!.body!,
+            action: AppButton(
+              buttonText: message.data['button_text'] ?? "Controlla",
+              onPressed: () {
+                Navigator.of(navigatorKey.currentContext!).pushNamed(
+                    message.data['screen'],
+                    arguments: RouteArgument(
+                        id: message.data['id'],
+                        showFull: message.data['full'] ?? false));
+              },
+            ),
+          ),
+        );
       }
     }
   });

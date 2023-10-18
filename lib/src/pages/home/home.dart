@@ -15,6 +15,7 @@ import 'package:pharma_app/src/providers/categories_provider.dart';
 import 'package:pharma_app/src/providers/home_cuisines_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../components/main_app_bar.dart';
 import '../../components/search_bar/home_search_bar.dart';
@@ -186,12 +187,26 @@ class _HomeState extends ConsumerState<Home> {
                                       width: 48,
                                       height: 48,
                                       decoration: BoxDecoration(
-                                          color: AppAssets.colori[index],
+                                          // color: AppAssets.colori[index],
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(100))),
-                                      child: Image(
-                                          image: AssetImage(
-                                              AppAssets.immagini[index])),
+                                      child: categorie.categories.values
+                                                  .elementAt(index)
+                                                  .image
+                                                  ?.icon !=
+                                              null
+                                          ? CachedNetworkImage(
+                                              imageUrl: categorie
+                                                  .categories.values
+                                                  .elementAt(index)
+                                                  .image!
+                                                  .icon!,
+                                            )
+                                          : SizedBox(),
+                                      /* Image(
+                                        image: AssetImage(
+                                            AppAssets.immagini[index]),
+                                      ), */
                                     ),
                                     Container(
                                       child: Text(
