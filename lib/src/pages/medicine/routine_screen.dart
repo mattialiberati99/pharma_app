@@ -2,11 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pharma_app/src/components/search_bar/search_bar_terapie.dart';
+import 'package:pharma_app/src/components/search_bar/search_bar_routine.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
-import 'package:pharma_app/src/pages/medicine/widgets/medicina_terapia.dart';
-import 'package:pharma_app/src/pages/medicine/widgets/screen2terapie.dart';
-import 'package:pharma_app/src/providers/terapia_provider.dart';
+import 'package:pharma_app/src/pages/medicine/widgets/medicina_routine.dart';
+import 'package:pharma_app/src/pages/medicine/widgets/screen2routine.dart';
+import 'package:pharma_app/src/providers/routine_provider.dart';
 
 import '../../../generated/l10n.dart';
 import '../../components/drawer/app_drawer.dart';
@@ -16,16 +16,16 @@ import '../../components/search_bar/shop_search_bar.dart';
 import '../../helpers/app_config.dart';
 import '../../models/farmaco.dart';
 
-class TerapieScreen extends ConsumerStatefulWidget {
+class RoutineScreen extends ConsumerStatefulWidget {
   @override
-  ConsumerState<TerapieScreen> createState() => _TerapieScreenState();
+  ConsumerState<RoutineScreen> createState() => _RoutineScreenState();
 }
 
-class _TerapieScreenState extends ConsumerState<TerapieScreen> {
-  List<Farmaco> leMieTerapie = [];
+class _RoutineScreenState extends ConsumerState<RoutineScreen> {
+  List<Farmaco> leMieRoutine = [];
   final tx = TextEditingController(text: '');
   Farmaco? selectedProduct;
-  String nomeTerapia = '';
+  String nomeRoutine = '';
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                   const SizedBox(height: 50),
                   const Text('Aggiungi il farmaco'),
                   const SizedBox(height: 20),
-                  SearchBarTerapie(callback: selectProduct),
+                  SearchBarRoutine(callback: selectProduct),
                   const SizedBox(height: 20),
                   selectedProduct != null
                       ? Center(
@@ -88,32 +88,35 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Image(
-                                          image: NetworkImage(
-                                              selectedProduct!.image!.url!),
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.14,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.05),
+                                        image: NetworkImage(
+                                            selectedProduct!.image!.url!),
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.14,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.05,
+                                      ),
                                       const SizedBox(width: 10),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            selectedProduct != null
-                                                ? selectedProduct!.name!
-                                                : '',
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      )
+                                      Expanded(
+                                        // Wrap the Text widget in an Expanded widget
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              selectedProduct != null
+                                                  ? selectedProduct!.name!
+                                                  : '',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
-                                  ),
+                                  )
                                 ],
                               ),
                               const SizedBox(height: 10),
@@ -125,7 +128,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
-                                      _screenTerapia(context, selectedProduct!);
+                                      _screenRoutine(context, selectedProduct!);
                                       //   Navigator.of(context)
                                       //  .pop();
                                     },
@@ -159,7 +162,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
     });
   }
 
-  _screenTerapia(BuildContext ctx, Farmaco prodotto) {
+  _screenRoutine(BuildContext ctx, Farmaco prodotto) {
     showModalBottomSheet(
         backgroundColor: Colors.white,
         shape: const RoundedRectangleBorder(
@@ -168,12 +171,12 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
         ),
         isScrollControlled: true,
         context: ctx,
-        builder: (_) => Screen2Terapie(prodotto, nomeTerapia));
+        builder: (_) => Screen2Routine(prodotto, nomeRoutine));
   }
 
   @override
   Widget build(BuildContext context) {
-    final leMieMed = ref.watch(terapiaProvider);
+    final leMieMed = ref.watch(routineProvider);
     FlutterNativeSplash.remove();
 
     if (leMieMed.isEmpty()) {
@@ -186,7 +189,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                 children: [
                   const SizedBox(height: 15),
                   const Text(
-                    'Le mie terapie',
+                    'Le mie routine',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
@@ -213,7 +216,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                         width: 210,
                         child: ElevatedButton(
                           onPressed: () {
-                            /*  Noti().showTerapiaNotification(
+                            /*  Noti().showRoutineNotification(
                                 title: 'Prova', body: 'Funge'); */
                             showModalBottomSheet(
                                 shape: const RoundedRectangleBorder(
@@ -240,7 +243,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             const Text(
-                                              'Aggiungi un nome alla terapia:',
+                                              'Aggiungi un nome alla routine:',
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500),
@@ -254,13 +257,13 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                               child: TextFormField(
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    nomeTerapia = tx.text;
+                                                    nomeRoutine = tx.text;
                                                   });
                                                 },
                                                 onSaved: (value) {
                                                   if (tx.text.isNotEmpty) {
                                                     setState(() {
-                                                      nomeTerapia = tx.text;
+                                                      nomeRoutine = tx.text;
                                                     });
                                                   }
                                                 },
@@ -313,7 +316,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                                                   Radius
                                                                       .circular(
                                                                           10))),
-                                                  hintText: 'Nome Terapia',
+                                                  hintText: 'Nome Routine',
                                                   hintStyle: TextStyle(
                                                       color: Color.fromARGB(
                                                           255, 182, 184, 183)),
@@ -330,7 +333,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                                 width: 246,
                                                 child: ElevatedButton(
                                                   onPressed: () {
-                                                    if (nomeTerapia
+                                                    if (nomeRoutine
                                                         .isNotEmpty) {
                                                       print(tx.text);
                                                       Navigator.of(context)
@@ -342,7 +345,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                                           .showSnackBar(
                                                         const SnackBar(
                                                           content: Text(
-                                                              "Inserisci nome terapia"),
+                                                              "Inserisci nome routine"),
                                                         ),
                                                       );
                                                     }
@@ -360,7 +363,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                                     ),
                                                   ),
                                                   child: const Text(
-                                                    'Crea Terapia',
+                                                    'Crea Routine',
                                                   ),
                                                 )),
                                             const SizedBox(
@@ -388,7 +391,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                             ),
                           ),
                           child: const Text(
-                            'Aggiungi terapia',
+                            'Aggiungi routine',
                           ),
                         ),
                       ),
@@ -410,7 +413,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
               height: 20,
             ),
             const Text(
-              'Le mie terapie',
+              'Le mie routine',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(
@@ -420,7 +423,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: leMieMed.length,
-              itemBuilder: (ctx, i) => leMieMed.terapie[i],
+              itemBuilder: (ctx, i) => leMieMed.routine[i],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -446,7 +449,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   const Text(
-                                    'Aggiungi un nome alla terapia:',
+                                    'Aggiungi un nome alla routine:',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500),
@@ -460,13 +463,13 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                     child: TextFormField(
                                       onChanged: (value) {
                                         setState(() {
-                                          nomeTerapia = tx.text;
+                                          nomeRoutine = tx.text;
                                         });
                                       },
                                       onSaved: (value) {
                                         if (tx.text.isNotEmpty) {
                                           setState(() {
-                                            nomeTerapia = tx.text;
+                                            nomeRoutine = tx.text;
                                           });
                                         }
                                       },
@@ -498,7 +501,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                                 color: AppColors.gray4),
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(10))),
-                                        hintText: 'Nome Terapia',
+                                        hintText: 'Nome Routine',
                                         hintStyle: TextStyle(
                                             color: Color.fromARGB(
                                                 255, 182, 184, 183)),
@@ -513,7 +516,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                   SizedBox(
                                     height: 50,
                                     width: 246,
-                                    child: nomeTerapia.isNotEmpty
+                                    child: nomeRoutine.isNotEmpty
                                         ? ElevatedButton(
                                             onPressed: () {
                                               Navigator.of(context).pop();
@@ -531,7 +534,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                               ),
                                             ),
                                             child: const Text(
-                                              'Crea Terapia',
+                                              'Crea Routine',
                                             ),
                                           )
                                         : ElevatedButton(
@@ -546,7 +549,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                                               ),
                                             ),
                                             child: const Text(
-                                              'Crea Terapia',
+                                              'Crea Routine',
                                             ),
                                           ),
                                   ),
@@ -574,7 +577,7 @@ class _TerapieScreenState extends ConsumerState<TerapieScreen> {
                     ),
                   ),
                   child: const Text(
-                    'Aggiungi terapia',
+                    'Aggiungi routine',
                   ),
                 ),
               ],

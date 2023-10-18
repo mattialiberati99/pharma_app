@@ -129,7 +129,7 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                                           'assets/immagini_pharma/Rectangle.png'),
                                       const SizedBox(height: 30),
                                       DrawerItem(
-                                        pageName: 'Terapie',
+                                        pageName: 'Routine',
                                         iconPath:
                                             'assets/ico/Jar Of Pills 2.svg',
                                         onPressed: () {

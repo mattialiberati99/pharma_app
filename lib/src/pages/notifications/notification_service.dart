@@ -12,8 +12,8 @@ class NotificationService {
         NotificationChannel(
           channelKey: 'high_importance_channel',
           channelGroupKey: 'high_importance_channel',
-          channelName: 'Terapie',
-          channelDescription: 'Notification channel for terapie',
+          channelName: 'Routine',
+          channelDescription: 'Notification channel for routine',
           defaultColor: AppColors.primary,
           ledColor: Colors.white,
           importance: NotificationImportance.Max,

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pharma_app/src/pages/medicine/widgets/medicina_terapia.dart';
-import 'package:pharma_app/src/providers/terapia_provider.dart';
+import 'package:pharma_app/src/pages/medicine/widgets/medicina_routine.dart';
+import 'package:pharma_app/src/providers/routine_provider.dart';
 
 import '../../../../main.dart';
 import '../../../helpers/app_config.dart';
@@ -15,13 +15,13 @@ import '../../notifications/notification_service.dart';
 
 class ScreenReminder extends ConsumerStatefulWidget {
   Farmaco prodotto;
-  String nomeTerapia;
+  String nomeRoutine;
   List<int> giorni;
   String orario;
   String quantita;
   String durata;
 
-  ScreenReminder(this.prodotto, this.nomeTerapia, this.giorni, this.orario,
+  ScreenReminder(this.prodotto, this.nomeRoutine, this.giorni, this.orario,
       this.quantita, this.durata);
 
   @override
@@ -106,7 +106,7 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
 
   @override
   Widget build(BuildContext context) {
-    final leMieMed = ref.read(terapiaProvider);
+    final leMieMed = ref.read(routineProvider);
     final notificationProv = ref.watch(notificationProvider);
 
     return Container(
@@ -188,7 +188,7 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                             height: 10,
                           ),
                           Text(
-                            'Terapia ',
+                            'Routine ',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 140, 149, 149),
                                 fontSize: 12),
@@ -197,7 +197,7 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                             height: 5,
                           ),
                           Text(
-                            widget.nomeTerapia,
+                            widget.nomeRoutine,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
@@ -1056,46 +1056,61 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                   width: 185,
                   height: 38,
                   decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.gray5),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white),
+                    border: Border.all(color: AppColors.gray5),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        '${widget.durata} Compresse',
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
+                      Expanded(
+                        child: Text(
+                          '${widget.durata} Comp',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                    width: 185,
-                    height: 38,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.gray5),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        color: Colors.white),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (int.parse(widget.durata) - widget.giorni.length > 0)
-                          Text(
-                            '${int.parse(widget.durata) - widget.giorni.length} Mancanti',
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600),
-                          ),
-                        if (int.parse(widget.durata) - widget.giorni.length ==
-                            0)
-                          const Text(
-                            '0 Mancanti',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600),
-                          ),
-                      ],
-                    )),
+                  width: 185,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.gray5),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child:
+                            (int.parse(widget.durata) - widget.giorni.length >
+                                    0)
+                                ? Text(
+                                    '${int.parse(widget.durata) - widget.giorni.length} Man',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                : const Text(
+                                    '0 Man',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             ElevatedButton(
@@ -1104,9 +1119,9 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                 dateNotifiche = convertGiorniInDate(widget.giorni);
                 sendNotifiche(dateNotifiche);
 
-                MedicinaTerapia medicina = MedicinaTerapia(
+                MedicinaRoutine medicina = MedicinaRoutine(
                     widget.prodotto,
-                    widget.nomeTerapia,
+                    widget.nomeRoutine,
                     widget.giorni,
                     widget.durata,
                     widget.quantita,
@@ -1117,7 +1132,7 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                     dialogType: DialogType.error,
                     animType: AnimType.bottomSlide,
                     title: "Errore",
-                    desc: "La medicina è già presente nelle terapie!",
+                    desc: "La medicina è già presente nelle routine!",
                     btnOkOnPress: Navigator.of(context).pop,
                   ).show();
                 }
@@ -1127,7 +1142,7 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                   dialogType: DialogType.success,
                   animType: AnimType.topSlide,
                   title: "Medicina Aggiunta",
-                  desc: "Medicina aggiunta correttamente alle terapie!",
+                  desc: "Medicina aggiunta correttamente alle routine!",
                   btnOkOnPress: () {
                     Navigator.of(context)
                         .pushReplacementNamed('Le Mie Medicine');

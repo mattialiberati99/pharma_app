@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:pharma_app/src/pages/medicine/armadietto_screen.dart';
-import 'package:pharma_app/src/pages/medicine/terapie_screen.dart';
+import 'package:pharma_app/src/pages/medicine/routine_screen.dart';
 
 import '../../components/drawer/app_drawer.dart';
 import '../../components/meds_app_bar.dart';
@@ -10,9 +10,9 @@ import '../../components/bottomNavigation.dart';
 
 class TabsScreen extends StatefulWidget {
   final List<Farmaco> leMieMedicine;
-  final List<Farmaco> leMieTerapie;
+  final List<Farmaco> leMieRoutine;
 
-  TabsScreen(this.leMieMedicine, this.leMieTerapie);
+  TabsScreen(this.leMieMedicine, this.leMieRoutine);
 
   @override
   State<TabsScreen> createState() => _TabsScreenState();
@@ -62,7 +62,7 @@ class _TabsScreenState extends State<TabsScreen>
               unselectedLabelColor: Color(0xFFC7D0D7),
               labelColor: Colors.white,
               tabs: const [
-                Tab(text: 'Terapie'),
+                Tab(text: 'Routine'),
                 Tab(text: 'Armadietto'),
               ],
               controller: _tabController,
@@ -73,7 +73,7 @@ class _TabsScreenState extends State<TabsScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                TerapieScreen(),
+                RoutineScreen(),
                 ArmadiettoScreen(),
               ],
             ),

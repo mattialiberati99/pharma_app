@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../pages/medicine/widgets/medicina_terapia.dart';
+import '../pages/medicine/widgets/medicina_routine.dart';
 
 final indirizziConsegnaProvider =
     ChangeNotifierProvider<IndirizziConsegnaProvider>((ref) {
@@ -96,10 +96,10 @@ class IndirizziConsegnaProvider with ChangeNotifier {
     return indirizzi;
   }
 
-  void remove(MedicinaTerapia medicina) async {
-    _terapie.remove(medicina);
+  void remove(MedicinaRoutine medicina) async {
+    _routine.remove(medicina);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('miaTerapia');
+    await prefs.remove('miaRoutine');
     notifyListeners();
   } */
 }

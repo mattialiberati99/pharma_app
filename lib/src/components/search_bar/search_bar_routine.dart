@@ -9,12 +9,12 @@ import 'package:pharma_app/src/models/shop.dart';
 import '../../../generated/l10n.dart';
 import '../../helpers/app_config.dart';
 import '../../models/search_result.dart';
-import '../../pages/medicine/terapie_screen.dart';
+import '../../pages/medicine/routine_screen.dart';
 import '../../providers/shops_provider.dart';
 import '../../repository/food_repository.dart';
 import '../../repository/restaurant_repository.dart';
 
-class SearchBarTerapie extends ConsumerStatefulWidget {
+class SearchBarRoutine extends ConsumerStatefulWidget {
   final ValueChanged? onClickFilter;
   final Function? onSuggestionSelected;
   final String? restaurant_id;
@@ -25,7 +25,7 @@ class SearchBarTerapie extends ConsumerStatefulWidget {
   final String? routePage;
   final Function(Farmaco) callback;
 
-  const SearchBarTerapie({
+  const SearchBarRoutine({
     Key? key,
     this.onClickFilter,
     this.onSuggestionSelected,
@@ -39,10 +39,10 @@ class SearchBarTerapie extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   @override
-  ConsumerState<SearchBarTerapie> createState() => _SearchBarTerapieState();
+  ConsumerState<SearchBarRoutine> createState() => _SearchBarRoutineState();
 }
 
-class _SearchBarTerapieState extends ConsumerState<SearchBarTerapie> {
+class _SearchBarRoutineState extends ConsumerState<SearchBarRoutine> {
   Farmaco? selectedProduct;
   @override
   Widget build(BuildContext context) {
@@ -163,7 +163,7 @@ class _SearchBarTerapieState extends ConsumerState<SearchBarTerapie> {
         SearchResult search = SearchResult(
             text: product.name!,
             id: product.id!,
-            route: 'SearchBarTerapie',
+            route: 'SearchBarRoutine',
             type: SearchResult.food,
             data: product);
         elements.add(search);

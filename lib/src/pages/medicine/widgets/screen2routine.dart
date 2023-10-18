@@ -9,17 +9,17 @@ import 'package:sizer/sizer.dart';
 import '../../../helpers/app_config.dart';
 import '../../../providers/notification_provider.dart';
 
-class Screen2Terapie extends ConsumerStatefulWidget {
+class Screen2Routine extends ConsumerStatefulWidget {
   Farmaco prodotto;
-  String nomeTerapia;
+  String nomeRoutine;
 
-  Screen2Terapie(this.prodotto, this.nomeTerapia);
+  Screen2Routine(this.prodotto, this.nomeRoutine);
 
   @override
-  ConsumerState<Screen2Terapie> createState() => _Screen2TerapieState();
+  ConsumerState<Screen2Routine> createState() => _Screen2RoutineState();
 }
 
-class _Screen2TerapieState extends ConsumerState<Screen2Terapie> {
+class _Screen2RoutineState extends ConsumerState<Screen2Routine> {
   TextEditingController tx = TextEditingController();
 
   TextEditingController durata = TextEditingController();
@@ -46,7 +46,7 @@ class _Screen2TerapieState extends ConsumerState<Screen2Terapie> {
         isScrollControlled: true,
         context: ctx,
         builder: (_) => ScreenReminder(
-            widget.prodotto, widget.nomeTerapia, [], orario, quantita, durata));
+            widget.prodotto, widget.nomeRoutine, [], orario, quantita, durata));
   }
 
   @override

@@ -16,7 +16,7 @@ import 'package:pharma_app/src/pages/login/success_verification_page.dart';
 import 'package:pharma_app/src/pages/login/verify_otp.dart';
 import 'package:pharma_app/src/pages/medicine/reminder_screen.dart';
 import 'package:pharma_app/src/pages/medicine/tabs_screen.dart';
-import 'package:pharma_app/src/pages/medicine/terapie_screen.dart';
+import 'package:pharma_app/src/pages/medicine/routine_screen.dart';
 import 'package:pharma_app/src/pages/notifications/notifications.dart';
 import 'package:pharma_app/src/pages/orders/order.dart';
 import 'package:pharma_app/src/pages/orders/order_success.dart';
@@ -37,7 +37,7 @@ import 'package:pharma_app/src/pages/shop_detail/widget/product_detail_sheet.dar
 import 'package:pharma_app/src/pages/shops_by_address/shops_address.dart';
 import 'package:pharma_app/src/pages/tracking/tracking.dart';
 import 'package:pharma_app/src/repository/paymentCards_repository.dart';
-import 'src/components/search_bar/search_bar_terapie.dart';
+import 'src/components/search_bar/search_bar_routine.dart';
 import 'src/pages/chat/messages_page.dart';
 import 'src/pages/error.dart';
 import 'src/pages/filters/filters.dart';
@@ -57,7 +57,7 @@ class RouteGenerator {
     }
 
     List<Farmaco> _leMieMedicine = [];
-    List<Farmaco> _leMieTerapie = [];
+    List<Farmaco> _leMieRoutine = [];
 
     switch (settings.name) {
       case 'Splash':
@@ -110,8 +110,7 @@ class RouteGenerator {
       case 'GestisciCarte':
         return MaterialPageRoute(builder: (_) => const CarteWidget());
       case 'PayPal':
-        return MaterialPageRoute(
-            builder: (_) => PayPalPaymentWidget());
+        return MaterialPageRoute(builder: (_) => PayPalPaymentWidget());
       case 'NewCard':
         return MaterialPageRoute(
             builder: (_) => Material(
@@ -129,7 +128,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const Home());
       case 'Le Mie Medicine':
         return MaterialPageRoute(
-            builder: (_) => TabsScreen(_leMieMedicine, _leMieTerapie));
+            builder: (_) => TabsScreen(_leMieMedicine, _leMieRoutine));
       case 'Notifiche':
         return MaterialPageRoute(builder: (_) => const NotificationsWidget());
       case 'Preferiti':
