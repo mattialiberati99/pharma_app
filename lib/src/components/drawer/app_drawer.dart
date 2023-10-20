@@ -18,7 +18,7 @@ import '../../providers/selected_page_name_provider.dart';
 
 final _drawerItems = <String>[
   'Home',
-  'Le Mie Medicine',
+  'Le Mie Routine',
   'Ordini',
   'Preferiti',
   'Chat',
@@ -29,7 +29,7 @@ final _drawerItems = <String>[
 
 final _drawerIcons = <String, String>{
   'Home': AppAssets.home,
-  'Le Mie Medicine': AppAssets.medicine,
+  'Le Mie Routine': AppAssets.medicine,
   'Ordini': AppAssets.ordini,
   'Preferiti': AppAssets.preferiti,
   'Chat': AppAssets.chat,

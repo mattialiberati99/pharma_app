@@ -1145,7 +1145,7 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                   desc: "Medicina aggiunta correttamente alle routine!",
                   btnOkOnPress: () {
                     Navigator.of(context)
-                        .pushReplacementNamed('Le Mie Medicine');
+                        .pushReplacementNamed('Le Mie Routine');
                   },
                 ).show();
               },

@@ -126,7 +126,7 @@ class _HomeState extends ConsumerState<Home> {
                   ),
                   GestureDetector(
                     onTap: () =>
-                        Navigator.of(context).pushNamed("Le Mie Medicine"),
+                        Navigator.of(context).pushNamed("Le Mie Routine"),
                     child: Image(
                       width: 87.4.w,
                       height: 11.1.h,

@@ -135,7 +135,7 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                                         onPressed: () {
                                           Navigator.of(context)
                                               .pushReplacementNamed(
-                                                  'Le Mie Medicine');
+                                                  'Le Mie Routine');
                                         },
                                       ),
                                       DrawerItem(
@@ -144,7 +144,7 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                                         onPressed: () {
                                           Navigator.of(context)
                                               .pushReplacementNamed(
-                                                  'Le Mie Medicine');
+                                                  'Le Mie Routine');
                                         },
                                       ),
                                     ],

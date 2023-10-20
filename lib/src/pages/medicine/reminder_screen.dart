@@ -223,7 +223,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                               
                             btnOkOnPress: () {
                               Navigator.of(context)
-                                  .pushReplacementNamed('Le Mie Medicine');
+                                  .pushReplacementNamed('Le Mie Routine');
                             },
                           ).show();
                           ;

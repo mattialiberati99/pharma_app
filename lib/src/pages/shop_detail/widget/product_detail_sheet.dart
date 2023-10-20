@@ -72,7 +72,7 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final canAdd = ref.watch(canAddProvider);
+    //final canAdd = ref.watch(canAddProvider);
     final farmaci = ref.watch(foodProvider(widget.product.farmacia!.id!));
     final favorites = ref.watch(favoritesProvider);
     FarmacoFavorite? isFavorite = favorites.getFarmacoFavorite(widget.product);
@@ -355,33 +355,21 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
         firstAction: () {
           // TODO: FIX CATEGORIA ID NULL
           logger.info(widget.product.category!.id);
-          canAdd
-              ? {
-                  if (size != null) extras.add(size!),
-                  if (color != null) extras.add(color!),
-                  cart.add(widget.product, quantity, extras),
-                  print(widget.product.name),
-                  AwesomeDialog(
-                      context: context,
-                      dialogType: DialogType.success,
-                      animType: AnimType.topSlide,
-                      showCloseIcon: true,
-                      title: "Aggiunto",
-                      desc: "Prodotto aggiunto correttamente al carrello",
-                      btnOkOnPress: () {
-                        Navigator.of(context).pushReplacementNamed('Cart');
-                      }).show(),
-                }
-              : ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                        'Non puoi ordinare da più negozi contemporaneamente'),
-                    action: SnackBarAction(
-                      onPressed: () => Navigator.of(context).pushNamed('Cart'),
-                      label: 'Vai al carrello',
-                    ),
-                  ),
-                );
+
+          if (size != null) extras.add(size!);
+          if (color != null) extras.add(color!);
+          cart.add(widget.product, quantity, extras);
+          print(widget.product.name);
+          AwesomeDialog(
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.topSlide,
+              showCloseIcon: true,
+              title: "Aggiunto",
+              desc: "Prodotto aggiunto correttamente al carrello",
+              btnOkOnPress: () {
+                Navigator.of(context).pushReplacementNamed('Cart');
+              }).show();
         },
         // firstAction: () {
         //   if (size != null) extras.add(size!);
@@ -398,17 +386,6 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
     );
   }
 }
-
-// firstAction:  () => ref.watch(canAddProvider) ? context.navigator.pushNamed('Cart') :
-// ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-// content:
-// Text('Non puoi ordinare da più negozi contemporaneamente'),
-// action: SnackBarAction(
-// onPressed: () =>
-// Navigator.of(context).pushNamed('Cart'),
-// label: 'Vai al carrello',
-// ),
-// )),
 
 class QuantitySetter extends StatefulWidget {
   final int quantity;

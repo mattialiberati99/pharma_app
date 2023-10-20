@@ -71,7 +71,7 @@ class MedsAppBar extends ConsumerWidget implements PreferredSizeWidget {
                     child: Container(
                       margin: const EdgeInsets.only(top: 40),
                       child: const Text(
-                        'Le mie medicine',
+                        'Le mie routine',
                         style: TextStyle(
                           fontSize: 28,
                           color: Colors.white,

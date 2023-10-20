@@ -126,9 +126,9 @@ class RouteGenerator {
                 ));
       case 'Home':
         return MaterialPageRoute(builder: (_) => const Home());
-      case 'Le Mie Medicine':
+      case 'Le Mie Routine':
         return MaterialPageRoute(
-            builder: (_) => TabsScreen(_leMieMedicine, _leMieRoutine));
+            builder: (_) => TabsScreen(_leMieRoutine, _leMieRoutine));
       case 'Notifiche':
         return MaterialPageRoute(builder: (_) => const NotificationsWidget());
       case 'Preferiti':

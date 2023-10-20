@@ -312,42 +312,27 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                               .quantity!,
                                                           onAdd: () =>
                                                               setState(() {
-                                                            if (cartProv
+                                                            cartProv.add(
+                                                                cartProv
                                                                     .carts[
                                                                         index]
-                                                                    .quantity! <
-                                                                100) {
-                                                              cartProv.add(
-                                                                  cartProv
-                                                                      .carts[
-                                                                          index]
-                                                                      .product!,
-                                                                  1,
-                                                                  cartProv
-                                                                      .carts[
-                                                                          index]
-                                                                      .extras!);
-                                                              prezzoTot += cartProv
-                                                                  .carts[index]
-                                                                  .product!
-                                                                  .discountPrice!;
-                                                              scontoTot +=
-                                                                  cartProv
-                                                                      .carts[
-                                                                          index]
-                                                                      .product!
-                                                                      .price!;
-                                                              quantity++;
-                                                            } else {
-                                                              ScaffoldMessenger
-                                                                      .of(
-                                                                          context)
-                                                                  .showSnackBar(
-                                                                      const SnackBar(
-                                                                content: Text(
-                                                                    'Non puoi ordinare da più farmacie contemporaneamente'),
-                                                              ));
-                                                            }
+                                                                    .product!,
+                                                                1,
+                                                                cartProv
+                                                                    .carts[
+                                                                        index]
+                                                                    .extras!);
+                                                            prezzoTot += cartProv
+                                                                .carts[index]
+                                                                .product!
+                                                                .discountPrice!;
+                                                            scontoTot +=
+                                                                cartProv
+                                                                    .carts[
+                                                                        index]
+                                                                    .product!
+                                                                    .price!;
+                                                            quantity++;
                                                           }),
                                                           onRemove: () =>
                                                               setState(() {
