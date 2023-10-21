@@ -5,7 +5,6 @@ import 'package:pharma_app/src/models/order.dart';
 import 'package:pharma_app/src/models/route_argument.dart';
 import 'package:pharma_app/src/models/shop.dart';
 import 'package:pharma_app/src/pages/cart/check.dart';
-import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
 import 'package:pharma_app/src/pages/chat/chat_page.dart';
 import 'package:pharma_app/src/pages/contact_us/contact_us.dart';
 import 'package:pharma_app/src/pages/favorites/favorites.dart';

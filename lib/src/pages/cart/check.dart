@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/models/address.dart';
 import 'package:pharma_app/src/pages/cart/cart_page.dart';
-import 'package:pharma_app/src/pages/cart/mappa_farmacie.dart';
 import 'package:pharma_app/src/pages/orders/widgets/ordinePagato.dart';
 import 'package:pharma_app/src/pages/payment_cards/gestisci_carte.dart';
 import 'package:pharma_app/src/providers/addresses_provider.dart';
@@ -48,7 +47,6 @@ class _CheckState extends ConsumerState<Check> {
 
   var selectedOne = 0;
   bool first = false;
-  bool scd = false;
   bool c1 = false;
   bool c2 = false;
   bool c3 = false;
@@ -178,7 +176,9 @@ class _CheckState extends ConsumerState<Check> {
     final userAddrProv = ref.read(userAddressesProvider);
     final addrProv = ref.watch(addressesProvider);
 
-    my_address = addrProv.addresses.first.address ?? locationText;
+    my_address = addrProv.addresses.isNotEmpty
+        ? addrProv.addresses.first.address ?? locationText
+        : locationText;
 
     return Scaffold(
       bottomSheet: Container(
@@ -300,7 +300,6 @@ class _CheckState extends ConsumerState<Check> {
                                       setState(() {
                                         selectedOne = 0;
                                         first = newValue!;
-                                        scd = false;
                                       });
                                     }),
                                 const Text(
@@ -361,81 +360,7 @@ class _CheckState extends ConsumerState<Check> {
               const SizedBox(
                 height: 10,
               ),
-              //ind reale dal backEnd
-              ClipRRect(
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(color: Color.fromARGB(26, 7, 15, 71))),
-                  alignment: Alignment.center,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Checkbox(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(100)),
-                                    value: scd,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        selectedOne = 1;
-                                        scd = newValue!;
-                                        first = false;
-                                      });
-                                    }),
-                                const Text(
-                                  'Salta la fila e ritira in farmacia',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 9, 15, 71),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w700),
-                                )
-                              ],
-                            ),
-                            // Matita Farmacia
-                            /*  Padding(
-                              padding: const EdgeInsets.only(right: 20.0),
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: const Image(
-                                    image: AssetImage(
-                                        'assets/immagini_pharma/mod.png')),
-                              ),
-                            ) */
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 45.0),
-                          child: Text(
-                            cartProv.carts.first.product!.farmacia!.phone!,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Color.fromARGB(115, 9, 15, 71)),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 3,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 45.0),
-                          child: Text(
-                            cartProv.carts.first.product!.farmacia!.address!,
-                            style: const TextStyle(
-                                fontSize: 14,
-                                color: Color.fromARGB(115, 9, 15, 71)),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        )
-                      ]),
-                ),
-              ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -825,13 +750,10 @@ class _CheckState extends ConsumerState<Check> {
 
   void gestisciPagamento(cartProv, ordProv) {
     String metodoScelto = '';
-    if ((c1 || c2 || c3) && (first || scd)) {
+    if ((c1 || c2 || c3) && first) {
       if (first) {
         // Consegna a casa
         if (dateinput.text != '' && timeinput.text != '') {
-          /*  if (_ricetta == null) {
-            importaRicetta();
-          } else { */
           if (c1) {
             pagaConCarta();
           } else if (c2) {
@@ -848,139 +770,8 @@ class _CheckState extends ConsumerState<Check> {
             ),
           );
         }
-      } else if (scd) {
-        // Salta la fila
-        if (c1) {
-          metodoScelto = 'Carta';
-        } else if (c2) {
-          metodoScelto = 'Paypal';
-          // TODO PAYPAL
-        } else if (c3) {
-          metodoScelto = 'Contanti';
-          // TODO CONTANTI
-        }
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MappaFarmacie(
-                      metodoScelto: metodoScelto,
-                    )));
       }
     }
-  }
-
-  void importaRicetta() {
-    showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            title: const Center(child: Text("Importa ricetta")),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 300,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    children: [
-                      Divider(
-                        color: Colors.grey[300],
-                        thickness: 1.0,
-                      ),
-                      Stack(
-                        alignment: Alignment.center,
-                        clipBehavior: Clip.none,
-                        children: [
-                          Image.asset(
-                            'assets/immagini_pharma/ricetta_dialog.png',
-                            height: 250,
-                            fit: BoxFit.cover,
-                          ),
-                          const Positioned(
-                            top: 40,
-                            child: Center(
-                              child: SizedBox(
-                                width: 220,
-                                child: Text(
-                                  'Per validare la tua prenotazione allega la ricetta',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                          // TODO FINIRE IMPORTAZIONE RICETTE
-                          /*   Positioned(
-                            top: 160,
-                            child: SizedBox(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  await _getDocument();
-                                  setState(() {});
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 47, 171, 148),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Allega documento',
-                                ),
-                              ),
-                            ),
-                          ), */
-                          /*  Positioned(
-                            top: 225,
-                            child: SizedBox(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  await _getImage(ImageSource.camera);
-                                  Navigator.pop(context, _ricetta);
-                                  setState(() {});
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                        width: 1,
-                                        color:
-                                            Color.fromARGB(255, 107, 107, 107)),
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Scatta una foto',
-                                  style: TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 107, 107, 107)),
-                                ),
-                              ),
-                            ),
-                          ), */
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
   }
 
   void pagaConCarta() {

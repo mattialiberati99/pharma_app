@@ -88,6 +88,12 @@ class _CartPageState extends ConsumerState<CartPage> {
     final address = ref.watch(userDefaultCartAddressProvider) ??
         ref.watch(userDefaultAddressProvider).asData?.value;
 
+    final sconto = double.parse(
+        ((cartProv.total - cartProv.sconto) != cartProv.total
+                ? (cartProv.total - cartProv.sconto)
+                : 0)
+            .toStringAsFixed(2));
+
     if (address != null) {
       cartProv.deliveryAddress = address;
     }
@@ -120,11 +126,9 @@ class _CartPageState extends ConsumerState<CartPage> {
                       'Acquista',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: () async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Check()));
+                    onPressed: ()  {
+                       Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Check()));
                     },
                   ),
               ],
@@ -434,8 +438,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                               ),
                                             ),
                                             Text(
-                                              '${(cartProv.total - cartProv.sconto != cartProv.total) ? (cartProv.total - cartProv.sconto) : 0}€'
-                                                  .toString(),
+                                              '$sconto€',
                                               style: const TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 9, 15, 71),
@@ -470,7 +473,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                               ),
                                             ),
                                             Text(
-                                              '${(cartProv.total.toStringAsFixed(2))}€',
+                                              '${(cartProv.total + sconto).toStringAsFixed(2)}€',
                                               style: const TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 9, 15, 71),

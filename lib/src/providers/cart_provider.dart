@@ -46,7 +46,9 @@ class CartProvider with ChangeNotifier {
     carts.forEach((cart) {
       total += cart.getFarmacoPrice() * cart.quantity!;
     });
-    return total;
+    // prendo solo le prime due cifre decimali
+    double formattedTotal = double.parse(total.toStringAsFixed(2));
+    return formattedTotal;
   }
 
   int get count {
@@ -63,7 +65,8 @@ class CartProvider with ChangeNotifier {
     carts.forEach((cart) {
       sconto += cart.getFarmacoDiscountPrice() * cart.quantity!;
     });
-    return sconto;
+    double formattedSconto = double.parse(sconto.toStringAsFixed(2));
+    return formattedSconto;
   }
 
   double get delivery_fee {
@@ -75,7 +78,8 @@ class CartProvider with ChangeNotifier {
         deliv_fee += cart.product!.farmacia!.deliveryFee ?? 0;
       }
     });
-    return deliv_fee;
+    double formattedDeliveryFee = double.parse(deliv_fee.toStringAsFixed(2));
+    return formattedDeliveryFee;
   }
 
   add(Farmaco food, int quantity, List<Extra> extras) {
