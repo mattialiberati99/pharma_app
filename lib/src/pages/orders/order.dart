@@ -43,9 +43,9 @@ class OrderP extends ConsumerWidget {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacementNamed('Cart');
-                        notificationProv.nuovaNotifica = false;
+                       
                       },
-                      child: notificationProv.nuovaNotifica
+                      child: notificationProv.notifications.isNotEmpty
                           ? const Image(
                               image: AssetImage(
                                   'assets/immagini_pharma/Icon_shop_noti.png'))

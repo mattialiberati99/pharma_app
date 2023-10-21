@@ -22,14 +22,14 @@ class NotificationProvider with ChangeNotifier {
 
   setRead(model.Notification notification) {
     notification.read = true;
-   
+
     markAsReadNotifications(notification);
     notifyListeners();
   }
 
   delete(model.Notification notification) {
     notifications.remove(notification);
-    
+
     removeNotification(notification);
     notifyListeners();
   }
