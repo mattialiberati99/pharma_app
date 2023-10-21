@@ -41,9 +41,8 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed('Notifiche');
-              notificationProv.nuovaNotifica = false;
             },
-            child: notificationProv.nuovaNotifica
+            child: notificationProv.notifications.isNotEmpty
                 ? const ColorFiltered(
                     colorFilter:
                         ColorFilter.mode(Colors.black, BlendMode.srcIn),

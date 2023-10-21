@@ -303,7 +303,7 @@ class _CheckState extends ConsumerState<Check> {
                                       });
                                     }),
                                 const Text(
-                                  'Casa',
+                                  'Indirizzo',
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 9, 15, 71),
                                       fontSize: 15,
@@ -751,26 +751,29 @@ class _CheckState extends ConsumerState<Check> {
   void gestisciPagamento(cartProv, ordProv) {
     String metodoScelto = '';
     if ((c1 || c2 || c3) && first) {
-      if (first) {
-        // Consegna a casa
-        if (dateinput.text != '' && timeinput.text != '') {
-          if (c1) {
-            pagaConCarta();
-          } else if (c2) {
-            cartProv.deliveryAddress!.address = my_address;
-            Navigator.of(context).pushReplacementNamed('PayPal');
-          } else if (c3) {
-            pagaContanti(cartProv, ordProv, context);
-          }
-          //}
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Seleziona la data di consegna!"),
-            ),
-          );
+      if (dateinput.text != '' && timeinput.text != '') {
+        if (c1) {
+          pagaConCarta();
+        } else if (c2) {
+          cartProv.deliveryAddress!.address = my_address;
+          Navigator.of(context).pushReplacementNamed('PayPal');
+        } else if (c3) {
+          pagaContanti(cartProv, ordProv, context);
         }
+        //}
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Seleziona la data di consegna!"),
+          ),
+        );
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Seleziona tutti i campi per procedere al pagamento!"),
+        ),
+      );
     }
   }
 

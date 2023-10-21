@@ -11,26 +11,25 @@ final notificationProvider =
 
 class NotificationProvider with ChangeNotifier {
   List<model.Notification> notifications = [];
-  bool nuovaNotifica = false;
 
   NotificationProvider() {
     Future.delayed(Duration.zero, () async {
       notifications.addAll(await getNotifications());
-      nuovaNotifica = true;
+      // nuovaNotifica = true;
       notifyListeners();
     });
   }
 
   setRead(model.Notification notification) {
     notification.read = true;
-    nuovaNotifica = false;
+   
     markAsReadNotifications(notification);
     notifyListeners();
   }
 
   delete(model.Notification notification) {
     notifications.remove(notification);
-    nuovaNotifica = false;
+    
     removeNotification(notification);
     notifyListeners();
   }

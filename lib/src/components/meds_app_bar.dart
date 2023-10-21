@@ -47,9 +47,8 @@ class MedsAppBar extends ConsumerWidget implements PreferredSizeWidget {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).pushNamed('Notifiche');
-                            notificationProv.nuovaNotifica = false;
                           },
-                          child: notificationProv.nuovaNotifica
+                          child: notificationProv.notifications.isNotEmpty
                               ? const Image(
                                   width: 24,
                                   height: 24,
