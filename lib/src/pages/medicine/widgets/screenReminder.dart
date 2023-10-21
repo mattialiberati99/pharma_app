@@ -129,9 +129,9 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushNamed("Notifiche");
-                    notificationProv.nuovaNotifica = false;
+                   
                   },
-                  child: notificationProv.nuovaNotifica
+                  child: notificationProv.notifications.isNotEmpty
                       ? const Image(
                           color: AppColors.gray4,
                           width: 24,

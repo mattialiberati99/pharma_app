@@ -79,9 +79,8 @@ class _Screen2RoutineState extends ConsumerState<Screen2Routine> {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed("Notifiche");
-                  notificationProv.nuovaNotifica = false;
                 },
-                child: notificationProv.nuovaNotifica
+                child: notificationProv.notifications.isNotEmpty
                     ? const Image(
                         width: 24,
                         height: 24,
