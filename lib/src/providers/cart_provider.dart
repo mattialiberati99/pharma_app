@@ -33,6 +33,7 @@ class CartProvider with ChangeNotifier {
   Coupon? coupon;
   bool loading = false;
   AcquistiRecentiProvider? acquistiRecenti;
+  late double veroTotale;
 
   CartProvider() {
     Future.delayed(Duration.zero, () async {

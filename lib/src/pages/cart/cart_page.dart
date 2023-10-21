@@ -126,8 +126,9 @@ class _CartPageState extends ConsumerState<CartPage> {
                       'Acquista',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: ()  {
-                       Navigator.push(context,
+                    onPressed: () {
+                      cartProv.veroTotale = cartProv.total + sconto;
+                      Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Check()));
                     },
                   ),

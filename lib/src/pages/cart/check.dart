@@ -250,7 +250,7 @@ class _CheckState extends ConsumerState<Check> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    '${cartProv.total.toStringAsFixed(2)}€',
+                    '${(cartProv.veroTotale).toStringAsFixed(2)}€',
                     style: const TextStyle(
                         color: Color.fromARGB(255, 9, 15, 71),
                         fontSize: 20,
@@ -824,8 +824,8 @@ class _CheckState extends ConsumerState<Check> {
                 child: Text('Annulla'),
               ),
               TextButton(
-                onPressed: () async {
-                  await Helper.callFinalizeOrder(
+                onPressed: () {
+                  /*       await Helper.callFinalizeOrder(
                       cartProv, ordProv, context, 'contanti');
                   await Navigator.pushReplacement(
                     context,
@@ -833,8 +833,8 @@ class _CheckState extends ConsumerState<Check> {
                       builder: (context) =>
                           OrdinePagato(data.toString(), time.toString()),
                     ),
-                  );
-                  cartProv.carts.clear();
+                  ); */
+                  cartProv.clear();
                 },
                 child: Text('Conferma'),
               ),
