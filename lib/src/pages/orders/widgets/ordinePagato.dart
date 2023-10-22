@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:pharma_app/src/components/custom_toggle.dart';
 import 'package:pharma_app/src/helpers/app_config.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
@@ -12,10 +13,20 @@ import 'package:pharma_app/src/providers/orders_provider.dart';
 import '../../../providers/user_provider.dart';
 
 class OrdinePagato extends ConsumerStatefulWidget {
-  String date;
-  String time;
+  DateTime date;
+  TimeOfDay time;
 
   OrdinePagato(this.date, this.time);
+
+  String formattedDate() {
+    final dateFormat = DateFormat('dd/MM/yyyy');
+    return dateFormat.format(date);
+  }
+
+  String formattedTime() {
+    final timeFormat = DateFormat('HH:mm');
+    return timeFormat.format(DateTime(2023, 1, 1, time.hour, time.minute));
+  }
 
   @override
   ConsumerState<OrdinePagato> createState() => _OrdinePagatoState();
@@ -23,8 +34,13 @@ class OrdinePagato extends ConsumerStatefulWidget {
 
 class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
   @override
+  void dispose() {
+    ref.read(cartProvider).clear();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final cartProv = ref.watch(cartProvider);
+    final cartProv = ref.read(cartProvider);
 
     return Scaffold(
       bottomSheet: Container(
@@ -43,24 +59,9 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                /*for (var i = 0; i < cartProv.carts.length; i++) {
-                            try {
-                              ordine.food = cartProv.carts[i].product!;
-                              ordine.price =
-                                  cartProv.carts[i].product!.discountPrice!;
-                              ordine.quantity = cartProv.carts[i].quantity!;
-                              ordine.dateTime = DateTime.now();
-                            } finally {
-                              ord.foodOrders.add(ordine);
-                            }
-                          }
-                          ord.active = true;
-                       
-                          orderProv.add();*/
-                //     finalizeOrder(cartProv, orderProv, context);
-
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Aestetic()));
+                cartProv.clear();
               },
             ),
           ],
@@ -82,6 +83,7 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                 IconButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed('Home');
+                      cartProv.clear();
                     },
                     icon: const Icon(
                       Icons.arrow_back_ios_new,
@@ -208,7 +210,7 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                         ),
                         Row(children: [
                           Text(
-                            '${cartProv.carts[index].product!.price! * cartProv.carts[index].quantity!}€',
+                            '${cartProv.veroTotale.toStringAsFixed(2)}€',
                             style: const TextStyle(
                                 color: Color.fromARGB(255, 9, 15, 71),
                                 fontSize: 14,
@@ -263,14 +265,14 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                 if (index == cartProv.carts.length - 1)
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.calendar_today,
                         color: Color.fromARGB(255, 167, 166, 165),
                         size: 20,
                       ),
                       Text(
-                        widget.date + '   ore  ' + widget.time,
-                        style: TextStyle(
+                        '${widget.formattedDate()}  ore  ${widget.formattedTime()}',
+                        style: const TextStyle(
                           color: Color.fromARGB(255, 167, 166, 165),
                         ),
                       )
@@ -294,7 +296,7 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                               fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          '${cartProv.total}€',
+                          '${cartProv.veroTotale.toStringAsFixed(2)}€',
                           style: const TextStyle(
                               color: Color.fromARGB(255, 9, 15, 71),
                               fontSize: 20,

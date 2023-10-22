@@ -7,7 +7,7 @@ class FarmacoOrder {
   double? price;
   int? quantity;
   List<Extra> extras = [];
-  Farmaco? food;
+  Farmaco? product;
   DateTime? dateTime;
 
   FarmacoOrder();
@@ -17,7 +17,7 @@ class FarmacoOrder {
       id = jsonMap['id'].toString();
       price = jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0.0;
       quantity = jsonMap['quantity'] != null ? jsonMap['quantity'] : 0.0;
-      food = jsonMap['food'] != null
+      product = jsonMap['food'] != null
           ? Farmaco.fromJSON(jsonMap['food'])
           : Farmaco.fromJSON({});
       dateTime = DateTime.parse(jsonMap['updated_at']);
@@ -30,7 +30,7 @@ class FarmacoOrder {
       id = '';
       price = 0.0;
       quantity = 0;
-      food = Farmaco.fromJSON({});
+      product = Farmaco.fromJSON({});
       dateTime = DateTime(0);
       extras = [];
       print(CustomTrace(StackTrace.current, message: e.toString()));
@@ -42,7 +42,7 @@ class FarmacoOrder {
     map["id"] = id;
     map["price"] = price;
     map["quantity"] = quantity;
-    map["food_id"] = food!.id;
+    map["food_id"] = product!.id;
     map["extras"] = extras.map((element) => element.id).toList();
     return map;
   }

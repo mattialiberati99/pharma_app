@@ -96,6 +96,7 @@ dependencies:
   awesome_dialog: ^3.1.0
   sizer: ^2.0.15
   webview_flutter: ^2.0.9
+  skeleton_loader: ^2.0.0+4
 
   # Chat
   detectable_text_field: ^2.0.4
@@ -104,7 +105,7 @@ dependencies:
   image_picker: ^0.8.7+4
   fluttertoast: ^8.2.1
   photo_view: ^0.14.0
-  flutter_stripe: ^9.2.0
+  flutter_stripe: ^9.4.0
   cached_network_image: ^3.2.3
 #
 #dependency_overrides:

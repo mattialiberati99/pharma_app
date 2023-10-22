@@ -16,6 +16,7 @@ import 'package:pharma_app/src/providers/orders_provider.dart';
 import 'package:pharma_app/src/providers/user_addresses_provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../main.dart';
 import '../../app_assets.dart';
 import '../../components/bottomNavigation.dart';
 import '../../helpers/app_config.dart';
@@ -88,12 +89,6 @@ class _CartPageState extends ConsumerState<CartPage> {
     final address = ref.watch(userDefaultCartAddressProvider) ??
         ref.watch(userDefaultAddressProvider).asData?.value;
 
-    final sconto = double.parse(
-        ((cartProv.total - cartProv.sconto) != cartProv.total
-                ? (cartProv.total - cartProv.sconto)
-                : 0)
-            .toStringAsFixed(2));
-
     if (address != null) {
       cartProv.deliveryAddress = address;
     }
@@ -127,7 +122,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {
-                      cartProv.veroTotale = cartProv.total + sconto;
+                      logger.info(cartProv.veroTotale);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Check()));
                     },
@@ -439,7 +434,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                               ),
                                             ),
                                             Text(
-                                              '$sconto€',
+                                              '${cartProv.veroSconto}€',
                                               style: const TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 9, 15, 71),
@@ -474,7 +469,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                               ),
                                             ),
                                             Text(
-                                              '${(cartProv.total + sconto).toStringAsFixed(2)}€',
+                                              '${(cartProv.veroTotale).toStringAsFixed(2)}€',
                                               style: const TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 9, 15, 71),

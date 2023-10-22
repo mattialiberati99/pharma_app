@@ -33,7 +33,6 @@ class CartProvider with ChangeNotifier {
   Coupon? coupon;
   bool loading = false;
   AcquistiRecentiProvider? acquistiRecenti;
-  late double veroTotale;
 
   CartProvider() {
     Future.delayed(Duration.zero, () async {
@@ -52,12 +51,21 @@ class CartProvider with ChangeNotifier {
     return formattedTotal;
   }
 
+  double get veroTotale {
+    return double.parse((total + veroSconto).toStringAsFixed(2));
+  }
+
   int get count {
     int counter = 0;
     for (var cart in carts) {
       counter += cart.quantity!;
     }
     return counter;
+  }
+
+  double get veroSconto {
+    return double.parse(
+        ((total - sconto) != total ? (total - sconto) : 0).toStringAsFixed(2));
   }
 
   double get sconto {
@@ -167,79 +175,8 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Order>?> addPrenotazione(Shop farmacia) async {
-    Map<String, List<FarmacoOrder>> cartSplitPerShop = {};
-    List<Order> orders = [];
-    for (Cart cart in carts) {
-      try {
-        if (cartSplitPerShop[cart.product!.farmacia!.id!] != null) {
-          print("added");
-          cartSplitPerShop[cart.product!.farmacia!.id!]!.add(cart.foodOrder());
-        } else {
-          print("created");
-          cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
-        }
-      } catch (e) {
-        print(e);
-        print("Error Created");
-        cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
-      }
-      print("looop");
-    }
-    try {
-      for (MapEntry entry in cartSplitPerShop.entries) {
-        Order order = Order();
-        Payment payment = Payment('Carta');
-        order.foodOrders = entry.value;
-        //_order.tax = checkout!.cart!.taxAmount;
-        //order.note = checkout.note;
-        //order.oraRitiro
-        logger.info(int.parse(farmacia.id!));
-        order.farmaciaId = int.tryParse(farmacia.id!);
-        order.consegna = DateTime.now();
-        order.payment = payment;
-        //order.payment!.method = 'Carta';
-        logger.info(order.payment!.method.toString());
-        //_order.importo = checkout.importo;
-        OrderStatus orderStatus = OrderStatus();
-        orderStatus.id = OrderStatus.received;
-        order.orderStatus = orderStatus;
-        order.active = false;
-        order.deliveryAddress = deliveryAddress;
-        order.sconto = sconto;
-        order.discountCode = coupon?.code ?? '';
-        try {
-          Order? newOrder = await orderRepo.addOrder(order);
-          if (newOrder != null) {
-            coupon = null;
-            paymentMethod = null;
-            loading = false;
-            notifyListeners();
-            orders.insert(0, newOrder);
-            notifyListeners();
-          } else {
-            loading = false;
-            notifyListeners();
-          }
-        } catch (e, stack) {
-          print("--------------------");
-          print(e.toString());
-          print(stack);
-
-          loading = false;
-          notifyListeners();
-        }
-      }
-    } catch (e, stack) {
-      print(e);
-      print(stack);
-      return null;
-    }
-    return orders;
-  }
-
   Future<List<Order>?> addOrderContanti() async {
-    print("adding order");
+    logger.info("adding order");
     Map<String, List<FarmacoOrder>> cartSplitPerShop = {};
     List<Order> orders = [];
     for (Cart cart in carts) {
@@ -258,35 +195,42 @@ class CartProvider with ChangeNotifier {
       }
       print("looop");
     }
-    print(cartSplitPerShop.length);
-    //Creiamo multipli ordini per i vari negozi coinvolti
+
+    print('Creiamo multipli ordini per i vari negozi coinvolti');
     try {
+      print("TRY PRIMA DEL FOR");
       for (MapEntry entry in cartSplitPerShop.entries) {
         Order _order = Order();
         _order.foodOrders = entry.value;
-        _order.deliveryFee = delivery_fee;
-        //_order.tax = checkout!.cart!.taxAmount;
-        //_order.note = checkout.note;
-        _order.farmaciaId = int.tryParse(entry.value.first.food!.farmacia!.id);
-        _order.consegna = DateTime.now().add(
-            Duration(days: entry.value.first.food!.farmacia!.giorni_consegna!));
-        _order.importo = total.toStringAsFixed(2);
 
-        OrderStatus _orderStatus = OrderStatus();
+        //_order.tax = checkout!.cart!.taxAmount;
+        // _order.deliveryFee = delivery_fee;
+        //_order.note = checkout.note;
+        _order.consegna = DateTime.now().add(Duration(
+            days: entry.value.first.product!.farmacia!.giorni_consegna!));
+        //_order.importo = checkout.importo;
+        OrderStatus _orderStatus = new OrderStatus();
         _orderStatus.id = OrderStatus.received;
         _order.orderStatus = _orderStatus;
         _order.deliveryAddress = deliveryAddress;
         _order.sconto = sconto;
         _order.discountCode = coupon?.code ?? '';
-        Order? newOrder = await orderRepo.addOrder(
-          _order,
-        );
-        if (newOrder != null) {
+
+        print("Fin qui tutto ok");
+        Order? order = await orderRepo.addOrder(_order);
+
+        if (order != null) {
+          logger.info('ORDER NON NULL');
+        } else {
+          logger.info('ORDER NULL ');
+        }
+
+        if (order != null) {
           coupon = null;
           paymentMethod = null;
           loading = false;
           notifyListeners();
-          orders.insert(0, newOrder);
+          orders.insert(0, order);
           notifyListeners();
         } else {
           loading = false;
@@ -387,8 +331,9 @@ class CartProvider with ChangeNotifier {
 
           if (paymentIntentResult.status ==
               Stripe.PaymentIntentsStatus.RequiresCapture) {
-            Order? newOrder = await orderRepo.addOrder(_order,
-                paymentIntentResult: paymentIntentResult);
+            Order? newOrder = await orderRepo.addOrder(
+              _order,
+            );
 
             if (newOrder != null) {
               coupon = null;
@@ -436,9 +381,10 @@ class CartProvider with ChangeNotifier {
     try {
       if (method == 'carta') {
         orders = await addOrder();
-      } else if (method == 'contanti') {
+      } else if (method == 'Contanti') {
         orders = await addOrderContanti();
       }
+
       if (orders != null && orders.isNotEmpty) {
         coupon = null;
         paymentMethod = null;
@@ -447,7 +393,6 @@ class CartProvider with ChangeNotifier {
         notifyListeners();
         return orders;
       } else {
-        print("empty orders");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Errore nel pagamento, riprova"),
         ));
@@ -455,8 +400,6 @@ class CartProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e, s) {
-      print(e);
-      print(s);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Errore nel pagamento, riprova"),
       ));

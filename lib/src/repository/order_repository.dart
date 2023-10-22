@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' as Stripe;
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:retry/retry.dart';
 import 'package:pharma_app/src/repository/user_repository.dart';
 
+import '../../main.dart';
 import '../helpers/helper.dart';
 import '../models/credit_card.dart';
 import '../models/destination_object.dart';
@@ -196,7 +197,7 @@ Future<Stream<DestinationObject?>> getTrackingStatus(orderId) async {
 }
 
 Future<Order?> addOrder(Order order,
-    {PaymentIntent? paymentIntentResult}) async {
+    {Stripe.PaymentIntent? paymentIntentResult}) async {
   User _user = currentUser.value;
   if (_user.apiToken == null) {
     return null;
@@ -219,12 +220,12 @@ Future<Order?> addOrder(Order order,
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: json.encode(params),
     );
-    print(uri);
-    print(json.encode(params));
+    logger.info("Order pay: $uri");
+    logger.info(json.encode(params));
     return Order.fromJSON(json.decode(response.body)['data']);
   } catch (e, stack) {
-    print(e);
-    print(stack);
+    logger.error(e);
+    logger.error(stack);
     return null;
   }
 }

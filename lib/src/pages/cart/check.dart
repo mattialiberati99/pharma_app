@@ -198,7 +198,7 @@ class _CheckState extends ConsumerState<Check> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                gestisciPagamento(cartProv, ordProv);
+                gestisciPagamento(cartProv, ordProv, addrProv);
               },
             ),
           ],
@@ -333,7 +333,7 @@ class _CheckState extends ConsumerState<Check> {
                         Padding(
                           padding: EdgeInsets.only(left: 45.0),
                           child: Text(
-                            address_number,
+                            cartProv.deliveryAddress!.phone ?? address_number,
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Color.fromARGB(115, 9, 15, 71)),
@@ -345,7 +345,8 @@ class _CheckState extends ConsumerState<Check> {
                         Padding(
                           padding: EdgeInsets.only(left: 45.0),
                           child: Text(
-                            my_address,
+                            cartProv.deliveryAddress!.address ??
+                                'Seleziona indirizzo',
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Color.fromARGB(115, 9, 15, 71)),
@@ -748,19 +749,22 @@ class _CheckState extends ConsumerState<Check> {
     );
   }
 
-  void gestisciPagamento(cartProv, ordProv) {
+  void gestisciPagamento(cartProv, ordProv, addrProv) {
     String metodoScelto = '';
     if ((c1 || c2 || c3) && first) {
       if (dateinput.text != '' && timeinput.text != '') {
-        if (c1) {
-          pagaConCarta();
-        } else if (c2) {
-          cartProv.deliveryAddress!.address = my_address;
-          Navigator.of(context).pushReplacementNamed('PayPal');
-        } else if (c3) {
-          pagaContanti(cartProv, ordProv, context);
+        if (cartProv.deliveryAddress == null) {
+          scegliIndirizzo(context, addrProv);
+        } else if (cartProv.deliveryAddress != null) {
+          if (c1) {
+            pagaConCarta();
+          } else if (c2) {
+            cartProv.deliveryAddress!.address = my_address;
+            Navigator.of(context).pushReplacementNamed('PayPal');
+          } else if (c3) {
+            pagaContanti(cartProv, ordProv, context);
+          }
         }
-        //}
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -824,17 +828,29 @@ class _CheckState extends ConsumerState<Check> {
                 child: Text('Annulla'),
               ),
               TextButton(
-                onPressed: () {
-                  /*       await Helper.callFinalizeOrder(
-                      cartProv, ordProv, context, 'contanti');
-                  await Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          OrdinePagato(data.toString(), time.toString()),
-                    ),
-                  ); */
-                  cartProv.clear();
+                onPressed: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  List<Order>? orders =
+                      await cartProv.proceedOrder(context, 'Contanti');
+                  Navigator.of(context).pop();
+
+                  if (orders != null) {
+                    ordProv.orders.insertAll(0, orders);
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OrdinePagato(data, time),
+                      ),
+                    );
+                  }
+              
                 },
                 child: Text('Conferma'),
               ),

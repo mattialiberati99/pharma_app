@@ -504,7 +504,7 @@ class Helper {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      callFinalizeOrder(cartProv, orderProv, context, 'method');
+                     await callFinalizeOrder(cartProv, orderProv, context, 'method');
                       // TODO ACQUISTI
                     },
                     child: Text('Paga'))

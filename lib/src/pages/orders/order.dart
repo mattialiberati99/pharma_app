@@ -10,7 +10,6 @@ import 'package:pharma_app/src/providers/orders_provider.dart';
 
 // ignore: must_be_immutable
 class OrderP extends ConsumerWidget {
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orders = ref.watch(ordersProvider);
@@ -43,7 +42,6 @@ class OrderP extends ConsumerWidget {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacementNamed('Cart');
-                       
                       },
                       child: notificationProv.notifications.isNotEmpty
                           ? const Image(
@@ -79,14 +77,14 @@ class OrderP extends ConsumerWidget {
                                 width: 77,
                                 height: 88,
                                 image: NetworkImage(
-                                    e.foodOrders.first.food!.image!.url!)),
+                                    e.foodOrders.first.product!.image!.url!)),
                           ),
                           Column(
                             children: [
                               Row(
                                 children: [
                                   Text(
-                                    e.foodOrders.first.food!.name!,
+                                    e.foodOrders.first.product!.name!,
                                     style: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 13,
@@ -101,7 +99,7 @@ class OrderP extends ConsumerWidget {
                                 ],
                               ),
                               Text(
-                                e.foodOrders.first.food!.ingredients!,
+                                e.foodOrders.first.product!.ingredients!,
                                 style: const TextStyle(
                                   color: Color.fromARGB(115, 9, 15, 71),
                                   fontSize: 12,

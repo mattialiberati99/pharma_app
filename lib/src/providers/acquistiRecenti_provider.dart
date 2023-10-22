@@ -34,7 +34,7 @@ class AcquistiRecentiProvider with ChangeNotifier {
   void saveListaAcquistiRecenti(List<Order> acquisti) async {
     for (Order a in acquisti) {
       for (FarmacoOrder f in a.foodOrders) {
-        acquistiRecenti.add(f.food!);
+        acquistiRecenti.add(f.product!);
       }
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();

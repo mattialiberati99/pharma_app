@@ -100,7 +100,7 @@ class Order {
     map["note"] = note;
     map["sconto"] = sconto;
     map["coupon"] = discountCode;
-    map["restaurant_id"] = foodOrders[0].food!.farmacia!.id;
+    map["restaurant_id"] = foodOrders[0].product!.farmacia!.id;
     return map;
   }
 
@@ -109,7 +109,7 @@ class Order {
     params += "user_id=${user?.id}";
     params += "&order_status_id=${orderStatus?.id}";
     params += "&delivery_fee=$deliveryFee";
-   /*  if (!deliveryAddress!.isUnknown()) {
+    /*  if (!deliveryAddress!.isUnknown()) {
       params += "&delivery_address_id= ${deliveryAddress?.id}";
     } */
     params += "&importo=$importo";

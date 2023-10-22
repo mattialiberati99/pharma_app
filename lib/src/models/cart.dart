@@ -113,7 +113,7 @@ class Cart {
     FarmacoOrder _foodOrder = FarmacoOrder();
     _foodOrder.quantity = quantity!;
     _foodOrder.price = getFarmacoPrice();
-    _foodOrder.food = product!;
+    _foodOrder.product = product!;
     _foodOrder.extras = extras ?? [];
     return _foodOrder;
   }
