@@ -389,7 +389,6 @@ class CartProvider with ChangeNotifier {
         coupon = null;
         paymentMethod = null;
         loading = false;
-        acquistiRecenti?.saveListaAcquistiRecenti(orders); // Acquisti Recenti
         notifyListeners();
         return orders;
       } else {

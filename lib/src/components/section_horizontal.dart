@@ -22,7 +22,7 @@ class SectionHorizontal extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //final chosen = ref.watch(farmaOfCategoryProvider('11'));
-    final chosen = ref.watch(acquistiRecenti);
+    final acquistiRecentiProv = ref.watch(acquistiRecentiProvider);
     return Column(
       children: [
         Row(
@@ -51,32 +51,22 @@ class SectionHorizontal extends ConsumerWidget {
         //TODO valutare su usare overflow o meno anche per il filtro e se mettere un padding
         // child: OverflowBox(
         //   maxWidth: MediaQuery.of(context).size.width,
-        AsyncValueWidget(
-            value: chosen,
-            loading: const CircularProgressIndicator(),
-            data: (chosenShops) {
-              /* final filtered =
-                      ref.watch(shopsFilteredByDeliveryProvider(chosenShops)); */
-              if (chosenShops.length == 0) {
-                return Text('Nessun acquisto recente');
-              }
-              return Container(
-                height: 250,
-                width: 300,
-                child: ListView.builder(
-                  clipBehavior: Clip.none,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: chosenShops.length,
-                  itemBuilder: (_, index) {
-                    print(index);
-                    return FarmacoCardHorizontal(
-                      farmaco: chosenShops.acquistiRecenti[index],
-                    );
-                  },
-                ),
+
+        Container(
+          height: 250,
+          width: 300,
+          child: ListView.builder(
+            clipBehavior: Clip.none,
+            scrollDirection: Axis.horizontal,
+            itemCount: acquistiRecentiProv.acquistiRecenti.length,
+            itemBuilder: (_, index) {
+              print(index);
+              return FarmacoCardHorizontal(
+                farmaco: acquistiRecentiProv.acquistiRecenti[index],
               );
-            }),
-        //) //overflow
+            },
+          ),
+        ),
       ],
     );
   }

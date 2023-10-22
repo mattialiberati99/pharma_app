@@ -27,6 +27,7 @@ import '../../helpers/app_config.dart';
 import '../../helpers/helper.dart';
 import '../../models/food_order.dart';
 import '../../models/order.dart';
+import '../../providers/acquistiRecenti_provider.dart';
 import '../../providers/can_add_provider.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/orders_provider.dart';
@@ -171,10 +172,11 @@ class _CheckState extends ConsumerState<Check> {
   @override
   Widget build(BuildContext context) {
     final cartProv = ref.watch(cartProvider);
-    final shopId = ref.watch(currentShopIDProvider);
+
     final ordProv = ref.watch(ordersProvider);
-    final userAddrProv = ref.read(userAddressesProvider);
+
     final addrProv = ref.watch(addressesProvider);
+    final acquistiRecentiProv = ref.watch(acquistiRecentiProvider);
 
     my_address = addrProv.addresses.isNotEmpty
         ? addrProv.addresses.first.address ?? locationText
@@ -198,7 +200,8 @@ class _CheckState extends ConsumerState<Check> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                gestisciPagamento(cartProv, ordProv, addrProv);
+                gestisciPagamento(
+                    cartProv, ordProv, addrProv, acquistiRecentiProv);
               },
             ),
           ],
@@ -749,7 +752,7 @@ class _CheckState extends ConsumerState<Check> {
     );
   }
 
-  void gestisciPagamento(cartProv, ordProv, addrProv) {
+  void gestisciPagamento(cartProv, ordProv, addrProv, acquistiRecentiProv) {
     String metodoScelto = '';
     if ((c1 || c2 || c3) && first) {
       if (dateinput.text != '' && timeinput.text != '') {
@@ -762,7 +765,7 @@ class _CheckState extends ConsumerState<Check> {
             cartProv.deliveryAddress!.address = my_address;
             Navigator.of(context).pushReplacementNamed('PayPal');
           } else if (c3) {
-            pagaContanti(cartProv, ordProv, context);
+            pagaContanti(cartProv, ordProv, acquistiRecentiProv, context);
           }
         }
       } else {
@@ -813,8 +816,8 @@ class _CheckState extends ConsumerState<Check> {
     );
   }
 
-  void pagaContanti(
-      CartProvider cartProv, OrdersProvider ordProv, BuildContext context) {
+  void pagaContanti(CartProvider cartProv, OrdersProvider ordProv,
+      AcquistiRecentiProvider acquistiRecentiProv, BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -843,6 +846,12 @@ class _CheckState extends ConsumerState<Check> {
                   if (orders != null) {
                     ordProv.orders.insertAll(0, orders);
 
+                    // aggiunta ordini recenti
+                    for (int i = 0; i < orders.length; i++) {
+                      acquistiRecentiProv.saveAcquistiRecenti(
+                          orders[i].foodOrders[i].product!);
+                    }
+
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -850,7 +859,6 @@ class _CheckState extends ConsumerState<Check> {
                       ),
                     );
                   }
-              
                 },
                 child: Text('Conferma'),
               ),

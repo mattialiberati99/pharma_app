@@ -7,7 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/farmaco.dart';
 import '../models/order.dart';
 
-final acquistiRecenti = FutureProvider<AcquistiRecentiProvider>((ref) async {
+final acquistiRecentiProvider =
+    ChangeNotifierProvider<AcquistiRecentiProvider>((ref) {
   return AcquistiRecentiProvider();
 });
 
@@ -22,13 +23,15 @@ class AcquistiRecentiProvider with ChangeNotifier {
   }
 
   void saveAcquistiRecenti(Farmaco farmaco) async {
-    acquistiRecenti.add(farmaco);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final acquistiRecentitJson =
-        acquistiRecenti.map((farmaco) => farmaco.toJson()).toList();
-    final acquistiRecentiJsonString = json.encode(acquistiRecentitJson);
-    await prefs.setString('acquistiRecenti', acquistiRecentiJsonString);
-    notifyListeners();
+    if (!acquistiRecenti.contains(farmaco)) {
+      acquistiRecenti.add(farmaco);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final acquistiRecentitJson =
+          acquistiRecenti.map((farmaco) => farmaco.toJson()).toList();
+      final acquistiRecentiJsonString = json.encode(acquistiRecentitJson);
+      await prefs.setString('acquistiRecenti', acquistiRecentiJsonString);
+      notifyListeners();
+    }
   }
 
   void saveListaAcquistiRecenti(List<Order> acquisti) async {
