@@ -8,6 +8,8 @@ import 'package:pharma_app/src/pages/orders/widgets/ordine_widget.dart';
 import 'package:pharma_app/src/providers/notification_provider.dart';
 import 'package:pharma_app/src/providers/orders_provider.dart';
 
+import '../../../main.dart';
+
 class OrderP extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -72,7 +74,11 @@ class OrderP extends ConsumerWidget {
                 separatorBuilder: (context, index) => const Divider(),
                 itemCount: orders.orders.length,
                 itemBuilder: (ctx, i) {
-                  return OrdineTab(orders.orders[i].foodOrders[i], orders.orders[i]);
+                  logger.info('INDICE: $i');
+                  logger.info('ID ORDINE: ${orders.orders[i].id}');
+
+                  return OrdineTab(
+                      orders.orders[i].foodOrders[0], orders.orders[i]);
                 },
               ),
             const SizedBox(),

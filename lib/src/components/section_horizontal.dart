@@ -10,7 +10,7 @@ import '../providers/shops_provider.dart';
 import 'async_value_widget.dart';
 import 'shop_card_horizontal.dart';
 
-class SectionHorizontal extends ConsumerWidget {
+class SectionHorizontal extends ConsumerStatefulWidget {
   final String title;
 
   final String subTitle;
@@ -20,7 +20,18 @@ class SectionHorizontal extends ConsumerWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SectionHorizontal> createState() => _SectionHorizontalState();
+}
+
+class _SectionHorizontalState extends ConsumerState<SectionHorizontal> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(acquistiRecentiProvider).loadData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     //final chosen = ref.watch(farmaOfCategoryProvider('11'));
     final acquistiRecentiProv = ref.watch(acquistiRecentiProvider);
     return Column(
@@ -29,14 +40,14 @@ class SectionHorizontal extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              title,
+              widget.title,
               style: const TextStyle(
                   fontSize: 18,
                   color: Color.fromARGB(255, 28, 31, 30),
                   fontWeight: FontWeight.w600),
             ),
             Text(
-              subTitle,
+              widget.subTitle,
               style: const TextStyle(
                   fontSize: 12,
                   color: Color.fromARGB(255, 28, 31, 30),
@@ -55,17 +66,22 @@ class SectionHorizontal extends ConsumerWidget {
         Container(
           height: 250,
           width: 300,
-          child: ListView.builder(
-            clipBehavior: Clip.none,
-            scrollDirection: Axis.horizontal,
-            itemCount: acquistiRecentiProv.acquistiRecenti.length,
-            itemBuilder: (_, index) {
-              print(index);
-              return FarmacoCardHorizontal(
-                farmaco: acquistiRecentiProv.acquistiRecenti[index],
-              );
-            },
-          ),
+          child: acquistiRecentiProv.acquistiRecenti.isNotEmpty
+              ? ListView.builder(
+                  clipBehavior: Clip.none,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: acquistiRecentiProv.acquistiRecenti.length,
+                  itemBuilder: (_, index) {
+                    print(index);
+                    return FarmacoCardHorizontal(
+                      farmaco: acquistiRecentiProv.acquistiRecenti[index],
+                    );
+                  },
+                )
+              : const Padding(
+                  padding: EdgeInsets.only(left: 70.0),
+                  child: Text('Nessun acquisto recente'),
+                ),
         ),
       ],
     );

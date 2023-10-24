@@ -96,7 +96,6 @@ dependencies:
   awesome_dialog: ^3.1.0
   sizer: ^2.0.15
   webview_flutter: ^2.0.9
-  skeleton_loader: ^2.0.0+4
 
   # Chat
   detectable_text_field: ^2.0.4

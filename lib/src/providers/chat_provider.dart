@@ -17,7 +17,8 @@ class ChatProvider with ChangeNotifier {
   Map<String, Chat> chats = {};
   bool loading = false;
 
-  get unread=>chats.values.where((Chat value) =>value.non_read_count>0).length;
+  get unread =>
+      chats.values.where((Chat value) => value.non_read_count > 0).length;
 
   ChatProvider() {
     Future.delayed(Duration.zero, () async {
@@ -63,6 +64,7 @@ class ChatProvider with ChangeNotifier {
       print(chat.shop!.id);
 
       if (chat.shop!.id == id) {
+        notifyListeners();
         return chat;
       }
     }
@@ -97,16 +99,18 @@ class ChatProvider with ChangeNotifier {
 
   Future<Chat?> getChat(id) async {
     var chat = chats[id];
-    if (chat==null || chat.messages.isEmpty || chat.messages.length < 10) {
-      chats[id]=await chatRepo.getUserChat(id);
+    if (chat == null || chat.messages.isEmpty || chat.messages.length < 10) {
+      chats[id] = await chatRepo.getUserChat(id);
       chat = chats[id];
-      chat!.messages= await chatRepo.getChatMessages(id, 0);
+      chat!.messages = await chatRepo.getChatMessages(id, 0);
     }
     return chat;
   }
 
   removeUnreadOfChat(String chatId) {
-    chats[chatId]!.messages.forEach((element) { element.messageRead=true;});
+    chats[chatId]!.messages.forEach((element) {
+      element.messageRead = true;
+    });
     notifyListeners();
   }
 
@@ -148,7 +152,7 @@ class ChatProvider with ChangeNotifier {
     if (newMessage != null) {
       chats[chatId]!.messages.insert(0, newMessage);
       chats[chatId]!.lastMessage = newMessage;
-      chats[chatId]!.non_read_count+=1;
+      chats[chatId]!.non_read_count += 1;
     }
 
     notifyListeners();
@@ -161,15 +165,13 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void sendImageMessage(String chatId,File? file) async{
-      Message message = new Message()
-        ..data = file!.path
-
-        ..chat_id = chatId;
-      message = await chatRepo.pushContentMessage(message);
-      chats[chatId]!.messages.insert(0, message);
-      chats[chatId]!.lastMessage = message;
-      notifyListeners();
-
+  void sendImageMessage(String chatId, File? file) async {
+    Message message = new Message()
+      ..data = file!.path
+      ..chat_id = chatId;
+    message = await chatRepo.pushContentMessage(message);
+    chats[chatId]!.messages.insert(0, message);
+    chats[chatId]!.lastMessage = message;
+    notifyListeners();
   }
 }

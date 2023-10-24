@@ -140,7 +140,7 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
       child: _MessageTile(
         chat: chat,
         messageData: MessageData(
-          senderName: chat.shop!.name!,
+          senderName: chat.shop!.name ?? 'prova',
           message: chat.lastMessage!.text!,
           messageDate: DateTime(2023, 8, 7, 15, 30),
           dateMessage: formatDateToDateView(chat.lastMessage!.updated_at!),

@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_credit_card/extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +26,7 @@ import '../../dialogs/CustomDialog.dart';
 import '../../dialogs/order_success_dialog.dart';
 import '../../helpers/app_config.dart';
 import '../../helpers/helper.dart';
+import '../../models/chat.dart';
 import '../../models/food_order.dart';
 import '../../models/order.dart';
 import '../../providers/acquistiRecenti_provider.dart';
@@ -201,7 +203,6 @@ class _CheckState extends ConsumerState<Check> {
               onPressed: () {
                 gestisciPagamento(
                     cartProv, ordProv, addrProv, acquistiRecentiProv);
-               
               },
             ),
           ],
@@ -333,6 +334,8 @@ class _CheckState extends ConsumerState<Check> {
                         const SizedBox(
                           height: 3,
                         ),
+                        if (cartProv.deliveryAddress == null)
+                          const Center(child: CircularProgressIndicator()),
                         Padding(
                           padding: EdgeInsets.only(left: 45.0),
                           child: Text(
@@ -850,6 +853,23 @@ class _CheckState extends ConsumerState<Check> {
                     for (int i = 0; i < orders.length; i++) {
                       acquistiRecentiProv.saveAcquistiRecenti(
                           orders[i].foodOrders[i].product!);
+                    }
+
+                    // Creo chat con negozio
+                    final chatProv = ref.watch(chatProvider);
+
+                    Chat? chat = await chatProv.getChatWithUser('7');
+                    if (chat != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Creata chat con il negozio!"),
+                        ),
+                      );
+                      logger.info('ID CHAT: ${chat.id} , NOME: ${chat.name}');
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Errore nella creazione della chat!")));
+                      logger.error('ERROE CREAZIONE CHAT');
                     }
 
                     Navigator.pushReplacement(
