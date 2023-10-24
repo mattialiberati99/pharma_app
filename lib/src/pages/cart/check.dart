@@ -30,6 +30,7 @@ import '../../models/order.dart';
 import '../../providers/acquistiRecenti_provider.dart';
 import '../../providers/can_add_provider.dart';
 import '../../providers/cart_provider.dart';
+import '../../providers/chat_provider.dart';
 import '../../providers/orders_provider.dart';
 import '../../providers/shops_provider.dart';
 import '../home/home.dart';
@@ -172,9 +173,7 @@ class _CheckState extends ConsumerState<Check> {
   @override
   Widget build(BuildContext context) {
     final cartProv = ref.watch(cartProvider);
-
     final ordProv = ref.watch(ordersProvider);
-
     final addrProv = ref.watch(addressesProvider);
     final acquistiRecentiProv = ref.watch(acquistiRecentiProvider);
 
@@ -202,6 +201,7 @@ class _CheckState extends ConsumerState<Check> {
               onPressed: () {
                 gestisciPagamento(
                     cartProv, ordProv, addrProv, acquistiRecentiProv);
+               
               },
             ),
           ],
