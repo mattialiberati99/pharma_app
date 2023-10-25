@@ -189,7 +189,9 @@ Future<Message> pushContentMessage(Message message) async {
       await dio.MultipartFile.fromFile(message.data!,
           filename: p.basename(message.data!))));
   print(url);
-  formData.fields.forEach((element) {print( element.key+" - "+element.value);});
+  formData.fields.forEach((element) {
+    print(element.key + " - " + element.value);
+  });
   var response = await dioRequest.post(
     url,
     data: formData,
@@ -200,7 +202,6 @@ Future<Message> pushContentMessage(Message message) async {
       },
     ),
   );
-
 
   if (response.statusCode == 200) {
     return Message.fromJSON(response.data["data"]);
@@ -232,7 +233,7 @@ Future<Chat?> checkChatWithUser(String userId) async {
   }
 }
 
-Future<Chat?> createNewChat(otherId, {public = false}) async {
+Future<Chat?> createNewChat(restaurantId, {public = false}) async {
   final String url = '${GlobalConfiguration().getValue('api_base_url')}chats';
 
   var uri = Uri.parse(url);
@@ -240,7 +241,7 @@ Future<Chat?> createNewChat(otherId, {public = false}) async {
   Map<String, dynamic> _queryParams = {};
 
   _queryParams['api_token'] = currentUser.value.apiToken;
-  _queryParams['other_id'] = otherId;
+  _queryParams['restaurant_id'] = restaurantId;
   uri = uri.replace(queryParameters: _queryParams);
 
   final client = new http.Client();
@@ -253,7 +254,6 @@ Future<Chat?> createNewChat(otherId, {public = false}) async {
     return null;
   }
 }
-
 
 Future<bool> deleteChat(id) async {
   final String _apiToken = 'api_token=${currentUser.value.apiToken}';

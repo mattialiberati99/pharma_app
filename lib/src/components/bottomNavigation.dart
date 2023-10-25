@@ -1,20 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:pharma_app/src/components/custom_toggle.dart';
 import 'package:pharma_app/src/components/drawer/widgets/drawer_item.dart';
 import 'package:pharma_app/src/helpers/app_config.dart';
-import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sizer/sizer.dart';
+import 'package:badges/badges.dart' as badges;
 
-import '../models/chat.dart';
-import '../models/route_argument.dart';
 import '../providers/chat_provider.dart';
-import '../providers/user_provider.dart';
 
 enum SelectedBottom {
   home,
@@ -179,12 +172,17 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                         'Chat',
                       );
                     },
-                    child: Image(
-                        color: widget.sel == SelectedBottom.chat
-                            ? AppColors.primary
-                            : AppColors.gray4,
-                        image: const AssetImage(
-                            'assets/immagini_pharma/icon_chat.png')),
+                    child: badges.Badge(
+                      showBadge: ref.watch(chatProvider).unread > 0,
+                      badgeStyle:
+                          const badges.BadgeStyle(badgeColor: Colors.red),
+                      child: Image(
+                          color: widget.sel == SelectedBottom.chat
+                              ? AppColors.primary
+                              : AppColors.gray4,
+                          image: const AssetImage(
+                              'assets/immagini_pharma/icon_chat.png')),
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {

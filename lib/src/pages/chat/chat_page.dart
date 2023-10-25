@@ -12,6 +12,7 @@ import 'package:detectable_text_field/widgets/detectable_text_field.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
 import '../../../generated/l10n.dart';
@@ -105,8 +106,8 @@ class _ChatState extends ConsumerState<ChatPage> {
                       borderRadius: BorderRadius.circular(60),
                       child: CachedNetworkImage(
                         imageUrl: chat!.shop!.image!.thumb!,
-                        height: 50,
-                        width: 50,
+                        height: 40,
+                        width: 40,
                       ),
                     ),
                     Expanded(
@@ -119,11 +120,18 @@ class _ChatState extends ConsumerState<ChatPage> {
                         ),
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 20)),
                   ],
                 ),
               ),
               backgroundColor: Colors.white,
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.phone),
+                  onPressed: () {
+                    launch('tel://${chat!.shop!.mobile}');
+                  },
+                ),
+              ],
               // actions: [
               //   InkWell(
               //       onTap: () => showDialog(

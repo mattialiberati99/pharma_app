@@ -74,9 +74,6 @@ class OrderP extends ConsumerWidget {
                 separatorBuilder: (context, index) => const Divider(),
                 itemCount: orders.orders.length,
                 itemBuilder: (ctx, i) {
-                  logger.info('INDICE: $i');
-                  logger.info('ID ORDINE: ${orders.orders[i].id}');
-
                   return OrdineTab(
                       orders.orders[i].foodOrders[0], orders.orders[i]);
                 },

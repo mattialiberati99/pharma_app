@@ -121,17 +121,17 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
       ),
       confirmDismiss: (DismissDirection direction) async {
         return showDialog(
-                context: context,
-                builder: (_) => CustomDialog(
-                    title: S.current.delete_chat,
-                    description: S.current.eliminated_for_both))
-            .then((value) async {
+            context: context,
+            builder: (_) => CustomDialog(
+                title: S.current.delete_chat,
+                description: S.current.eliminated_for_both)).then((value) {
           if (value) {
-            var deleted = await deleteChat(chat.id);
+            chatProv.del(chat);
+            /* var deleted = await deleteChat(chat.id);
             if (deleted) {
               Navigator.of(context).pop();
               chatProv.chats.remove(chat.id);
-            }
+            } */
           }
         });
         ;
@@ -140,10 +140,12 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
       child: _MessageTile(
         chat: chat,
         messageData: MessageData(
-          senderName: chat.shop!.name ?? 'prova',
-          message: chat.lastMessage!.text!,
+          senderName: chat.shop!.name ?? '',
+          message: chat.lastMessage?.text ?? '',
           messageDate: DateTime(2023, 8, 7, 15, 30),
-          dateMessage: formatDateToDateView(chat.lastMessage!.updated_at!),
+          dateMessage: chat.lastMessage != null
+              ? formatDateToDateView(chat.lastMessage!.updated_at!)
+              : '',
           profilePicture: chat.shop!.image!.thumb!,
         ),
       ),

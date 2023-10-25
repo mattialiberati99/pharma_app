@@ -41,48 +41,22 @@ class _ChatAppBarState extends State<ChatAppBar> {
     return AppBar(
       flexibleSpace: Container(
         width: double.infinity,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            //if (hideBackImage != null && hideBackImage == false)
-            SvgPicture.asset('assets/img/left_img_bar.svg'),
-            // Opacity(
-            //   opacity: hideLogo ?? true ? 0.0 : 1,
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(right: 24.0),
-            //     child: SvgPicture.asset('assets/img/logo_color.svg'),
-            //   ),
-            // ),
-          ],
-        ),
       ),
       actions: widget.actions ?? <Widget>[Container()],
       leadingWidth: 90,
       centerTitle: false,
       leading: Navigator.of(context).canPop() && widget.canGoBack
           ? Padding(
-              padding: const EdgeInsets.only(left: 24.0),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4, bottom: 16.0),
-                child: FloatingActionButton(
-                  shape: const CircleBorder(),
-                  onPressed: () {
-                    if (widget.backPressed != null) {
-                      widget.backPressed!();
-                    } else {
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  elevation: 3,
-                  backgroundColor: Colors.white,
-                  child: const Center(
-                      child: Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Icon(Icons.arrow_back_ios,
-                        color: AppColors.secondColor),
-                  )),
-                ),
+              padding: const EdgeInsets.only(top: 4, bottom: 16.0),
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  if (widget.backPressed != null) {
+                    widget.backPressed!();
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
               ),
             )
           : widget.canGoBack
@@ -104,10 +78,10 @@ class _ChatAppBarState extends State<ChatAppBar> {
                 )
               : Container(),
       iconTheme: IconThemeData(
-        color: widget.color ?? Theme.of(context).primaryColor,
+        color: Colors.black,
       ),
       backgroundColor: widget.backgroundColor ?? Colors.white,
-      elevation: 0.0,
+      elevation: 0,
       title: widget.titleWidget != null
           ? widget.titleWidget
           : Text(

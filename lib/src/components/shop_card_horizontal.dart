@@ -5,7 +5,9 @@ import 'package:pharma_app/src/components/shadow_box.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/models/farmaco.dart';
 
+import '../../main.dart';
 import '../helpers/helper.dart';
+import '../models/route_argument.dart';
 import '../providers/shops_provider.dart';
 
 class FarmacoCardHorizontal extends ConsumerWidget {
@@ -16,11 +18,7 @@ class FarmacoCardHorizontal extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () {
-        ref.read(currentFarmacieShopIDProvider.notifier).state =
-            farmaco.farmacia!.id!;
-        Navigator.of(context).pushNamed('Product', arguments: farmaco);
-      },
+      onTap: () {},
       child: Container(
         width: 172,
         height: 175,

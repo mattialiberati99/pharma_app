@@ -29,6 +29,7 @@ import '../../helpers/helper.dart';
 import '../../models/chat.dart';
 import '../../models/food_order.dart';
 import '../../models/order.dart';
+import '../../models/route_argument.dart';
 import '../../providers/acquistiRecenti_provider.dart';
 import '../../providers/can_add_provider.dart';
 import '../../providers/cart_provider.dart';
@@ -858,18 +859,21 @@ class _CheckState extends ConsumerState<Check> {
                     // Creo chat con negozio
                     final chatProv = ref.watch(chatProvider);
 
-                    Chat? chat = await chatProv.getChatWithUser('7');
+                    logger.info(cartProv.carts[0].product!.farmacia!.id);
+
+                    Chat? chat = await chatProv.getChatWithUser(
+                        cartProv.carts[0].product!.farmacia!.id);
+
                     if (chat != null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("Creata chat con il negozio!"),
                         ),
                       );
-                      logger.info('ID CHAT: ${chat.id} , NOME: ${chat.name}');
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Errore nella creazione della chat!")));
-                      logger.error('ERROE CREAZIONE CHAT');
+                      logger.error('ERRORE CREAZIONE CHAT');
                     }
 
                     Navigator.pushReplacement(
