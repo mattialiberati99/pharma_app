@@ -34,7 +34,7 @@ class Media {
     collection = 'unknown';
   }
 
-  Media.fromJSON(Map<String, dynamic> jsonMap) {
+  Media.fromJson(Map<String, dynamic> jsonMap) {
     try {
       id = jsonMap['id'].toString();
       name = jsonMap['name'];

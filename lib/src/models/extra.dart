@@ -30,7 +30,7 @@ class Extra {
       description = jsonMap['description'];
       color =jsonMap['color']!=null?Color(int.parse(jsonMap['color'].replaceAll("#", "0xFF"))):null;
       checked = false;
-      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
+      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJson(jsonMap['media'][0]) : new Media();
     } catch (e) {
       id = '';
       extraGroupId = '0';

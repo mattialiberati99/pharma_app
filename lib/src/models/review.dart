@@ -31,7 +31,7 @@ class Review {
       username = jsonMap['username'];
       date = DateTime.tryParse(jsonMap['updated_at'] ?? "");
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
-          ? Media.fromJSON(jsonMap['media'][0])
+          ? Media.fromJson(jsonMap['media'][0])
           : new Media();
       print(image!.name == null);
       if (jsonMap['food'] != null) {

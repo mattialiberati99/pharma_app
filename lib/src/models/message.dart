@@ -27,7 +27,7 @@ class Message {
       messageRead = jsonMap['message_read'] ?? false;
       if (jsonMap['media'] != null && (jsonMap['media'] as List).isNotEmpty) {
         print(jsonMap['media']);
-        content = Media.fromJSON((jsonMap['media'] as List).first);
+        content = Media.fromJson((jsonMap['media'] as List).first);
         print(text);
         //text='Audio 🎵';
       }

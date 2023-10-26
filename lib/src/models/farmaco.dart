@@ -77,13 +77,13 @@ class Farmaco {
           ? AppCategory.fromJSON(jsonMap['category'])
           : AppCategory.fromJSON({});
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
-          ? Media.fromJSON(jsonMap['media'][0])
+          ? Media.fromJson(jsonMap['media'][0])
           : new Media();
 
       if (jsonMap['media'] != null && (jsonMap['media'] as List).length > 1) {
         (jsonMap['media'] as List).forEach((element) {
           if (gallery == null) gallery = [];
-          gallery!.add(Media.fromJSON(element));
+          gallery!.add(Media.fromJson(element));
         });
       }
       if (jsonMap['extras'] != null && (jsonMap['extras'] as List).length > 0) {
@@ -99,18 +99,7 @@ class Farmaco {
             case 2:
               types.add(Extra.fromJSON(element));
               break;
-            /*    case 3:
-              sizes.add(Extra.fromJSON(element));
-              break;
-            case 4:
-              colors.add(Extra.fromJSON(element));
-              break;
-            case 5:
-              mixtures.add(Extra.fromJSON(element));
-              break;
-            case 6:
-              additions.add(Extra.fromJSON(element));
-              break; */
+
             default:
               extras.add(Extra.fromJSON(element));
               break;
@@ -119,9 +108,6 @@ class Farmaco {
       }
       ;
 
-      /*extraGroups = jsonMap['extra_groups'] != null && (jsonMap['extra_groups'] as List).length > 0
-          ? List.from(jsonMap['extra_groups']).map((element) => ExtraGroup.fromJSON(element)).toSet().toList()
-          : [];*/
       foodReviews = jsonMap['food_reviews'] != null &&
               (jsonMap['food_reviews'] as List).length > 0
           ? List.from(jsonMap['food_reviews'])

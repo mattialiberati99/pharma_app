@@ -19,7 +19,8 @@ import 'package:dio/dio.dart' as dio;
 
 /// Loads the driver from api using the token
 Future<Driver?> load(User user) async {
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}drivers/${user.id}?api_token=${user.apiToken}';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}drivers/${user.id}?api_token=${user.apiToken}';
   final client = http.Client();
   final response = await client.get(
     Uri.parse(url),
@@ -28,15 +29,15 @@ Future<Driver?> load(User user) async {
   if (response.statusCode == 200) {
     return Driver.fromJSON(json.decode(response.body)['data']);
   } else {
-    logger.error(CustomTrace(StackTrace.current, message: response.body).toString());
+    logger.error(
+        CustomTrace(StackTrace.current, message: response.body).toString());
     throw Exception(response.body);
   }
 }
 
 Future<Driver?> create(Driver driver) async {
-
   final String _apiToken = 'api_token=${currentUser.value.apiToken}';
-  String api_url=GlobalConfiguration().getValue('api_base_url');
+  String api_url = GlobalConfiguration().getValue('api_base_url');
   final String url = '${api_url}drivers?$_apiToken';
   final client = http.Client();
 
@@ -55,7 +56,7 @@ Future<Driver?> create(Driver driver) async {
 
 Future<Driver?> update(Driver driver) async {
   final String _apiToken = 'api_token=${currentUser.value.apiToken}';
-  String api_url=GlobalConfiguration().getValue('api_base_url');
+  String api_url = GlobalConfiguration().getValue('api_base_url');
   final String url = '${api_url}set_data/${currentDriver.value!.id}?$_apiToken';
   final client = http.Client();
 
@@ -72,18 +73,17 @@ Future<Driver?> update(Driver driver) async {
   return currentDriver.value;
 }
 
-Future<int> getDriverCount() async{
+Future<int> getDriverCount() async {
   User _user = currentUser.value;
   if (_user.apiToken == null) {
     return 0;
   }
   final String url =
       '${GlobalConfiguration().getValue('api_base_url')}drivers/count?';
-  Map<String,dynamic> _queryParams={};
+  Map<String, dynamic> _queryParams = {};
   _queryParams['api_token'] = '${_user.apiToken}';
 
-
-  Uri uri=Uri.parse(url);
+  Uri uri = Uri.parse(url);
   uri = uri.replace(queryParameters: _queryParams);
   logger.info(uri);
   final client = http.Client();
@@ -118,14 +118,16 @@ Future<void> logout() async {
 }
 
 Future<Media?> addIDImage(String path) async {
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}drivers/image?api_token=${currentUser.value.apiToken}';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}drivers/image?api_token=${currentUser.value.apiToken}';
 
   var uri = Uri.parse(url);
   var dioRequest = dio.Dio();
   // create multipart request
   dio.FormData formData = dio.FormData.fromMap({
     "driver_id": currentDriver.value!.id,
-    "file": await dio.MultipartFile.fromFile(path, filename: path.split('/').last)
+    "file":
+        await dio.MultipartFile.fromFile(path, filename: path.split('/').last)
   });
   logger.info(uri);
   var response = await dioRequest.post(url, data: formData);
@@ -133,7 +135,7 @@ Future<Media?> addIDImage(String path) async {
   logger.info(response.statusCode);
   logger.info(response.data.toString());
   if (response.statusCode == 200) {
-    return Media.fromJSON(response.data['data']);
+    return Media.fromJson(response.data['data']);
   } else {
     return null;
   }
@@ -142,7 +144,8 @@ Future<Media?> addIDImage(String path) async {
 Future<void> removeIDImage(Media media) async {
   User _user = currentUser.value;
   final String _apiToken = 'api_token=${_user.apiToken}';
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}drivers/image/${media.id}?$_apiToken';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}drivers/image/${media.id}?$_apiToken';
   final client = http.Client();
   try {
     await client.delete(
@@ -158,12 +161,18 @@ Future<void> removeIDImage(Media media) async {
 
 /// get driver reviews, added &with=user to get user object for image
 Future<Stream<Review>> getDriverReviews(String id) async {
-  final String url = '${GlobalConfiguration().getValue('base_url')}api/driver_reviews?orderBy=updated_at&sortedBy=desc&search=driver_id:$id&with=user';
+  final String url =
+      '${GlobalConfiguration().getValue('base_url')}api/driver_reviews?orderBy=updated_at&sortedBy=desc&search=driver_id:$id&with=user';
   try {
     final client = http.Client();
     logger.info('getDriverReviews: $url');
     final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
-    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map(( data) => Helper.getData(data as Map<String,dynamic>)).expand((data) => (data as List)).map((data) {
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data as Map<String, dynamic>))
+        .expand((data) => (data as List))
+        .map((data) {
       return Review.fromJSON(data);
     });
   } catch (e) {
@@ -172,8 +181,10 @@ Future<Stream<Review>> getDriverReviews(String id) async {
   }
 }
 
-Future<Review?> addDriverReview(Review review, int driverId, int shippingId) async {
-  final String url = '${GlobalConfiguration().getValue('api_base_url')}driver_reviews?api_token=${currentUser.value.apiToken}';
+Future<Review?> addDriverReview(
+    Review review, int driverId, int shippingId) async {
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}driver_reviews?api_token=${currentUser.value.apiToken}';
 
   var uri = Uri.parse(url);
   var dioRequest = dio.Dio();
@@ -201,7 +212,8 @@ Future<Review?> addDriverReview(Review review, int driverId, int shippingId) asy
       "rate": review.rate,
       "uuid": uuid.v4(),
       "field": "image",
-      "file": await dio.MultipartFile.fromFile(review.imagePath!, filename: review.imagePath!.split('/').last),
+      "file": await dio.MultipartFile.fromFile(review.imagePath!,
+          filename: review.imagePath!.split('/').last),
       "user_id": currentUser.value.id,
     });
   }

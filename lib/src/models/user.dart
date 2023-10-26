@@ -1,8 +1,11 @@
+import 'package:json_annotation/json_annotation.dart';
 
 import '../helpers/custom_trace.dart';
+part 'user.g.dart';
 
 enum UserState { available, away, busy }
 
+@JsonSerializable()
 class User {
   String? id;
   String? name;
@@ -52,6 +55,8 @@ class User {
     }
   }
 
+  Map<String, dynamic> toJson() => _$UserToJson(this);
+
   Map toMap() {
     var map = new Map<String, dynamic>();
     map["id"] = id;
@@ -90,6 +95,10 @@ class User {
   }
 
   bool profileCompleted() {
-    return name != null && name != 'username' && phone != null && phone != '' && phone!.length > 6;
+    return name != null &&
+        name != 'username' &&
+        phone != null &&
+        phone != '' &&
+        phone!.length > 6;
   }
 }

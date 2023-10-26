@@ -32,7 +32,6 @@ class _SectionHorizontalState extends ConsumerState<SectionHorizontal> {
 
   @override
   Widget build(BuildContext context) {
-    //final chosen = ref.watch(farmaOfCategoryProvider('11'));
     final acquistiRecentiProv = ref.watch(acquistiRecentiProvider);
     return Column(
       children: [

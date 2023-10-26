@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/media.dart';
@@ -8,6 +9,7 @@ import 'user.dart';
 
 //here goes the function
 
+@JsonSerializable()
 class Shop {
   String? id;
   String? name;
@@ -51,34 +53,54 @@ class Shop {
     try {
       id = jsonMap['id'].toString();
       name = jsonMap['name'];
-      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
+      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
+          ? Media.fromJson(jsonMap['media'][0])
+          : new Media();
       rate = jsonMap['rate'] ?? '0';
-      deliveryFee = jsonMap['delivery_fee'] != null ? jsonMap['delivery_fee'].toDouble() : 0.0;
-      adminCommission = jsonMap['admin_commission'] != null ? jsonMap['admin_commission'].toDouble() : 0.0;
-      deliveryRange = jsonMap['delivery_range'] != null ? jsonMap['delivery_range'].toDouble() : 0.0;
+      deliveryFee = jsonMap['delivery_fee'] != null
+          ? jsonMap['delivery_fee'].toDouble()
+          : 0.0;
+      adminCommission = jsonMap['admin_commission'] != null
+          ? jsonMap['admin_commission'].toDouble()
+          : 0.0;
+      deliveryRange = jsonMap['delivery_range'] != null
+          ? jsonMap['delivery_range'].toDouble()
+          : 0.0;
       address = jsonMap['address'];
       description = jsonMap['description'];
       phone = jsonMap['phone'];
       mobile = jsonMap['mobile'];
-      defaultTax = jsonMap['default_tax'] != null ? jsonMap['default_tax'].toDouble() : 0.0;
+      defaultTax = jsonMap['default_tax'] != null
+          ? jsonMap['default_tax'].toDouble()
+          : 0.0;
       information = jsonMap['information'];
       latitude = jsonMap['latitude'];
       longitude = jsonMap['longitude'];
       closed = jsonMap['closed'] ?? false;
       availableForDelivery = jsonMap['available_for_delivery'] ?? false;
-      distance = jsonMap['distance'] != null ? double.parse(jsonMap['distance'].toString()) : 0;
-      ordine_minimo = jsonMap['ordine_minimo'] != null ? double.parse(jsonMap['ordine_minimo'].toString()) : 0.0;
-      giorni_consegna = jsonMap['giorni_consegna'] != null ? int.parse(jsonMap['giorni_consegna'].toString()) : 2;
+      distance = jsonMap['distance'] != null
+          ? double.parse(jsonMap['distance'].toString())
+          : 0;
+      ordine_minimo = jsonMap['ordine_minimo'] != null
+          ? double.parse(jsonMap['ordine_minimo'].toString())
+          : 0.0;
+      giorni_consegna = jsonMap['giorni_consegna'] != null
+          ? int.parse(jsonMap['giorni_consegna'].toString())
+          : 2;
       users = jsonMap['users'] != null && (jsonMap['users'] as List).length > 0
-          ? List.from(jsonMap['users']).map((element) => User.fromJSON(element)).toSet().toList()
+          ? List.from(jsonMap['users'])
+              .map((element) => User.fromJSON(element))
+              .toSet()
+              .toList()
           : [];
 
-
-      tempo_consegna = jsonMap['tempo_consegna'] != null ? jsonMap['tempo_consegna'].toString() : null;
+      tempo_consegna = jsonMap['tempo_consegna'] != null
+          ? jsonMap['tempo_consegna'].toString()
+          : null;
 
       if (jsonMap['media'] != null && (jsonMap['media'] as List).length > 1) {
         (jsonMap['media'] as List).forEach((element) {
-          gallery.add(Media.fromJSON(element));
+          gallery.add(Media.fromJson(element));
         });
       }
       orario = [
@@ -115,12 +137,17 @@ class Shop {
                   int startDay = -1;
                   int endDay = -2;
                   if (days.contains(lapseDays[0].trim())) {
-                    startDay = days.indexWhere((element) => element == key.split("-")[0].trim());
-                    endDay = days.indexWhere((element) => element == key.split("-")[1].trim());
+                    startDay = days.indexWhere(
+                        (element) => element == key.split("-")[0].trim());
+                    endDay = days.indexWhere(
+                        (element) => element == key.split("-")[1].trim());
                   } else {
-                    DateTime startDate = DateFormat("dd/MM/yyyy").parse("${lapseDays[0].trim()}/${oggi.year}");
-                    DateTime endDate = DateFormat("dd/MM/yyyy").parse("${lapseDays[1].trim()}/${oggi.year}");
-                    if (startDate.difference(oggi) <= Duration(days: 7) && oggi.isBefore(endDate)) {
+                    DateTime startDate = DateFormat("dd/MM/yyyy")
+                        .parse("${lapseDays[0].trim()}/${oggi.year}");
+                    DateTime endDate = DateFormat("dd/MM/yyyy")
+                        .parse("${lapseDays[1].trim()}/${oggi.year}");
+                    if (startDate.difference(oggi) <= Duration(days: 7) &&
+                        oggi.isBefore(endDate)) {
                       startDay = startDate.weekday % 7;
                       endDay = endDate.weekday & 7;
                     }
@@ -131,7 +158,8 @@ class Shop {
                     int day = days.indexWhere((element) => element == key);
                     orario[day] = value;
                   } else {
-                    DateTime date = DateFormat("dd/MM/yyyy").parse("$key/${oggi.year}");
+                    DateTime date =
+                        DateFormat("dd/MM/yyyy").parse("$key/${oggi.year}");
                     if (oggi.difference(date) <= Duration(days: 7)) {
                       orario[date.weekday & 7] = value;
                     }
@@ -145,8 +173,10 @@ class Shop {
               TimeOfDay nowTime = TimeOfDay.now();
               for (String ore in splits) {
                 var partiOre = ore.trim().split("-");
-                TimeOfDay inizio = TimeOfDay.fromDateTime(DateFormat('HH:mm').parse(partiOre[0].trim()));
-                TimeOfDay fine = TimeOfDay.fromDateTime(DateFormat('HH:mm').parse(partiOre[1].trim()));
+                TimeOfDay inizio = TimeOfDay.fromDateTime(
+                    DateFormat('HH:mm').parse(partiOre[0].trim()));
+                TimeOfDay fine = TimeOfDay.fromDateTime(
+                    DateFormat('HH:mm').parse(partiOre[1].trim()));
                 double now = toDouble(nowTime);
                 double inizioDouble = toDouble(inizio);
                 double fineDouble = toDouble(fine);
@@ -167,10 +197,13 @@ class Shop {
               if (printOrario!.contains("-")) {
                 var ore = printOrario!.split("-");
                 TimeOfDay nowTime = TimeOfDay.now();
-                TimeOfDay inizio = TimeOfDay.fromDateTime(DateFormat('HH:mm').parse(ore[0].trim()));
-                TimeOfDay fine = TimeOfDay.fromDateTime(DateFormat('HH:mm').parse(ore[1].trim()));
+                TimeOfDay inizio = TimeOfDay.fromDateTime(
+                    DateFormat('HH:mm').parse(ore[0].trim()));
+                TimeOfDay fine = TimeOfDay.fromDateTime(
+                    DateFormat('HH:mm').parse(ore[1].trim()));
 
-                if (toDouble(nowTime) >= toDouble(inizio) && toDouble(nowTime) <= toDouble(fine)) {
+                if (toDouble(nowTime) >= toDouble(inizio) &&
+                    toDouble(nowTime) <= toDouble(fine)) {
                   closed = false;
                 } else {
                   closed = true;
@@ -253,6 +286,37 @@ class Shop {
 
   double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
 
+    Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'image': image?.toJson(), // Assuming Media has a toJson method
+      'rate': rate,
+      'delivery_fee': deliveryFee,
+      'admin_commission': adminCommission,
+      'delivery_range': deliveryRange,
+      'address': address,
+      'description': description,
+      'phone': phone,
+      'mobile': mobile,
+      'default_tax': defaultTax,
+      'information': information,
+      'latitude': latitude,
+      'longitude': longitude,
+      'closed': closed,
+      'available_for_delivery': availableForDelivery,
+      'distance': distance,
+      'ordine_minimo': ordine_minimo,
+      'giorni_consegna': giorni_consegna,
+      'users': users.map((user) => user.toJson()).toList(), // Assuming User has a toJson method
+      'tempo_consegna': tempo_consegna,
+      'gallery': gallery.map((media) => media.toJson()).toList(), // Assuming Media has a toJson method
+      'isHotel': isHotel,
+      'isService': isService,
+      'email': email,
+    };
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -271,12 +335,18 @@ class Shop {
   }
 
   Map<String, dynamic> toDestination() {
-    return {'address': address, 'name': name, 'latitude': latitude, 'longitude': longitude};
+    return {
+      'address': address,
+      'name': name,
+      'latitude': latitude,
+      'longitude': longitude
+    };
   }
 
   String _parseHtmlString(String htmlString) {
     final document = parse(htmlString);
-    final String parsedString = parse(document.body!.text).documentElement!.text;
+    final String parsedString =
+        parse(document.body!.text).documentElement!.text;
 
     return parsedString;
   }

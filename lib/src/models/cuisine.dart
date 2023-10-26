@@ -17,7 +17,7 @@ class Cuisine {
       name = jsonMap['name'];
       description = jsonMap['description'];
       parentId = jsonMap['parent_id'].toString();
-      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
+      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJson(jsonMap['media'][0]) : new Media();
       selected = jsonMap['selected'] ?? false;
     } catch (e) {
       id = '';

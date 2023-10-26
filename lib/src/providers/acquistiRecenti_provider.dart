@@ -43,20 +43,6 @@ class AcquistiRecentiProvider with ChangeNotifier {
     }
   }
 
-/*   void saveListaAcquistiRecenti(List<Order> acquisti) async {
-    for (Order a in acquisti) {
-      for (FarmacoOrder f in a.foodOrders) {
-        acquistiRecenti.add(f.product!);
-      }
-    }
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final acquistiRecentitJson =
-        acquistiRecenti.map((farmaco) => farmaco.toJson()).toList();
-    final acquistiRecentiJsonString = json.encode(acquistiRecentitJson);
-    await prefs.setString('acquistiRecenti', acquistiRecentiJsonString);
-    notifyListeners();
-  } */
-
   Future<List<Farmaco>> loadAcquistiRecenti() async {
     List<Farmaco> myList = [];
 
@@ -73,7 +59,6 @@ class AcquistiRecentiProvider with ChangeNotifier {
         acquistiRecenti = mieiAcquistiRecenti;
         notifyListeners();
         return acquistiRecenti;
-        logger.info('PRESI CORRETTAMENTE');
       } else {
         return [];
       }

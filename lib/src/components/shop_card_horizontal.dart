@@ -18,7 +18,17 @@ class FarmacoCardHorizontal extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        /*     if (farmaco.farmacia != null) {
+          logger.info(farmaco.farmacia!.id);
+        } else {
+          logger.error('farmaco.farmacia.id NULL');
+        }
+        logger.info(farmaco.name);
+        logger.info(farmaco.category ?? 'null'); */
+
+        Navigator.of(context).pushNamed('Product', arguments: farmaco);
+      },
       child: Container(
         width: 172,
         height: 175,
