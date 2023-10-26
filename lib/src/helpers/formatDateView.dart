@@ -36,15 +36,11 @@ String formatDateToDateView(DateTime dateTime) {
   DateTime yesterday = DateTime.now().subtract(Duration(days: 1));
   var yesterdayDate = DateFormat('dd-MM-yyyy').format(yesterday);
 
-  //print(yesterdayDate);
-
   if (date == currentDate) {
     return DateFormat('HH:mm').format(dateTime);
   } else if (date == yesterdayDate) {
-    return DateTime.now().subtract(const Duration(days: 1)) as String;
-  } else if (date != currentDate) {
-    return DateFormat('dd/MM/yy').format(dateTime).toString();
+    return DateFormat('dd/MM/yy').format(dateTime);
+  } else {
+    return DateFormat('dd/MM/yy').format(dateTime);
   }
-
-  return "";
 }

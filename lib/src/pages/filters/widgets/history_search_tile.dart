@@ -27,10 +27,14 @@ class HistorySearchTile extends StatelessWidget {
           const SizedBox(
             width: 20,
           ),
-          Text(
-            title,
-            style: context.textTheme.bodyText1?.copyWith(
-                fontWeight: FontWeight.w600, color: Color(0xff555555)),
+          Expanded(
+            child: Text(
+              title,
+              style: context.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w600, color: Color(0xff555555)),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           ),
           // Spacer(),
           // GestureDetector(

@@ -78,25 +78,6 @@ class ChatProvider with ChangeNotifier {
     }
   }
 
-  // Future<Chat?> getChatWithRestaurant(id) async {
-  //   print(id);
-  //   for (Chat chat in chats.values) {
-  //     print(chat.restaurant!.id);
-  //
-  //     if (chat.restaurant!.id == id) {
-  //       return chat;
-  //     }
-  //   }
-  //   Chat? newChat = await chatRepo.createNewChat(id);
-  //   if (newChat != null) {
-  //     chats[newChat.id!] = newChat;
-  //     notifyListeners();
-  //     return newChat;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
   Future<Chat?> getChat(id) async {
     var chat = chats[id];
     if (chat == null || chat.messages.isEmpty || chat.messages.length < 10) {
