@@ -9,6 +9,7 @@ import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/pages/orders/widgets/aestetic_widget.dart';
 import 'package:pharma_app/src/providers/cart_provider.dart';
 import 'package:pharma_app/src/providers/orders_provider.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../providers/user_provider.dart';
 
@@ -176,51 +177,61 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
             itemBuilder: (context, index) => Container(
               margin: const EdgeInsets.only(top: 20, left: 20),
               child: Column(children: [
-                Row(children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: Container(
+                Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      child: Container(
                         color: const Color.fromARGB(255, 242, 243, 243),
                         child: Image(
-                          width: 77,
-                          height: 88,
+                          width: 18.5.w,
+                          height: 9.8.h,
                           image: NetworkImage(
                               cartProv.carts[index].product!.image!.url!),
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              cartProv.carts[index].product!.name.toString(),
-                              style: const TextStyle(
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  cartProv.carts[index].product!.name
+                                      .toString(),
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 9, 15, 71),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          Row(
+                            children: [
+                              Text(
+                                '${cartProv.veroTotale.toStringAsFixed(2)}€',
+                                style: const TextStyle(
                                   color: Color.fromARGB(255, 9, 15, 71),
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Row(children: [
-                          Text(
-                            '${cartProv.veroTotale.toStringAsFixed(2)}€',
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 9, 15, 71),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700),
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
                           ),
-                        ]),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ]),
+                  ],
+                ),
                 if (index == cartProv.carts.length - 1)
                   const SizedBox(
                     height: 30,
