@@ -122,9 +122,10 @@ class _CartPageState extends ConsumerState<CartPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {
-                      logger.info(cartProv.veroTotale);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Check()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Check()));
                     },
                   ),
               ],

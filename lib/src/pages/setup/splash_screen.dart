@@ -49,13 +49,15 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
         }
       });
       setting.addListener(() {
+        logger.info("SPLASH setting.addListener");
         if (setting.value.appName != null) {
+          logger.info("Setting has a value: ${setting.value.appName}");
           setState(() {
-            logger.info("SPLASH setting.addListener");
             progress += 50;
           });
         }
         if (progress >= 100) {
+          logger.info("Calling loadData()");
           loadData();
         }
       });
@@ -89,6 +91,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   void didChangeDependencies() {
+    logger.info('SPLASH didChangeDependencies => loadUserFromSavedToken');
     ref.watch(userProvider).loadUserFromSavedToken();
     initSettings();
     super.didChangeDependencies();
@@ -99,17 +102,18 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   Future<void> initDynamicLinks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     dynamicLinks.onLink.listen((PendingDynamicLinkData dynamicLinkData) {
-      final Uri deepLink = dynamicLinkData.link;
+      final Uri? deepLink = dynamicLinkData.link;
+
       if (deepLink != null) {
         _latestLink = deepLink.path;
         prefs.setString('link', _latestLink);
       }
     }, onError: (e) async {
-      print('onLinkError');
-      print(e.message);
+      logger.error('onLinkError');
+      logger.error(e.message);
     }).onError((error) {
-      print('onLink error');
-      print(error.message);
+      logger.error('onLink error');
+      logger.error(error.message);
     });
 
     final PendingDynamicLinkData? data = await dynamicLinks.getInitialLink();
@@ -141,7 +145,6 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
     locationPermission();
 
     if (buildNumber >= setting.value.minVersion!) {
-      print(currentUser.value.apiToken);
       if (currentUser.value.apiToken != null) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
           if (currentUser.value.verified != null) {

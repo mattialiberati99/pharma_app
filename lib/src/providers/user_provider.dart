@@ -20,6 +20,9 @@ import '../repository/user_repository.dart' as userRepo;
 ValueNotifier<User> currentUser = ValueNotifier(User());
 ValueNotifier<Driver?> currentDriver = ValueNotifier(null);
 
+final stripeAccountProvider =
+    FutureProvider((ref) async => await userRepo.getStripeAccount());
+
 final userProvider = ChangeNotifierProvider<UserProvider>((ref) {
   return UserProvider();
 });

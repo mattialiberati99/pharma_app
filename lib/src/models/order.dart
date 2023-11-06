@@ -39,7 +39,7 @@ class Order {
       orderStatus = jsonMap['order_status'] != null
           ? OrderStatus.fromJSON(jsonMap['order_status'])
           : OrderStatus.fromJSON({});
-      dateTime = DateTime.parse(jsonMap['updated_at']);
+      //dateTime = DateTime.parse(jsonMap['updated_at']);
       deliveryAddress = jsonMap['delivery_address'] != null
           ? Address.fromJSON(jsonMap['delivery_address'])
           : Address.fromJSON({});
@@ -67,7 +67,7 @@ class Order {
       consegna = DateTime.tryParse(jsonMap['delivery_time'] ?? "");
       oraRitiro = DateTime.tryParse(jsonMap['ora_ritiro'] ?? "");
 
-      farmaciaId = jsonMap['restaurant_id'] ?? "";
+      farmaciaId = jsonMap['restaurant_id'] ?? 7;
     } catch (e, stack) {
       print(e);
       print(stack);
@@ -98,7 +98,7 @@ class Order {
     map['delivery_time'] = consegna.toString();
     map["importo"] = importo;
     map["note"] = note;
-    map["sconto"] = sconto;
+    map["sconto"] = 0.0;
     map["coupon"] = discountCode;
     map["restaurant_id"] = foodOrders[0].product!.farmacia!.id;
     return map;

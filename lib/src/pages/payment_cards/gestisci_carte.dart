@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pharma_app/src/providers/acquistiRecenti_provider.dart';
+import 'package:pharma_app/src/providers/chat_provider.dart';
 import 'package:pharma_app/src/providers/orders_provider.dart';
 
 import '../../../generated/l10n.dart';
@@ -76,9 +78,13 @@ class _CarteWidgetState extends ConsumerState<CarteWidget> {
                           selected = cards[cardIndex];
                           final cartProv = ref.watch(cartProvider);
                           final orderProv = ref.watch(ordersProvider);
+                          final acquistiRecentiProv =
+                              ref.watch(acquistiRecentiProvider);
+                          final chatProv = ref.watch(chatProvider);
                           cartProv.paymentMethod = cards[cardIndex];
                           Navigator.of(context).pop();
-                          Helper.nextOrderPage(context, cartProv, orderProv);
+                          Helper.nextOrderPage(context, cartProv, orderProv,
+                              acquistiRecentiProv, chatProv);
                           //}  else if (widget.type ==
                           //     OrderType.booking) {
                           //   selected = cards[cardIndex];

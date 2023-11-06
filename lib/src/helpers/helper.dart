@@ -18,10 +18,14 @@ import '../models/farmaco.dart';
 import '../models/food_order.dart';
 
 import '../models/shop.dart';
+import '../pages/orders/widgets/orderPage_dialog.dart';
 import '../pages/payment_cards/gestisci_carte.dart';
+import '../providers/acquistiRecenti_provider.dart';
 import '../providers/cart_provider.dart';
+import '../providers/chat_provider.dart';
 import '../providers/orders_provider.dart';
 import '../providers/settings_provider.dart';
+import '../pages/cart/check.dart' as check;
 import 'app_config.dart' as config;
 import 'app_config.dart';
 
@@ -482,47 +486,41 @@ class Helper {
   }
 
   static void nextOrderPage(
-      BuildContext context, CartProvider cartProv, OrdersProvider orderProv) {
+    BuildContext context,
+    CartProvider cartProv,
+    OrdersProvider orderProv,
+    AcquistiRecentiProvider acquistiRecentiProv,
+    ChatProvider chatProv,
+  ) {
+    bool isPaymentInProgress = false;
     if (cartProv.deliveryAddress == null) {
       Navigator.of(context).pushNamed('DeliveryAddresses', arguments: true);
     } else if (cartProv.paymentMethod == null) {
       Navigator.of(context).pushNamed('GestisciCarte', arguments: true);
     } else {
       showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Conferma'),
-              content:
-                  Text('Confermare il pagamento con la carta selezionata?'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Annulla'),
-                ),
-                ElevatedButton(
-                    onPressed: () async {
-                     await callFinalizeOrder(cartProv, orderProv, context, 'method');
-                      // TODO ACQUISTI
-                    },
-                    child: Text('Paga'))
-              ],
-            );
-          });
+        context: context,
+        builder: (BuildContext context) {
+          return OrderPageDialog(
+            cartProv: cartProv,
+            orderProv: orderProv,
+            acquistiRecentiProv: acquistiRecentiProv,
+            chatProv: chatProv,
+          );
+        },
+      );
       //Navigator.of(context).pushNamed('Check');
     }
   }
 
-  static Future<void> callFinalizeOrder(
+/*   static Future<void> callFinalizeOrder(
       CartProvider cartProv, OrdersProvider ordProv, BuildContext context, String method) async{
     try {
       await finalizeOrder(cartProv, ordProv, context, method);
     } catch (e) {
       logger.error('Errore nel pagamento');
     }
-  }
+  } */
 
   //
   // static imgFromCamera(User user) async {

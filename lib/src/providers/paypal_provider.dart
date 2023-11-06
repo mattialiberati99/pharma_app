@@ -27,7 +27,7 @@ class PayPalProvider with ChangeNotifier {
       order.consegna = DateTime.now();
       order.importo = cartProv.total.toStringAsFixed(2);
       order.user = currentUser.value;
-      order.note = 'note';
+      order.note = '';
       order.farmaciaId =
           int.tryParse(cartProv.carts.first.product!.farmacia!.id!);
       OrderStatus _orderStatus = OrderStatus();

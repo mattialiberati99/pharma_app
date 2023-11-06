@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_new
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Address {
   static const defaultLatitude = 40.133333;
@@ -49,6 +49,9 @@ class Address {
     map["ztl"] = ztl;
     return map;
   }
+
+  get latLng =>
+      LatLng(latitude ?? defaultLatitude, longitude ?? defaultLongitude);
 
 /*LocationData toLocationData() {
     return LocationData.fromMap({

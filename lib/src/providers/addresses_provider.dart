@@ -26,6 +26,12 @@ class AddressesProvider with ChangeNotifier {
     });
   }
 
+  Future<void> loadData() async {
+    await Future.delayed(Duration(seconds: 2));
+    addresses = await addressRepo.getAddresses();
+    notifyListeners();
+  }
+
   addAddressFromSuggestion() async {
     Address newAddress = Address.fromJSON({});
     newAddress.address = suggestion;

@@ -235,3 +235,18 @@ Future<bool> deleteUser() async {
   //setCurrentUser(response.body);
   return json.decode(response.body)['success'];
 }
+
+Future<String?> getStripeAccount() async {
+  final String _apiToken = 'api_token=${currentUser.value.apiToken}';
+  final String url =
+      '${GlobalConfiguration().getValue('api_base_url')}stripe_connected?$_apiToken';
+  logger.info(url);
+  final client = http.Client();
+  final response = await client.get(
+    Uri.parse(url),
+  );
+  logger.info(url);
+  //setCurrentUser(response.body);
+  final data = json.decode(response.body)['data'];
+  return data?['code'] ?? '';
+}

@@ -193,44 +193,39 @@ class CartProvider with ChangeNotifier {
         print("Error Created");
         cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
       }
-      print("looop");
     }
 
-    print('Creiamo multipli ordini per i vari negozi coinvolti');
     try {
-      print("TRY PRIMA DEL FOR");
       for (MapEntry entry in cartSplitPerShop.entries) {
-        Order _order = Order();
-        _order.foodOrders = entry.value;
-
-        //_order.tax = checkout!.cart!.taxAmount;
-        // _order.deliveryFee = delivery_fee;
-        //_order.note = checkout.note;
-        _order.consegna = DateTime.now().add(Duration(
+        Order order = Order();
+        order.foodOrders = entry.value;
+        order.consegna = DateTime.now().add(Duration(
             days: entry.value.first.product!.farmacia!.giorni_consegna!));
-        //_order.importo = checkout.importo;
-        OrderStatus _orderStatus = new OrderStatus();
-        _orderStatus.id = OrderStatus.received;
-        _order.orderStatus = _orderStatus;
-        _order.deliveryAddress = deliveryAddress;
-        _order.sconto = sconto;
-        _order.discountCode = coupon?.code ?? '';
+        order.importo = veroTotale.toStringAsFixed(2);
+        OrderStatus orderStatus = OrderStatus();
+        orderStatus.id = OrderStatus.received;
+        order.orderStatus = orderStatus;
+        order.deliveryAddress = deliveryAddress;
+        order.sconto = (-veroSconto);
+        order.discountCode = coupon?.code ?? '';
+
+        logger.log('_order.deliveryAddress:');
+        logger.log('${order.deliveryAddress!.toMap()}');
 
         print("Fin qui tutto ok");
-        Order? order = await orderRepo.addOrder(_order);
+        Order? newOrder = await orderRepo.addOrder(order, 'Contanti');
 
-        if (order != null) {
-          logger.info('ORDER NON NULL');
-        } else {
-          logger.info('ORDER NULL ');
-        }
+        //TODO order DOPO orderRepo.addOrder NULL !!!!!
 
-        if (order != null) {
+        logger.log('newOrder DOPO order.addOrder:');
+        logger.log('${newOrder!.deliveryAddress!.toMap()}');
+
+        if (newOrder != null) {
           coupon = null;
-          paymentMethod = null;
+          paymentMethod = paymentMethod;
           loading = false;
           notifyListeners();
-          orders.insert(0, order);
+          orders.insert(0, newOrder);
           notifyListeners();
         } else {
           loading = false;
@@ -263,31 +258,29 @@ class CartProvider with ChangeNotifier {
         print("Error Created");
         cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
       }
-      print("looop");
     }
     print(cartSplitPerShop.length);
     //Creiamo multipli ordini per i vari negozi coinvolti
     try {
       for (MapEntry entry in cartSplitPerShop.entries) {
-        Order _order = Order();
-        _order.foodOrders = entry.value;
-        //_order.tax = checkout!.cart!.taxAmount;
-        //_order.note = checkout.note;
-        _order.farmaciaId = int.tryParse(entry.value.first.food!.farmacia!.id);
-        _order.consegna = DateTime.now().add(
-            Duration(days: entry.value.first.food!.farmacia!.giorni_consegna!));
-        _order.importo = total.toStringAsFixed(2);
-        OrderStatus _orderStatus = OrderStatus();
-        _orderStatus.id = OrderStatus.received;
-        _order.orderStatus = _orderStatus;
-        _order.deliveryAddress = deliveryAddress;
-        _order.sconto = sconto;
-        _order.discountCode = coupon?.code ?? '';
+        Order order = Order();
+        order.foodOrders = entry.value;
 
-        print("Fin qui tutto ok");
+        order.farmaciaId =
+            int.tryParse(entry.value.first.product!.farmacia!.id);
+        order.consegna = DateTime.now().add(Duration(
+            days: entry.value.first.product!.farmacia!.giorni_consegna!));
+        order.importo = veroTotale.toStringAsFixed(2);
+        order.deliveryAddress = deliveryAddress;
+        OrderStatus orderStatus = OrderStatus();
+        orderStatus.id = OrderStatus.received;
+        order.orderStatus = orderStatus;
+
+        logger.info("Fin qui tutto ok");
+        logger.log(order.deliveryAddress!.toMap());
         try {
           Stripe.Stripe.publishableKey = setting.value.stripeKey!;
-          _order.card = paymentMethod!;
+          order.card = paymentMethod!;
           await Stripe.Stripe.instance.dangerouslyUpdateCardDetails(
               Stripe.CardDetails(
                   number: paymentMethod!.number,
@@ -311,7 +304,7 @@ class CartProvider with ChangeNotifier {
             ),
           ));
 
-          Map intentRequest = await orderRepo.getPaymentIntent(_order);
+          Map intentRequest = await orderRepo.getPaymentIntent(order);
 
           Stripe.Stripe.merchantIdentifier = intentRequest['connected_id'];
           Stripe.PaymentIntent paymentIntentResult =
@@ -332,8 +325,7 @@ class CartProvider with ChangeNotifier {
           if (paymentIntentResult.status ==
               Stripe.PaymentIntentsStatus.RequiresCapture) {
             Order? newOrder = await orderRepo.addOrder(
-              _order,
-            );
+                order, paymentIntentResult: paymentIntentResult, 'credit_card');
 
             if (newOrder != null) {
               coupon = null;
@@ -379,7 +371,7 @@ class CartProvider with ChangeNotifier {
 
     List<Order>? orders = [];
     try {
-      if (method == 'carta') {
+      if (method == 'Carta') {
         orders = await addOrder();
       } else if (method == 'Contanti') {
         orders = await addOrderContanti();
@@ -387,7 +379,7 @@ class CartProvider with ChangeNotifier {
 
       if (orders != null && orders.isNotEmpty) {
         coupon = null;
-        paymentMethod = null;
+        paymentMethod = paymentMethod;
         loading = false;
         notifyListeners();
         return orders;

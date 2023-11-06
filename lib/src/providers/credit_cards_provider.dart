@@ -10,9 +10,11 @@ final creditCardsProvider = FutureProvider.autoDispose((ref) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var string = await prefs.getString("credit_card");
     var responseJson = json.decode(string!);
-    return await (responseJson as List).map((p) => CreditCard.fromJSON(p)).toList();
+    return await (responseJson as List)
+        .map((p) => CreditCard.fromJSON(p))
+        .toList();
   } catch (e) {
     print(e);
-    return <CreditCard> [];
+    return <CreditCard>[];
   }
 });

@@ -196,13 +196,13 @@ Future<Stream<DestinationObject?>> getTrackingStatus(orderId) async {
   });
 }
 
-Future<Order?> addOrder(Order order,
+Future<Order?> addOrder(Order order, String? method,
     {Stripe.PaymentIntent? paymentIntentResult}) async {
   User _user = currentUser.value;
   if (_user.apiToken == null) {
     return null;
   }
-  order.payment = Payment('Contanti');
+  order.payment = Payment(method);
   final String url = '${GlobalConfiguration().getValue('api_base_url')}orders';
   Map<String, dynamic> _queryParams = {};
   _queryParams['api_token'] = _user.apiToken;

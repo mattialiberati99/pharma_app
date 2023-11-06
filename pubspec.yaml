@@ -6,11 +6,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 scripts:
-  # run is a default script. To use it, simply type
-  # in the command line: "rps" - that's all!
-  #run: "flutter run -t lib/main_development.dart --flavor development"
-  # you can define more commands like this: "rps gen"
-  #gen: "flutter pub run build_runner watch --delete-conflicting-outputs"
+
   splash: "flutter pub run flutter_native_splash:create --path=flutter_native_splash.yaml"
   gen: "flutter pub run build_runner build --delete-conflicting-outputs"
   intl: "flutter pub run intl_utils:generate"
@@ -18,14 +14,6 @@ scripts:
 
   freezed: "flutter pub add freezed_annotation|flutter pub add --dev build_runner|flutter pub add --dev freezed"
   json: "flutter pub add json_annotation|flutter pub add --dev json_serializable"
-  # and even nest them!
-#  build:
-#    android:
-#      # rps build android apk
-#      apk: "flutter build --release apk --flavor production"
-#      # rps build android appbundle
-#      appbundle: "flutter build --release appbundle --flavor production"
-#      # and so on...
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
@@ -45,7 +33,7 @@ dependencies:
   riverpod_generator: ^1.0.6
   firebase_core: ^2.13.0
   flutter_native_splash: ^2.2.19
-  #flutter_native_splash: ^2.2.11
+
   freezed_annotation: ^2.2.0
   global_configuration: ^2.0.0-nullsafety.1
   shared_preferences: ^2.1.1
