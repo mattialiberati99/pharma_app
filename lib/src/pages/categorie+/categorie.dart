@@ -172,19 +172,6 @@ class FarmacoCategoria extends ConsumerWidget {
         child: Stack(
           alignment: AlignmentDirectional.bottomStart,
           children: [
-            SizedBox(
-              width: 42.w,
-              height: 31.h,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(14.0),
-                ),
-                child: Image.network(
-                  farmaco.image!.url!,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
             ShadowBox(
               color: Colors.white,
               topRightRadius: 0,
@@ -201,45 +188,61 @@ class FarmacoCategoria extends ConsumerWidget {
                   height: context.mqh * 0.1,
                   color: Colors.white,
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          farmaco.name!,
-                          maxLines: 2,
-                          style: const TextStyle(
-                              color: Color.fromARGB(255, 9, 15, 71),
-                              fontSize: 14),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        farmaco.name!,
+                        maxLines: 2,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 9, 15, 71),
+                          fontSize: 14,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20)),
-                              child: Container(
-                                color: AppColors.primary,
-                                width: 11.6.w,
-                                height: 2.7.h,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 4.0),
-                                      child: Text('${farmaco.price!}€',
-                                          style: context.textTheme.titleSmall
-                                              ?.copyWith(
-                                                  color: Colors.white,
-                                                  fontSize: 14)),
-                                    )
-                                  ],
-                                ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomLeft: Radius.circular(20),
+                            ),
+                            child: Container(
+                              color: AppColors.primary,
+                              width: 11.6.w,
+                              height: 2.7.h,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 5.0),
+                                    child: Text(
+                                      '${farmaco.price!.toStringAsFixed(2)}€',
+                                      style: context.textTheme.titleSmall
+                                          ?.copyWith(
+                                        color: Colors.white,
+                                        fontSize: 9.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            )
-                          ],
-                        ),
-                      ]),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
+              ),
+            ),
+            Positioned(
+              left: 4.w,
+              top: 0,
+              child: Image.network(
+                farmaco.image!.url!,
+                fit: BoxFit.contain,
+                width: 36.w,
+                height: 27.h,
               ),
             ),
             Positioned(
@@ -268,7 +271,7 @@ class FarmacoCategoria extends ConsumerWidget {
                 ),
               ),
             ),
-            if (scount > 5 && scount != 100)
+            if (scount < -5 && scount != -100)
               Positioned(
                 top: 0,
                 child: Stack(
@@ -283,12 +286,13 @@ class FarmacoCategoria extends ConsumerWidget {
                         child: Text(
                           "${scount.toInt()}% OFF",
                           style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
