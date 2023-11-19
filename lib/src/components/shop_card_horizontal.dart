@@ -86,47 +86,6 @@ class FarmacoCardHorizontal extends ConsumerWidget {
                   ),
                 ],
               ),
-              Positioned(
-                bottom: 8.0,
-                right: 0,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                    ),
-                    child: Container(
-                      color: Color.fromARGB(255, 255, 192, 0),
-                      width: 48,
-                      height: 24,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            width: 13,
-                            height: 12,
-                            child: Image(
-                              image:
-                                  AssetImage('assets/immagini_pharma/star.png'),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4.0),
-                            child: Text(
-                              '4.2',
-                              style: context.textTheme.titleSmall?.copyWith(
-                                color: Colors.white,
-                                fontSize: 13,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
