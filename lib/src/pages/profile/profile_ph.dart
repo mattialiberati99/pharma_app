@@ -207,7 +207,7 @@ class _ProfilePhState extends State<ProfilePh> {
                   textInputAction: TextInputAction.next,
                 ),
               ),
-              const SizedBox(
+              /*  const SizedBox(
                 height: 15,
               ),
               const Text(
@@ -308,7 +308,7 @@ class _ProfilePhState extends State<ProfilePh> {
               ),
               const SizedBox(
                 height: 40,
-              ),
+              ), */
             ]),
           ),
         ),
