@@ -115,7 +115,7 @@ class MainAppBar extends ConsumerWidget implements PreferredSizeWidget {
                             fontWeight: FontWeight.w500),
                       )),
                   Text(
-                    '$nome!',
+                    '$nome'.split(' ')[0],
                     style: const TextStyle(
                         fontSize: 28,
                         color: Colors.white,

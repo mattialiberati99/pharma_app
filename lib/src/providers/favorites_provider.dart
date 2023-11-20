@@ -11,8 +11,7 @@ import '../models/shop.dart';
 import '../models/shop_favorite.dart';
 import '../repository/favorite_repository.dart';
 
-final favoritesProvider =
-    ChangeNotifierProvider.autoDispose<FavoritesProvider>((ref) {
+final favoritesProvider = ChangeNotifierProvider<FavoritesProvider>((ref) {
   return FavoritesProvider();
 });
 
