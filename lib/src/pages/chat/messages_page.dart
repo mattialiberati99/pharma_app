@@ -27,6 +27,7 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
   Widget build(BuildContext context) {
     final chatProv = ref.watch(chatProvider);
     final notificationProv = ref.watch(notificationProvider);
+
     return Scaffold(
       backgroundColor: Color.fromRGBO(244, 246, 245, 1),
       appBar: AppBar(
@@ -139,6 +140,7 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
       direction: DismissDirection.endToStart,
       child: _MessageTile(
         chat: chat,
+        chatProv: chatProv,
         messageData: MessageData(
           senderName: chat.shop!.name ?? '',
           message: chat.lastMessage?.text ?? '',
@@ -155,10 +157,14 @@ class _MessagesPageState extends ConsumerState<MessagesPage> {
 
 class _MessageTile extends ConsumerStatefulWidget {
   const _MessageTile(
-      {super.key, required this.messageData, required this.chat});
+      {super.key,
+      required this.messageData,
+      required this.chat,
+      required this.chatProv});
 
   final MessageData messageData;
   final Chat chat;
+  final ChatProvider chatProv;
 
   @override
   ConsumerState<_MessageTile> createState() => _MessageTileState();
@@ -170,9 +176,10 @@ class _MessageTileState extends ConsumerState<_MessageTile> {
     final chatProv = ref.watch(chatProvider);
     return GestureDetector(
       onTap: () {
-        chatProv.removeUnreadOfChat(widget.chat.id!);
+        // widget.chatProv.removeUnreadOfChat(widget.chat.id!);
         Navigator.of(context).pushNamed('ChatPage',
             arguments: RouteArgument(id: widget.chat.id));
+        chatProv.setAllRead(widget.chat.id);
       },
       child: Container(
         height: 100,

@@ -53,6 +53,7 @@ class _ChatAppBarState extends State<ChatAppBar> {
                 onPressed: () {
                   if (widget.backPressed != null) {
                     widget.backPressed!();
+                    
                   } else {
                     Navigator.of(context).pop();
                   }
