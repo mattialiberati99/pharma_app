@@ -14,6 +14,7 @@ import 'package:pharma_app/src/providers/favorites_provider.dart';
 import 'package:pharma_app/src/providers/food_provider.dart';
 import 'package:pharma_app/src/providers/products_provider.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:sizer/sizer.dart';
 
 import 'dart:math' as math;
 import '../../../../main.dart';
@@ -184,12 +185,12 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                                                 padding: const EdgeInsets.only(
                                                     left: 4.0),
                                                 child: Text(
-                                                    '${widget.product.price!}€',
+                                                    '${widget.product.price!.toStringAsFixed(2)}€',
                                                     style: context
                                                         .textTheme.subtitle2
                                                         ?.copyWith(
                                                             color: Colors.white,
-                                                            fontSize: 14)),
+                                                            fontSize: 10.sp)),
                                               )
                                             ],
                                           ),

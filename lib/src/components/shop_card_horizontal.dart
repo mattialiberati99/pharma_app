@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pharma_app/src/components/shadow_box.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/models/farmaco.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../main.dart';
 import '../helpers/helper.dart';
@@ -62,25 +63,37 @@ class FarmacoCardHorizontal extends ConsumerWidget {
                   Expanded(
                     flex: 1,
                     child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            farmaco.name ?? '',
-                            style: context.textTheme.titleMedium?.copyWith(
-                              color: Color.fromARGB(255, 9, 15, 71),
-                              fontSize: 13,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 1.5.h),
+                            Text(
+                              farmaco.name ?? '',
+                              style: context.textTheme.titleMedium?.copyWith(
+                                color: Color.fromARGB(255, 70, 69, 69),
+                                fontSize: 13,
+                              ),
                             ),
-                          ),
-                          Text(
-                            Helper.skipHtml(farmaco.description ?? ''),
-                            style: context.textTheme.titleSmall?.copyWith(
-                              color: Color.fromARGB(255, 9, 15, 71),
-                              fontSize: 13,
+                            SizedBox(height: 1.h),
+                            Text(
+                              '${farmaco.price!.toStringAsFixed(2)}€',
+                              style: context.textTheme.titleMedium?.copyWith(
+                                color: Colors.black,
+                                fontSize: 13,
+                              ),
                             ),
-                          ),
-                          // ... (rimanenti elementi rimangono invariati)
-                        ],
+                            /*   Text(
+                              Helper.skipHtml(farmaco.description ?? ''),
+                              style: context.textTheme.titleSmall?.copyWith(
+                                color: Color.fromARGB(255, 9, 15, 71),
+                                fontSize: 13,
+                              ),
+                            ), */
+                            // ... (rimanenti elementi rimangono invariati)
+                          ],
+                        ),
                       ),
                     ),
                   ),
