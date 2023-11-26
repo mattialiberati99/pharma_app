@@ -55,7 +55,7 @@ class MedicinaRoutine extends ConsumerWidget {
                 ),
               ),
               const SizedBox(
-                  width: 8), // Add some spacing between the image and text.
+                  width: 8), 
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

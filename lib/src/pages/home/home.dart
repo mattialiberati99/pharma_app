@@ -4,6 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:pharma_app/local_notifications.dart';
 import 'package:pharma_app/src/app_assets.dart';
 import 'package:pharma_app/src/components/drawer/app_drawer.dart';
 import 'package:pharma_app/src/components/section_vertical.dart';
@@ -48,8 +49,15 @@ class _HomeState extends ConsumerState<Home> {
     super.didChangeDependencies();
   }
 
+  listenToNotification() {
+    LocalNotifications.onClickNotification.stream.listen((event) {
+      Navigator.of(context).pushNamed('Le Mie Routine');
+    });
+  }
+
   @override
   void initState() {
+    listenToNotification();
     cuisineSelected = ref.read(currentCuisineProvider);
     super.initState();
   }

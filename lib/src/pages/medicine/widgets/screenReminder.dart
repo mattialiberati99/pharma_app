@@ -1,17 +1,15 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/pages/medicine/widgets/medicina_routine.dart';
 import 'package:pharma_app/src/providers/routine_provider.dart';
+import 'package:sizer/sizer.dart';
 
+import '../../../../local_notifications.dart';
 import '../../../../main.dart';
 import '../../../helpers/app_config.dart';
 import '../../../models/farmaco.dart';
 import '../../../providers/notification_provider.dart';
-import '../../notifications/notification_service.dart';
 
 class ScreenReminder extends ConsumerStatefulWidget {
   Farmaco prodotto;
@@ -129,7 +127,6 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushNamed("Notifiche");
-                   
                   },
                   child: notificationProv.notifications.isNotEmpty
                       ? const Image(
@@ -148,11 +145,12 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
               height: 20,
             ),
             Container(
-              width: 386,
-              height: 198,
+              width: 93.w,
+              height: 22.h,
               decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(8))),
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
               child: Column(
                 children: [
                   Row(
@@ -161,69 +159,76 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
                         child: Image(
-                            width: 124,
-                            height: 170,
-                            image: NetworkImage(widget.prodotto.image!.url!)),
+                          width: 30.w,
+                          height: 19.4.h,
+                          image: NetworkImage(widget.prodotto.image!.url!),
+                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Nome ',
-                            style: TextStyle(
+                      SizedBox(
+                          width:
+                              10), // Add some space between the image and text
+                      Expanded(
+                        // Use Expanded widget to fix the overflow issue
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Nome ',
+                              style: TextStyle(
                                 color: Color.fromARGB(255, 140, 149, 149),
-                                fontSize: 12),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            widget.prodotto.name!,
-                            style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              widget.prodotto.name!,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              'Routine ',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 140, 149, 149),
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              widget.nomeRoutine,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              'Prossima dose ',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 140, 149, 149),
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              widget.orario,
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Routine ',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 140, 149, 149),
-                                fontSize: 12),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            widget.nomeRoutine,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Prossima dose ',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 140, 149, 149),
-                                fontSize: 12),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            widget.orario,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      )
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -1115,9 +1120,20 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
             ),
             ElevatedButton(
               onPressed: () async {
-                // NOTIFICHE
                 dateNotifiche = convertGiorniInDate(widget.giorni);
-                sendNotifiche(dateNotifiche);
+
+                for (int i = 0; i < dateNotifiche.length; i++) {
+                  logger.info(dateNotifiche[i].toString());
+
+                  LocalNotifications.showScheduleNotification(
+                    title: 'Hai preso ${widget.quantita} di',
+                    body: '${widget.prodotto.name?.toUpperCase()} ?',
+                    payload: 'Reminder Routine',
+                    day: dateNotifiche[i].day,
+                    hour: dateNotifiche[i].hour,
+                    minute: dateNotifiche[i].minute,
+                  );
+                }
 
                 MedicinaRoutine medicina = MedicinaRoutine(
                     widget.prodotto,
@@ -1180,7 +1196,7 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
     return dateConvertite;
   }
 
-  void sendNotifiche(List<DateTime> dateNotifiche) async {
+/*   void sendNotifiche(List<DateTime> dateNotifiche) async {
     for (DateTime data in dateNotifiche) {
       await NotificationService.showNotification(
         title: "Hai preso ${widget.quantita} di",
@@ -1189,5 +1205,5 @@ class _ScreenReminderState extends ConsumerState<ScreenReminder> {
         category: NotificationCategory.Reminder,
       );
     }
-  }
+  } */
 }

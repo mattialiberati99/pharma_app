@@ -42,7 +42,7 @@ class _OrderPageDialogState extends State<OrderPageDialog> {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            isPaymentInProgress ? null : Navigator.of(context).pop();
           },
           child: Text('Annulla'),
         ),
@@ -52,7 +52,12 @@ class _OrderPageDialogState extends State<OrderPageDialog> {
                 onPressed: () async {
                   updatePaymentInProgress(true);
                   await finalizeOrder(
-                      widget.cartProv, widget.orderProv, widget.acquistiRecentiProv, widget.chatProv, context, 'Carta');
+                      widget.cartProv,
+                      widget.orderProv,
+                      widget.acquistiRecentiProv,
+                      widget.chatProv,
+                      context,
+                      'Carta');
                   updatePaymentInProgress(false);
                 },
                 child: const Text('Paga'),
