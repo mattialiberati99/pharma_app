@@ -23,9 +23,9 @@ Farmaco _$FarmacoFromJson(Map<String, dynamic> json) => Farmaco()
   ..packageItemsCount = json['packageItemsCount'] as String?
   ..featured = json['featured'] as bool?
   ..deliverable = json['deliverable'] as bool?
-  ..farmacia = json['farmacia'] == null
+  ..restaurant = json['restaurant'] == null
       ? null
-      : Shop.fromJSON(json['farmacia'] as Map<String, dynamic>)
+      : Shop.fromJSON(json['restaurant'] as Map<String, dynamic>)
   ..category = json['category'] == null
       ? null
       : AppCategory.fromJSON(json['category'] as Map<String, dynamic>)
@@ -51,7 +51,7 @@ Map<String, dynamic> _$FarmacoToJson(Farmaco instance) => <String, dynamic>{
       'packageItemsCount': instance.packageItemsCount,
       'featured': instance.featured,
       'deliverable': instance.deliverable,
-      'farmacia': instance.farmacia,
+      'restaurant': instance.restaurant,
       'category': instance.category,
       'rate': instance.rate,
       'rateCount': instance.rateCount,

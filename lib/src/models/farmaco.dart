@@ -28,7 +28,7 @@ class Farmaco {
   String? packageItemsCount;
   bool? featured;
   bool? deliverable;
-  Shop? farmacia;
+  Shop? restaurant;
   AppCategory? category;
   @JsonKey(ignore: true)
   List<Extra> types = [];
@@ -70,7 +70,7 @@ class Farmaco {
       packageItemsCount = jsonMap['package_items_count'].toString();
       featured = jsonMap['featured'] ?? false;
       deliverable = jsonMap['deliverable'] ?? false;
-      farmacia = jsonMap['restaurant'] != null
+      restaurant = jsonMap['restaurant'] != null
           ? Shop.fromJSON(jsonMap['restaurant'])
           : Shop.fromJSON({});
       category = jsonMap['category'] != null
@@ -142,7 +142,7 @@ class Farmaco {
       packageItemsCount = '';
       featured = false;
       deliverable = false;
-      farmacia = Shop.fromJSON({});
+      restaurant = Shop.fromJSON({});
       category = AppCategory.fromJSON({});
       image = new Media();
       extras = [];
@@ -193,7 +193,7 @@ class Farmaco {
               coupon = _couponDiscountPrice(coupon);
             }
           } else if (element.discountableType == "App\\Models\\Restaurant") {
-            if (element.discountableId == farmacia?.id) {
+            if (element.discountableId == restaurant?.id) {
               coupon = _couponDiscountPrice(coupon);
             }
           } else if (element.discountableType == "App\\Models\\Category") {

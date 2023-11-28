@@ -889,10 +889,10 @@ class _CheckState extends ConsumerState<Check> {
                     // Creo chat con negozio
                     final chatProv = ref.watch(chatProvider);
 
-                    logger.info(cartProv.carts[0].product!.farmacia!.id);
+                    logger.info(cartProv.carts[0].product!.restaurant!.id);
 
                     Chat? chat = await chatProv.getChatWithUser(
-                        cartProv.carts[0].product!.farmacia!.id);
+                        cartProv.carts[0].product!.restaurant!.id);
 
                     if (chat != null && chatProv.chats.isNotEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -1196,18 +1196,19 @@ Future<void> finalizeOrder(
       logger.info(
           'ID DELIVERY: ${cartProv.deliveryAddress!.id}, ADDR: ${cartProv.deliveryAddress!.address}, DESC: ${cartProv.deliveryAddress!.description}');
 
-      // aggiunta ordini recenti
-/*       for (int i = 0; i < orders.length; i++) {
+      // TODO: FIX aggiunta ordini recenti
+
+      /*   for (int i = 0; i < orders.length; i++) {
         acquistiRecentiProv
             .saveAcquistiRecenti(orders[i].foodOrders[i].product!);
       } */
 
       // Creo chat con negozio
 
-      logger.info(cartProv.carts[0].product!.farmacia!.id);
+      logger.info(cartProv.carts[0].product!.restaurant!.id);
 
       Chat? chat = await chatProv
-          .getChatWithUser(cartProv.carts[0].product!.farmacia!.id);
+          .getChatWithUser(cartProv.carts[0].product!.restaurant!.id);
 
       if (chat != null && chatProv.chats.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(

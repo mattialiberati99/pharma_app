@@ -17,7 +17,7 @@ final canAddProvider = Provider((ref) {
   }
   if (cart.carts.isNotEmpty) {
     return cart.carts
-        .every((element) => element.product!.farmacia?.id == shopId);
+        .every((element) => element.product!.restaurant?.id == shopId);
   }
   return true;
 });

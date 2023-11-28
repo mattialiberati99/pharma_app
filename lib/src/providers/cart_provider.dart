@@ -82,9 +82,9 @@ class CartProvider with ChangeNotifier {
     double deliv_fee = 0;
     List<String> already_added_id = [];
     carts.forEach((cart) {
-      if (!already_added_id.contains(cart.product!.farmacia!.id!)) {
-        already_added_id.add(cart.product!.farmacia!.id!);
-        deliv_fee += cart.product!.farmacia!.deliveryFee ?? 0;
+      if (!already_added_id.contains(cart.product!.restaurant!.id!)) {
+        already_added_id.add(cart.product!.restaurant!.id!);
+        deliv_fee += cart.product!.restaurant!.deliveryFee ?? 0;
       }
     });
     double formattedDeliveryFee = double.parse(deliv_fee.toStringAsFixed(2));
@@ -181,17 +181,18 @@ class CartProvider with ChangeNotifier {
     List<Order> orders = [];
     for (Cart cart in carts) {
       try {
-        if (cartSplitPerShop[cart.product!.farmacia!.id!] != null) {
+        if (cartSplitPerShop[cart.product!.restaurant!.id!] != null) {
           print("added");
-          cartSplitPerShop[cart.product!.farmacia!.id!]!.add(cart.foodOrder());
+          cartSplitPerShop[cart.product!.restaurant!.id!]!
+              .add(cart.foodOrder());
         } else {
           print("created");
-          cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
+          cartSplitPerShop[cart.product!.restaurant!.id!] = [cart.foodOrder()];
         }
       } catch (e) {
         print(e);
         print("Error Created");
-        cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
+        cartSplitPerShop[cart.product!.restaurant!.id!] = [cart.foodOrder()];
       }
     }
 
@@ -200,7 +201,7 @@ class CartProvider with ChangeNotifier {
         Order order = Order();
         order.foodOrders = entry.value;
         order.consegna = DateTime.now().add(Duration(
-            days: entry.value.first.product!.farmacia!.giorni_consegna!));
+            days: entry.value.first.product!.restaurant!.giorni_consegna!));
         order.importo = veroTotale.toStringAsFixed(2);
         OrderStatus orderStatus = OrderStatus();
         orderStatus.id = OrderStatus.received;
@@ -244,19 +245,21 @@ class CartProvider with ChangeNotifier {
     print("adding order");
     Map<String, List<FarmacoOrder>> cartSplitPerShop = {};
     List<Order> orders = [];
+
     for (Cart cart in carts) {
       try {
-        if (cartSplitPerShop[cart.product!.farmacia!.id!] != null) {
+        if (cartSplitPerShop[cart.product!.restaurant!.id!] != null) {
           print("added");
-          cartSplitPerShop[cart.product!.farmacia!.id!]!.add(cart.foodOrder());
+          cartSplitPerShop[cart.product!.restaurant!.id!]!
+              .add(cart.foodOrder());
         } else {
           print("created");
-          cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
+          cartSplitPerShop[cart.product!.restaurant!.id!] = [cart.foodOrder()];
         }
       } catch (e) {
         print(e);
         print("Error Created");
-        cartSplitPerShop[cart.product!.farmacia!.id!] = [cart.foodOrder()];
+        cartSplitPerShop[cart.product!.restaurant!.id!] = [cart.foodOrder()];
       }
     }
     print(cartSplitPerShop.length);
@@ -266,10 +269,10 @@ class CartProvider with ChangeNotifier {
         Order order = Order();
         order.foodOrders = entry.value;
 
-        order.farmaciaId =
-            int.tryParse(entry.value.first.product!.farmacia!.id);
+        order.restaurantId =
+            int.tryParse(entry.value.first.product!.restaurant!.id);
         order.consegna = DateTime.now().add(Duration(
-            days: entry.value.first.product!.farmacia!.giorni_consegna!));
+            days: entry.value.first.product!.restaurant!.giorni_consegna!));
         order.importo = veroTotale.toStringAsFixed(2);
         order.deliveryAddress = deliveryAddress;
         OrderStatus orderStatus = OrderStatus();
@@ -277,6 +280,7 @@ class CartProvider with ChangeNotifier {
         order.orderStatus = orderStatus;
 
         logger.info("Fin qui tutto ok");
+
         logger.log(order.deliveryAddress!.toMap());
         try {
           Stripe.Stripe.publishableKey = setting.value.stripeKey!;

@@ -84,7 +84,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        widget.product.farmacia!.name!,
+                        widget.product.restaurant!.name!,
                         style: const TextStyle(color: Colors.grey),
                       ),
                       const SizedBox(height: 30),
@@ -220,7 +220,6 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
                             title: "Medicina Aggiunta",
                             desc:
                                 "Medicina aggiunta correttamente all'armadietto!",
-                              
                             btnOkOnPress: () {
                               Navigator.of(context)
                                   .pushReplacementNamed('Le Mie Routine');

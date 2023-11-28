@@ -35,7 +35,7 @@ class IndirizzoConsegnaTile extends ConsumerWidget {
                                       });
                                     }),
                                 const Text(
-                                  'Salta la fila e ritira in farmacia',
+                                  'Salta la fila e ritira in restaurant',
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 9, 15, 71),
                                       fontSize: 15,

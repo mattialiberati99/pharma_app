@@ -124,9 +124,9 @@ class CartItemTile extends ConsumerWidget {
                                 const SizedBox(
                                   height: 2,
                                 ),
-                                cart.product!.farmacia?.name != null
+                                cart.product!.restaurant?.name != null
                                     ? Text(
-                                        cart.product!.farmacia!.name!,
+                                        cart.product!.restaurant!.name!,
                                         style: context.textTheme.subtitle2,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,

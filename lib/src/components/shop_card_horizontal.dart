@@ -20,10 +20,10 @@ class FarmacoCardHorizontal extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        /*     if (farmaco.farmacia != null) {
-          logger.info(farmaco.farmacia!.id);
+        /*     if (farmaco.restaurant != null) {
+          logger.info(farmaco.restaurant!.id);
         } else {
-          logger.error('farmaco.farmacia.id NULL');
+          logger.error('farmaco.restaurant.id NULL');
         }
         logger.info(farmaco.name);
         logger.info(farmaco.category ?? 'null'); */

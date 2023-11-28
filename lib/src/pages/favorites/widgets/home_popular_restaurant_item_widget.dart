@@ -15,23 +15,23 @@ import '../../../repository/favorite_repository.dart';
 import '../../../repository/restaurant_repository.dart';
 
 class HomePopularRestaurantItemWidget extends ConsumerWidget {
-  final Shop farmacia;
+  final Shop restaurant;
 
-  const HomePopularRestaurantItemWidget({Key? key, required this.farmacia})
+  const HomePopularRestaurantItemWidget({Key? key, required this.restaurant})
       : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final favoriteProv = ref.watch(favoritesProvider);
-    ShopFavorite? isFavorite = favoriteProv.getShopFavorite(farmacia);
+    ShopFavorite? isFavorite = favoriteProv.getShopFavorite(restaurant);
 
     return GestureDetector(
       onTap: () {
-        recentRestaurants.value.add(farmacia.id!);
+        recentRestaurants.value.add(restaurant.id!);
         saveRecentRestaurants();
         ref.invalidate(recentRestaurantsProvider);
-        Navigator.of(context)
-            .pushNamed('Ristorante', arguments: RouteArgument(model: farmacia));
+        Navigator.of(context).pushNamed('Ristorante',
+            arguments: RouteArgument(model: restaurant));
       },
       child: ShadowBox(
           hMargin: 12,
@@ -51,7 +51,7 @@ class HomePopularRestaurantItemWidget extends ConsumerWidget {
                         Radius.circular(10.0),
                       ),
                       child: Image.network(
-                        farmacia.image!.url!,
+                        restaurant.image!.url!,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -60,7 +60,7 @@ class HomePopularRestaurantItemWidget extends ConsumerWidget {
                     padding:
                         const EdgeInsets.only(left: 12.0, top: 8, bottom: 8),
                     child: Text(
-                      farmacia.name ?? '',
+                      restaurant.name ?? '',
                       //style: TextStyle.mediumBlackRegular,
                     ),
                   ),
@@ -75,7 +75,8 @@ class HomePopularRestaurantItemWidget extends ConsumerWidget {
                                 favoriteProv.delShop(isFavorite);
                               }
                             } else {
-                              final favorite = await addShopFavorite(farmacia);
+                              final favorite =
+                                  await addShopFavorite(restaurant);
                               if (favorite != null) {
                                 favoriteProv.addShop(favorite);
                               }

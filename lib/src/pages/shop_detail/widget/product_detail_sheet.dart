@@ -74,7 +74,7 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
   @override
   Widget build(BuildContext context) {
     //final canAdd = ref.watch(canAddProvider);
-    final farmaci = ref.watch(foodProvider(widget.product.farmacia!.id!));
+    final farmaci = ref.watch(foodProvider(widget.product.restaurant!.id!));
     final favorites = ref.watch(favoritesProvider);
     FarmacoFavorite? isFavorite = favorites.getFarmacoFavorite(widget.product);
 
@@ -162,7 +162,7 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        widget.product.farmacia!.name!
+                                        widget.product.restaurant!.name!
                                             .toUpperCase(),
                                         style: const TextStyle(
                                             color: Color.fromARGB(

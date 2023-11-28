@@ -286,7 +286,7 @@ class Shop {
 
   double toDouble(TimeOfDay myTime) => myTime.hour + myTime.minute / 60.0;
 
-    Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
@@ -308,9 +308,13 @@ class Shop {
       'distance': distance,
       'ordine_minimo': ordine_minimo,
       'giorni_consegna': giorni_consegna,
-      'users': users.map((user) => user.toJson()).toList(), // Assuming User has a toJson method
+      'users': users
+          .map((user) => user.toJson())
+          .toList(), // Assuming User has a toJson method
       'tempo_consegna': tempo_consegna,
-      'gallery': gallery.map((media) => media.toJson()).toList(), // Assuming Media has a toJson method
+      'gallery': gallery
+          .map((media) => media.toJson())
+          .toList(), // Assuming Media has a toJson method
       'isHotel': isHotel,
       'isService': isService,
       'email': email,

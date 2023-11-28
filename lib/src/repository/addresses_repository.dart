@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-
 import 'package:global_configuration/global_configuration.dart';
 import 'package:random_string/random_string.dart';
 import 'package:http/http.dart' as http;
@@ -23,9 +22,8 @@ Future<List<Address>> getAddresses() async {
     final client = new http.Client();
     print(url);
     final streamedRest = await client.get(Uri.parse(url));
-    final data=jsonDecode(streamedRest.body)['data'];
-    return (data as List)
-        .map((data) {
+    final data = jsonDecode(streamedRest.body)['data'];
+    return (data as List).map((data) {
       return Address.fromJSON(data);
     }).toList();
   } catch (e) {
@@ -60,7 +58,6 @@ Future<Address> getDefaultAddress() async {
     if(await list.isEmpty){return new Address.fromJSON({});}else{
       return list.first;
     }*/
-
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: url));
     return new Address.fromJSON({});

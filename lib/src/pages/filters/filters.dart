@@ -128,7 +128,7 @@ class _FiltersState extends ConsumerState<Filters> {
                 onTap: () {},
               ),
               HistorySearchTile(
-                title: "farmacia",
+                title: "restaurant",
                 onTap: () {},
               )
             ],

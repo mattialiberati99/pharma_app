@@ -49,7 +49,7 @@ class _ShopDetailState extends ConsumerState<ShopDetail> {
           onPressed: () => Navigator.of(context).pop(),
           color: Colors.black,
         ),
-        title: const Text('Informazioni Farmacia',
+        title: const Text('Informazioni restaurant',
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,

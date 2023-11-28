@@ -12,19 +12,15 @@ import '../../../models/shop.dart';
 
 class OrdineConfermato extends ConsumerStatefulWidget {
   String timeinput;
-  Shop farmacia;
+  Shop restaurant;
 
-  OrdineConfermato(this.timeinput, this.farmacia);
+  OrdineConfermato(this.timeinput, this.restaurant);
 
   @override
   ConsumerState<OrdineConfermato> createState() => _OrdineConfermatoState();
-
 }
 
-
-
 class _OrdineConfermatoState extends ConsumerState<OrdineConfermato> {
-
   @override
   Widget build(BuildContext context) {
     final cartProv = ref.watch(cartProvider);
@@ -251,7 +247,7 @@ class _OrdineConfermatoState extends ConsumerState<OrdineConfermato> {
                         color: Color.fromARGB(255, 167, 166, 165),
                       ),
                       Text(
-                        widget.farmacia.address!,
+                        widget.restaurant.address!,
                         style: const TextStyle(
                           color: Color.fromARGB(255, 167, 166, 165),
                         ),

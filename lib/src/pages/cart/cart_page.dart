@@ -49,8 +49,13 @@ class _CartPageState extends ConsumerState<CartPage> {
       setState(() {
         pickUp = false;
         delivery = true;
-        deliveryFee =
-            ref.watch(cartProvider).carts.first.product!.farmacia!.deliveryFee!;
+        deliveryFee = ref
+            .watch(cartProvider)
+            .carts
+            .first
+            .product!
+            .restaurant!
+            .deliveryFee!;
       });
     } else {
       setState(() {
@@ -94,7 +99,7 @@ class _CartPageState extends ConsumerState<CartPage> {
     }
 
     final hasDelivery = (cartProv.carts.isNotEmpty)
-        ? (cartProv.carts.first.product?.farmacia?.availableForDelivery)
+        ? (cartProv.carts.first.product?.restaurant?.availableForDelivery)
         : false;
 
     final paymentMethod = ref.watch(paymentMethodProvider);
