@@ -1,23 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:pharma_app/src/app_assets.dart';
-import 'package:pharma_app/src/components/custom_toggle.dart';
-import 'package:pharma_app/src/components/primary_nosized_button.dart';
+import 'package:sizer/sizer.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
-import 'package:pharma_app/src/pages/login/widgets/CustomTextFormField.dart';
-import 'package:pharma_app/src/pages/login/widgets/button_border_icon.dart';
 
-import '../../components/divider_label.dart';
+import '../../../generated/l10n.dart';
 import '../../components/social_login_row.dart';
 import '../../helpers/app_config.dart';
 import '../../helpers/validators.dart';
 import '../../models/user.dart';
-import '../../providers/selected_page_name_provider.dart';
-import '../../providers/user_provider.dart';
-import '../../repository/auth_service.dart';
 import '../../providers/user_provider.dart';
 
 class Login extends ConsumerStatefulWidget {
@@ -73,33 +68,33 @@ class _LoginState extends ConsumerState<Login> {
                     height: 30,
                   ),
                   Container(
-                    child: const Image(
-                      width: 33,
-                      height: 32,
+                    child: Image(
+                      width: 8.w,
+                      height: 5.h,
                       image:
                           AssetImage('assets/immagini_pharma/logo_small.png'),
                     ),
                   ),
-                  const SizedBox(
-                      // height: 50,
-                      ),
+                  SizedBox(
+                    height: 3.h,
+                  ),
                   Text(
                     'Accedi',
                     style: context.textTheme.subtitle1,
                   ),
-                  const SizedBox(
-                    height: 40,
+                  SizedBox(
+                    height: 6.h,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         margin: EdgeInsets.only(left: 5, bottom: 3),
-                        child: const Text(
+                        child: Text(
                           'Email',
                           style: TextStyle(
                               color: Color.fromARGB(255, 167, 166, 165),
-                              fontSize: 16,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w600),
                           textAlign: TextAlign.start,
                         ),
@@ -143,8 +138,8 @@ class _LoginState extends ConsumerState<Login> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 18,
+                  SizedBox(
+                    height: 1.h,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,15 +244,15 @@ class _LoginState extends ConsumerState<Login> {
                           ))
                     ],
                   ),
-                  const SizedBox(
-                    height: 130,
+                  SizedBox(
+                    height: 6.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                          width: 210,
-                          height: 50,
+                          width: 50.w,
+                          height: 5.h,
                           child: ElevatedButton(
                             onPressed: () {
                               if (loginFormKey!.currentState!.validate()) {
@@ -275,8 +270,8 @@ class _LoginState extends ConsumerState<Login> {
                           )),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 3.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -299,8 +294,80 @@ class _LoginState extends ConsumerState<Login> {
                           image: AssetImage('assets/immagini_pharma/Line.png')),
                     ],
                   ),
-                  SocialLogin(
-                    margin: context.mqw * 0.06,
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          width: 50.w,
+                          height: 5.h,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18)),
+                            ),
+                            child: const Text('Accedi come ospite'),
+                          )),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 1.h),
+                      SizedBox(
+                        width: 50.w,
+                        height: 5.h,
+                        child: ElevatedButton.icon(
+                          onPressed: () => userProv.signInWithApple(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
+                          icon: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: SvgPicture.asset(
+                              'assets/ico/logo_apple_white.svg',
+                              height: 30,
+                              width: 30,
+                            ),
+                          ),
+                          label: const Text('Accedi con Apple'),
+                        ),
+                      ),
+                      SizedBox(height: 1.h),
+                      SizedBox(
+                        width: 50.w,
+                        height: 5.h,
+                        child: ElevatedButton.icon(
+                          onPressed: () => userProv.loginGoogle(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
+                          icon: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: SvgPicture.asset(
+                              'assets/ico/google-icon.svg',
+                              height: 20,
+                              width: 20,
+                            ),
+                          ),
+                          label: const Text('Accedi con Google'),
+                        ),
+                      ),
+                    ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

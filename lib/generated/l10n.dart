@@ -90,6 +90,16 @@ class S {
     );
   }
 
+    /// `Oppure entra con`
+  String get or_login_with {
+    return Intl.message(
+      'Oppure entra con',
+      name: 'or_login_with',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email`
   String get email {
     return Intl.message(

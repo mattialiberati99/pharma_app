@@ -27,7 +27,7 @@ class SocialLogin extends ConsumerWidget {
           ButtonSocial(
             logoPath: 'assets/ico/fb.svg',
             borderColor: Colors.transparent,
-            onTap: () => userProv.signInWithFacebook(context),
+            onTap: () => userProv.signInWithApple(context),
           )
         ],
       ),

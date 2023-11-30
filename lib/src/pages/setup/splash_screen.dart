@@ -49,15 +49,13 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
         }
       });
       setting.addListener(() {
-        logger.info("SPLASH setting.addListener");
         if (setting.value.appName != null) {
-          logger.info("Setting has a value: ${setting.value.appName}");
           setState(() {
+            logger.info("SPLASH setting.addListener");
             progress += 50;
           });
         }
         if (progress >= 100) {
-          logger.info("Calling loadData()");
           loadData();
         }
       });
@@ -141,6 +139,8 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
       Navigator.of(context).pushReplacementNamed('Maintenance');
       return;
     }
+
+    print('fin qui tutto bene');
 
     locationPermission();
 

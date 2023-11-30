@@ -55,7 +55,7 @@ class _PreRegState extends ConsumerState<PreReg> {
             onPressed: () {
               SchedulerBinding.instance.addPostFrameCallback(
                 (_) {
-                  Navigator.of(context).pushReplacementNamed('PreSignUp');
+                  Navigator.of(context).pushReplacementNamed('Login');
                 },
               );
             },
@@ -112,7 +112,7 @@ class _PreRegState extends ConsumerState<PreReg> {
                 //print(controller.position);
                 SchedulerBinding.instance.addPostFrameCallback(
                   (_) {
-                    Navigator.of(context).pushReplacementNamed('PreSignUp');
+                    Navigator.of(context).pushReplacementNamed('Login');
                   },
                 );
               } else if (index == 0) {

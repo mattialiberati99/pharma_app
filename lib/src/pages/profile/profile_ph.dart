@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/pages/profile/widget/profile_app_bar.dart';
 import 'package:sizer/sizer.dart';
 
@@ -10,20 +11,22 @@ import '../../components/drawer/app_drawer.dart';
 import '../../helpers/app_config.dart';
 import '../../helpers/validators.dart';
 import '../../providers/user_provider.dart';
+import '../../repository/user_repository.dart';
 
-class ProfilePh extends StatefulWidget {
+class ProfilePh extends ConsumerStatefulWidget {
   const ProfilePh({super.key});
 
   @override
-  State<ProfilePh> createState() => _ProfilePhState();
+  ConsumerState<ProfilePh> createState() => _ProfilePhState();
 }
 
-class _ProfilePhState extends State<ProfilePh> {
+class _ProfilePhState extends ConsumerState<ProfilePh> {
   bool hide = true;
   final _advancedDrawerController = AdvancedDrawerController();
 
   @override
   Widget build(BuildContext context) {
+    final userProv = ref.watch(userProvider);
     return AdvancedDrawer(
       childDecoration: const BoxDecoration(
         boxShadow: <BoxShadow>[
@@ -145,10 +148,71 @@ class _ProfilePhState extends State<ProfilePh> {
                   textInputAction: TextInputAction.next,
                 ),
               ),
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: 8.h,
               ),
-              const Text(
+              Padding(
+                padding: EdgeInsets.only(left: 14.w),
+                child: SizedBox(
+                  width: 50.w,
+                  height: 5.h,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text(
+                                  'Sei sicuro di voler eliminare il tuo account? '
+                                  'Questa azione non può essere annullata.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text('Annulla'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    deleteUser().then((v) {
+                                      if (currentUser.value.apiToken != null) {
+                                        UserProvider.logout().then((value) {
+                                          Navigator.of(context)
+                                              .pushNamedAndRemoveUntil(
+                                                  'Login',
+                                                  (Route<dynamic> route) =>
+                                                      false,
+                                                  arguments: false);
+                                        });
+                                      } else {
+                                        Navigator.of(context).pushNamed('Login',
+                                            arguments: false);
+                                      }
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.red,
+                                  ),
+                                  child: const Text('Elimina'),
+                                )
+                              ],
+                            );
+                          });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    icon: const Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Icon(Icons.delete_forever),
+                    ),
+                    label: const Text('Elimina account'),
+                  ),
+                ),
+              ),
+              /*     const Text(
                 'Password',
                 style: TextStyle(
                     fontSize: 14,
@@ -206,7 +270,7 @@ class _ProfilePhState extends State<ProfilePh> {
                   //prefixIcon: Icon(Icons.email,color: Colors.white,),
                   textInputAction: TextInputAction.next,
                 ),
-              ),
+              ), */
               /*  const SizedBox(
                 height: 15,
               ),
