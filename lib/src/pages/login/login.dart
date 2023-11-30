@@ -318,28 +318,29 @@ class _LoginState extends ConsumerState<Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(height: 1.h),
-                      SizedBox(
-                        width: 50.w,
-                        height: 5.h,
-                        child: ElevatedButton.icon(
-                          onPressed: () => userProv.signInWithApple(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18),
+                      if (Platform.isIOS)
+                        SizedBox(
+                          width: 50.w,
+                          height: 5.h,
+                          child: ElevatedButton.icon(
+                            onPressed: () => userProv.signInWithApple(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
+                              ),
                             ),
-                          ),
-                          icon: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: SvgPicture.asset(
-                              'assets/ico/logo_apple_white.svg',
-                              height: 30,
-                              width: 30,
+                            icon: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: SvgPicture.asset(
+                                'assets/ico/logo_apple_white.svg',
+                                height: 30,
+                                width: 30,
+                              ),
                             ),
+                            label: const Text('Accedi con Apple'),
                           ),
-                          label: const Text('Accedi con Apple'),
                         ),
-                      ),
                       SizedBox(height: 1.h),
                       SizedBox(
                         width: 50.w,
