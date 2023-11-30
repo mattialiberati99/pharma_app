@@ -26,6 +26,7 @@ import '../../models/cuisine.dart';
 import '../../providers/notification_provider.dart';
 import '../../providers/selected_page_name_provider.dart';
 import '../../providers/user_provider.dart';
+import '../PermissionDeniedScreen.dart';
 import '../categorie+/categorie.dart';
 
 String locationText = "";
@@ -103,7 +104,7 @@ class _HomeState extends ConsumerState<Home> {
         appBar: MainAppBar(
           controller: searchController,
           advancedDrawerController: _advancedDrawerController,
-          nome: currentUser.value.name ?? 'Pharma User',
+          nome: currentUser.value.name ?? 'Ospite',
           indirizzo: locationText,
         ),
         body: SafeArea(
@@ -133,8 +134,15 @@ class _HomeState extends ConsumerState<Home> {
                     height: 30,
                   ),
                   GestureDetector(
-                    onTap: () =>
-                        Navigator.of(context).pushNamed("Le Mie Routine"),
+                    onTap: () {
+                      if (currentUser.value.apiToken == null) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) =>
+                                const PermissionDeniedScreen())));
+                      } else {
+                        Navigator.of(context).pushNamed("Le Mie Routine");
+                      }
+                    },
                     child: Image(
                       width: 87.4.w,
                       height: 11.1.h,
@@ -179,22 +187,22 @@ class _HomeState extends ConsumerState<Home> {
                                         .elementAt(index))));
                               },
                               child: Container(
-                                margin: EdgeInsets.only(right: 10),
+                                margin: const EdgeInsets.only(right: 10),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   border: Border.all(color: AppColors.gray4),
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(50)),
+                                      const BorderRadius.all(Radius.circular(50)),
                                 ),
                                 width: 64,
                                 height: 98,
                                 child: Column(
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.all(5),
+                                      margin: const EdgeInsets.all(5),
                                       width: 48,
                                       height: 48,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                           // color: AppAssets.colori[index],
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(100))),

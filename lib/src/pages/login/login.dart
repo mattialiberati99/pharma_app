@@ -304,7 +304,10 @@ class _LoginState extends ConsumerState<Login> {
                           width: 50.w,
                           height: 5.h,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('Home');
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.grey,
                               shape: RoundedRectangleBorder(

@@ -94,7 +94,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            currentUser.value.name ?? 'Pharma User',
+                            currentUser.value.name ?? 'Ospite',
                             style: context.textTheme.titleMedium
                                 ?.copyWith(fontSize: 20, color: Colors.white),
                           ),

@@ -18,7 +18,9 @@ import '../../components/shadow_box.dart';
 import '../../helpers/app_config.dart';
 import '../../models/farmaco.dart';
 import '../../models/food_favorite.dart';
+import '../../providers/user_provider.dart';
 import '../../repository/favorite_repository.dart';
+import '../PermissionDeniedScreen.dart';
 
 class Categorie extends ConsumerStatefulWidget {
   final AppCategory nomeCategoria;
@@ -68,18 +70,20 @@ class _CategorieState extends ConsumerState<Categorie> {
                   style:
                       TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushReplacementNamed('Cart');
-                  },
-                  child: cart.carts.isNotEmpty
-                      ? const Image(
-                          image: AssetImage(
-                              'assets/immagini_pharma/Icon_shop_noti.png'))
-                      : const Image(
-                          image: AssetImage(
-                              'assets/immagini_pharma/Icon_shop.png')),
-                )
+                currentUser.value.apiToken == null
+                    ? const SizedBox()
+                    : GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacementNamed('Cart');
+                        },
+                        child: cart.carts.isNotEmpty
+                            ? const Image(
+                                image: AssetImage(
+                                    'assets/immagini_pharma/Icon_shop_noti.png'))
+                            : const Image(
+                                image: AssetImage(
+                                    'assets/immagini_pharma/Icon_shop.png')),
+                      )
               ],
             ),
             SizedBox(
@@ -164,7 +168,6 @@ class FarmacoCategoria extends ConsumerWidget {
     FarmacoFavorite? isFavorite = favorites.getFarmacoFavorite(farmaco);
     return GestureDetector(
       onTap: () {
-        logger.info(farmaco.category!.name);
         Navigator.of(context).pushNamed('Product', arguments: farmaco);
       },
       child: Container(
@@ -245,32 +248,34 @@ class FarmacoCategoria extends ConsumerWidget {
                 height: 27.h,
               ),
             ),
-            Positioned(
-              left: 140,
-              top: 20,
-              child: GestureDetector(
-                onTap: () async {
-                  if (isFavorite != null) {
-                    if (await removeFarmacoFavorite(isFavorite)) {
-                      favorites.delFarmaco(isFavorite);
+            if (currentUser.value.apiToken != null)
+              Positioned(
+                left: 140,
+                top: 20,
+                child: GestureDetector(
+                  onTap: () async {
+                    if (isFavorite != null) {
+                      if (await removeFarmacoFavorite(isFavorite)) {
+                        favorites.delFarmaco(isFavorite);
+                      }
+                    } else {
+                      final favorite = await addFarmacoFavorite(farmaco);
+                      if (favorite != null) {
+                        favorites.addFarmaco(favorite);
+                      }
                     }
-                  } else {
-                    final favorite = await addFarmacoFavorite(farmaco);
-                    if (favorite != null) {
-                      favorites.addFarmaco(favorite);
-                    }
-                  }
-                },
-                child: Image(
-                  image:
-                      ref.read(favoritesProvider).getFarmacoFavorite(farmaco) ==
-                              null
-                          ? const AssetImage('assets/immagini_pharma/Heart.png')
-                          : const AssetImage(
-                              'assets/immagini_pharma/fullHeart.png'),
+                  },
+                  child: Image(
+                    image: ref
+                                .read(favoritesProvider)
+                                .getFarmacoFavorite(farmaco) ==
+                            null
+                        ? const AssetImage('assets/immagini_pharma/Heart.png')
+                        : const AssetImage(
+                            'assets/immagini_pharma/fullHeart.png'),
+                  ),
                 ),
               ),
-            ),
             if (scount < -5 && scount != -100)
               Positioned(
                 top: 0,

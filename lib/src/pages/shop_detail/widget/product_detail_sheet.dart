@@ -27,6 +27,7 @@ import '../../../providers/can_add_provider.dart';
 import '../../../providers/cart_provider.dart';
 import '../../../providers/current_additions_notifier.dart';
 import '../../../providers/shops_provider.dart';
+import '../../../providers/user_provider.dart';
 import '../../../repository/favorite_repository.dart';
 import '../../../repository/restaurant_repository.dart';
 import '../../product_detail/widgets/color_selector.dart';
@@ -109,18 +110,19 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                         onPressed: () => Navigator.of(context).pop(),
                         color: const Color(0xFF333333),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushReplacementNamed('Cart');
-                        },
-                        child: cart.carts.isNotEmpty
-                            ? const Image(
-                                image: AssetImage(
-                                    'assets/immagini_pharma/Icon_shop_noti.png'))
-                            : const Image(
-                                image: AssetImage(
-                                    'assets/immagini_pharma/Icon_shop.png')),
-                      )
+                      if (currentUser.value.apiToken != null)
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushReplacementNamed('Cart');
+                          },
+                          child: cart.carts.isNotEmpty
+                              ? const Image(
+                                  image: AssetImage(
+                                      'assets/immagini_pharma/Icon_shop_noti.png'))
+                              : const Image(
+                                  image: AssetImage(
+                                      'assets/immagini_pharma/Icon_shop.png')),
+                        )
                     ],
                   ),
                   Stack(
@@ -208,41 +210,43 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
                           ),
                         ),
                       ),
-                      Positioned(
-                        left: context.mqw * 0.85,
-                        top: 50,
-                        child: const Image(
-                          image:
-                              AssetImage('assets/immagini_pharma/points.png'),
-                        ),
-                      ),
-                      Positioned(
-                        left: context.mqw * 0.84,
-                        top: 25,
-                        child: GestureDetector(
-                          onTap: () async {
-                            if (isFavorite != null) {
-                              if (await removeFarmacoFavorite(isFavorite)) {
-                                favorites.delFarmaco(isFavorite);
-                              }
-                            } else {
-                              final favorite =
-                                  await addFarmacoFavorite(widget.product);
-                              if (favorite != null) {
-                                favorites.addFarmaco(favorite);
-                              }
-                            }
-                          },
-                          child: Image(
+                      if (currentUser.value.apiToken != null)
+                        Positioned(
+                          left: context.mqw * 0.85,
+                          top: 50,
+                          child: const Image(
                             image:
-                                fav.getFarmacoFavorite(widget.product) == null
-                                    ? const AssetImage(
-                                        'assets/immagini_pharma/Heart.png')
-                                    : const AssetImage(
-                                        'assets/immagini_pharma/fullHeart.png'),
+                                AssetImage('assets/immagini_pharma/points.png'),
                           ),
                         ),
-                      ),
+                      if (currentUser.value.apiToken != null)
+                        Positioned(
+                          left: context.mqw * 0.84,
+                          top: 25,
+                          child: GestureDetector(
+                            onTap: () async {
+                              if (isFavorite != null) {
+                                if (await removeFarmacoFavorite(isFavorite)) {
+                                  favorites.delFarmaco(isFavorite);
+                                }
+                              } else {
+                                final favorite =
+                                    await addFarmacoFavorite(widget.product);
+                                if (favorite != null) {
+                                  favorites.addFarmaco(favorite);
+                                }
+                              }
+                            },
+                            child: Image(
+                              image: fav.getFarmacoFavorite(widget.product) ==
+                                      null
+                                  ? const AssetImage(
+                                      'assets/immagini_pharma/Heart.png')
+                                  : const AssetImage(
+                                      'assets/immagini_pharma/fullHeart.png'),
+                            ),
+                          ),
+                        ),
                       (scount > 5 && scount != 100)
                           ? Positioned(
                               top: 0,
@@ -350,39 +354,38 @@ class _ProductDetailSheetState extends ConsumerState<ProductDetailSheet> {
           ],
         ),
       ),
-      bottomSheet: FooterActions(
-        firstLabel: 'Aggiungi al carrello',
+      bottomSheet: currentUser.value.apiToken == null
+          ? const SizedBox()
+          : FooterActions(
+              firstLabel: 'Aggiungi al carrello',
 
-        firstAction: () {
-          // TODO: FIX CATEGORIA ID NULL
-          logger.info(widget.product.category!.id);
+              firstAction: () {
+                if (size != null) extras.add(size!);
+                if (color != null) extras.add(color!);
+                cart.add(widget.product, quantity, extras);
+                print(widget.product.name);
+                AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.success,
+                    animType: AnimType.topSlide,
+                    showCloseIcon: true,
+                    title: "Aggiunto",
+                    desc: "Prodotto aggiunto correttamente al carrello",
+                    btnOkOnPress: () {
+                      Navigator.of(context).pushReplacementNamed('Cart');
+                    }).show();
+              },
+              // firstAction: () {
+              //   if (size != null) extras.add(size!);
+              //   if (color != null) extras.add(color!);
+              //   cart.add(widget.product, quantity, extras);
+              //   context.navigator.pop();
+              //   print(cart.total.toEUR());
+              // },
+              hasSecond: false,
 
-          if (size != null) extras.add(size!);
-          if (color != null) extras.add(color!);
-          cart.add(widget.product, quantity, extras);
-          print(widget.product.name);
-          AwesomeDialog(
-              context: context,
-              dialogType: DialogType.success,
-              animType: AnimType.topSlide,
-              showCloseIcon: true,
-              title: "Aggiunto",
-              desc: "Prodotto aggiunto correttamente al carrello",
-              btnOkOnPress: () {
-                Navigator.of(context).pushReplacementNamed('Cart');
-              }).show();
-        },
-        // firstAction: () {
-        //   if (size != null) extras.add(size!);
-        //   if (color != null) extras.add(color!);
-        //   cart.add(widget.product, quantity, extras);
-        //   context.navigator.pop();
-        //   print(cart.total.toEUR());
-        // },
-        hasSecond: false,
-
-        hasNote: false,
-      ),
+              hasNote: false,
+            ),
       bottomNavigationBar: BottomNavigation(sel: SelectedBottom.home),
     );
   }

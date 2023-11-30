@@ -14,6 +14,7 @@ import '../../app_assets.dart';
 import '../../helpers/app_config.dart';
 
 import '../../models/chat.dart';
+import '../../pages/PermissionDeniedScreen.dart';
 import '../../providers/selected_page_name_provider.dart';
 
 final _drawerItems = <String>[
@@ -55,7 +56,6 @@ class AppDrawer extends ConsumerWidget {
     final userProv = ref.watch(userProvider);
 
     return Drawer(
-      //TODO aggiungere ai colori
       backgroundColor: const Color.fromARGB(255, 243, 252, 245),
       elevation: 1,
       width: context.mqw * 0.8,
@@ -91,8 +91,17 @@ class AppDrawer extends ConsumerWidget {
                             ),
                             GestureDetector(
                               onTap: () => {
-                                //      advancedDrawerController.toggleDrawer(),
-                                Navigator.of(context).pushNamed('Profilo')
+                                if (currentUser.value.apiToken == null)
+                                  {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: ((context) =>
+                                            const PermissionDeniedScreen())))
+                                  }
+                                else
+                                  {
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('Profilo')
+                                  }
                               },
                               child: Column(
                                 children: [
@@ -115,7 +124,7 @@ class AppDrawer extends ConsumerWidget {
                                         width: 5,
                                       ),
                                       Text(
-                                        currentUser.value.name ?? 'Pharma User',
+                                        currentUser.value.name ?? 'Ospite',
                                         style: context.textTheme.titleMedium
                                             ?.copyWith(fontSize: 16),
                                       ),
@@ -140,13 +149,19 @@ class AppDrawer extends ConsumerWidget {
                             pageName: pageName,
                             iconPath: _drawerIcons[pageName]!,
                             onPressed: () async {
-                              final chatProv = ref.watch(chatProvider);
-                              Chat? chat =
-                                  await chatProv.getChat(currentUser.value.id);
-                              pageName == 'Chat'
-                                  ? Navigator.of(context).pushNamed('Chat',
-                                      arguments: RouteArgument(id: chat?.id))
-                                  : Navigator.of(context).pushNamed(pageName);
+                              if (currentUser.value.apiToken == null) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const PermissionDeniedScreen())));
+                              } else {
+                                final chatProv = ref.watch(chatProvider);
+                                Chat? chat = await chatProv
+                                    .getChat(currentUser.value.id);
+                                pageName == 'Chat'
+                                    ? Navigator.of(context).pushNamed('Chat',
+                                        arguments: RouteArgument(id: chat?.id))
+                                    : Navigator.of(context).pushNamed(pageName);
+                              }
                             }),
                         Positioned(
                             left: 68.w,
