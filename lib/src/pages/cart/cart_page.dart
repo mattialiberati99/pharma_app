@@ -87,10 +87,6 @@ class _CartPageState extends ConsumerState<CartPage> {
   @override
   Widget build(BuildContext context) {
     final cartProv = ref.watch(cartProvider);
-    final orderProv = ref.watch(ordersProvider);
-    final orderNote = ref.watch(noteOrderProvider);
-    //final creditCard = ref.watch(creditCardsProvider).asData?.value.first;
-    //final creditCard = ref.watch(creditCardsProvider);
     final address = ref.watch(userDefaultCartAddressProvider) ??
         ref.watch(userDefaultAddressProvider).asData?.value;
 

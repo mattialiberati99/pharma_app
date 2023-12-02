@@ -882,8 +882,10 @@ class _CheckState extends ConsumerState<Check> {
 
                     // aggiunta ordini recenti
                     for (int i = 0; i < orders.length; i++) {
-                      acquistiRecentiProv.saveAcquistiRecenti(
-                          orders[i].foodOrders[i].product!);
+                      logger.info('lunghezza orders: ${orders.length}');
+                      // FOOD ORDERS E' VUOTA
+                      logger.info(
+                          'lunghezza foodOrder dentro orders: ${orders[i].foodOrders.length}');
                     }
 
                     // Creo chat con negozio

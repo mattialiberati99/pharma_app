@@ -195,7 +195,7 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                         );
                       }
                     },
-                    child: currentUser.value.apiToken == null
+                    child: currentUser.value.apiToken != null
                         ? badges.Badge(
                             showBadge: ref.watch(chatProvider).unread > 0,
                             badgeStyle:
@@ -207,7 +207,12 @@ class BottomNavigationState extends ConsumerState<BottomNavigation> {
                                 image: const AssetImage(
                                     'assets/immagini_pharma/icon_chat.png')),
                           )
-                        : const SizedBox(),
+                        : Image(
+                            color: widget.sel == SelectedBottom.chat
+                                ? AppColors.primary
+                                : AppColors.gray4,
+                            image: const AssetImage(
+                                'assets/immagini_pharma/icon_chat.png')),
                   ),
                   GestureDetector(
                     onTap: () {

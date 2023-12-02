@@ -210,6 +210,9 @@ class CartProvider with ChangeNotifier {
         order.sconto = (-veroSconto);
         order.discountCode = coupon?.code ?? '';
 
+        logger.log('deliveryAddress:');
+        logger.log('${order.deliveryAddress!.toMap()}');
+
         logger.log('_order.deliveryAddress:');
         logger.log('${order.deliveryAddress!.toMap()}');
 
