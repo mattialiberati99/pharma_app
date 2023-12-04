@@ -216,6 +216,9 @@ class CartProvider with ChangeNotifier {
         logger.log('_order.deliveryAddress:');
         logger.log('${order.deliveryAddress!.toMap()}');
 
+        logger.log('ORDER TO MAP PRIMA DELLA ADDORDER REPO: ');
+        logger.log(order.toMap());
+
         print("Fin qui tutto ok");
         Order? newOrder = await orderRepo.addOrder(order, 'Contanti');
 
@@ -391,6 +394,7 @@ class CartProvider with ChangeNotifier {
         notifyListeners();
         return orders;
       } else {
+        print('empty orders');
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Errore nel pagamento, riprova"),
         ));
@@ -398,6 +402,8 @@ class CartProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e, s) {
+      print(e);
+      print(s);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Errore nel pagamento, riprova"),
       ));

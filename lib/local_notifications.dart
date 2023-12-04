@@ -2,8 +2,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-
-import 'main.dart';
+import './src/models/notification.dart' as model;
 
 class LocalNotifications {
   static final FlutterLocalNotificationsPlugin
@@ -22,7 +21,7 @@ class LocalNotifications {
         DarwinInitializationSettings(
             onDidReceiveLocalNotification: ((id, title, body, payload) =>
                 null));
-    final LinuxInitializationSettings initializationSettingsLinux =
+    const LinuxInitializationSettings initializationSettingsLinux =
         LinuxInitializationSettings(defaultActionName: 'Open notification');
     final InitializationSettings initializationSettings =
         InitializationSettings(
@@ -79,7 +78,7 @@ class LocalNotifications {
     );
 
     if (scheduledDate.isBefore(tz.TZDateTime.now(tz.local))) {
-      scheduledDate = scheduledDate.add(Duration(days: 30));
+      scheduledDate = scheduledDate.add(const Duration(days: 30));
     }
 
     await _flutterLocalNotificationsPlugin.zonedSchedule(
@@ -87,8 +86,6 @@ class LocalNotifications {
         title,
         body,
         scheduledDate,
-        // tz.TZDateTime.from(date, tz.local),
-        //tz.TZDateTime.now(tz.local).add(Duration(seconds: 5)),
         const NotificationDetails(
             android: AndroidNotificationDetails('Routine', 'Routine',
                 channelDescription: 'Notifiche routine',
@@ -99,5 +96,7 @@ class LocalNotifications {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         payload: payload);
+
+   // model.Notification not = model.Notification(data: {});
   }
 }

@@ -30,7 +30,8 @@ class AcquistiRecentiProvider with ChangeNotifier {
 
   void saveAcquistiRecenti(Farmaco farmaco) async {
     if (!acquistiRecenti.contains(farmaco)) {
-      acquistiRecenti.add(farmaco);
+      acquistiRecenti.insert(0, farmaco);
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final acquistiRecentiJson =
           acquistiRecenti.map((farmaco) => farmaco.toJson()).toList();

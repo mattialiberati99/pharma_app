@@ -877,21 +877,20 @@ class _CheckState extends ConsumerState<Check> {
                   Navigator.of(context).pop();
 
                   if (orders != null) {
-                    // logger.info(orders.asMap());
                     ordProv.orders.insertAll(0, orders);
 
                     // aggiunta ordini recenti
                     for (int i = 0; i < orders.length; i++) {
                       logger.info('lunghezza orders: ${orders.length}');
-                      // FOOD ORDERS E' VUOTA
                       logger.info(
                           'lunghezza foodOrder dentro orders: ${orders[i].foodOrders.length}');
+
+                      acquistiRecentiProv.saveAcquistiRecenti(
+                          orders[i].foodOrders[i].product!);
                     }
 
                     // Creo chat con negozio
                     final chatProv = ref.watch(chatProvider);
-
-                    logger.info(cartProv.carts[0].product!.restaurant!.id);
 
                     Chat? chat = await chatProv.getChatWithUser(
                         cartProv.carts[0].product!.restaurant!.id);
@@ -1200,10 +1199,10 @@ Future<void> finalizeOrder(
 
       // TODO: FIX aggiunta ordini recenti
 
-      /*   for (int i = 0; i < orders.length; i++) {
+      for (int i = 0; i < orders.length; i++) {
         acquistiRecentiProv
             .saveAcquistiRecenti(orders[i].foodOrders[i].product!);
-      } */
+      }
 
       // Creo chat con negozio
 

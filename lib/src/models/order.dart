@@ -1,3 +1,4 @@
+import '../../main.dart';
 import '../helpers/custom_trace.dart';
 import '../models/address.dart';
 import '../models/food_order.dart';
@@ -66,11 +67,11 @@ class Order {
       sconto = jsonMap['sconto'] != null ? jsonMap['sconto'].toDouble() : 0.0;
       consegna = DateTime.tryParse(jsonMap['delivery_time'] ?? "");
       oraRitiro = DateTime.tryParse(jsonMap['ora_ritiro'] ?? "");
-      restaurantId = int.tryParse(jsonMap['restaurant_id'] ?? '0');
+      restaurantId = jsonMap['restaurant_id'] ?? 0;
       print('restaurantId: $restaurantId');
     } catch (e, stack) {
-      print(e);
-      print(stack);
+      logger.error(e);
+      logger.error(stack);
       id = '';
       deliveryFee = 0.0;
       active = false;
