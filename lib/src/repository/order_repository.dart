@@ -48,6 +48,7 @@ Future<Order?> getOrder(orderId) async {
   if (_user.apiToken == null) {
     return null;
   }
+
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
       '${GlobalConfiguration().getValue('api_base_url')}orders/$orderId?${_apiToken}with=user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;deliveryAddress;payment';

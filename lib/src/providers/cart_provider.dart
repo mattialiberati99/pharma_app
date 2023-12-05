@@ -210,26 +210,12 @@ class CartProvider with ChangeNotifier {
         order.sconto = (-veroSconto);
         order.discountCode = coupon?.code ?? '';
 
-        logger.log('deliveryAddress:');
-        logger.log('${order.deliveryAddress!.toMap()}');
-
-        logger.log('_order.deliveryAddress:');
-        logger.log('${order.deliveryAddress!.toMap()}');
-
-        logger.log('ORDER TO MAP PRIMA DELLA ADDORDER REPO: ');
-        logger.log(order.toMap());
-
         print("Fin qui tutto ok");
         Order? newOrder = await orderRepo.addOrder(order, 'Contanti');
 
-        //TODO order DOPO orderRepo.addOrder NULL !!!!!
-
-        logger.log('newOrder DOPO order.addOrder:');
-        logger.log('${newOrder!.deliveryAddress!.toMap()}');
-
         if (newOrder != null) {
           coupon = null;
-          paymentMethod = paymentMethod;
+          paymentMethod = null;
           loading = false;
           notifyListeners();
           orders.insert(0, newOrder);
@@ -268,22 +254,20 @@ class CartProvider with ChangeNotifier {
         cartSplitPerShop[cart.product!.restaurant!.id!] = [cart.foodOrder()];
       }
     }
-    print(cartSplitPerShop.length);
     //Creiamo multipli ordini per i vari negozi coinvolti
     try {
       for (MapEntry entry in cartSplitPerShop.entries) {
         Order order = Order();
         order.foodOrders = entry.value;
-
-        order.restaurantId =
-            int.tryParse(entry.value.first.product!.restaurant!.id);
         order.consegna = DateTime.now().add(Duration(
             days: entry.value.first.product!.restaurant!.giorni_consegna!));
         order.importo = veroTotale.toStringAsFixed(2);
-        order.deliveryAddress = deliveryAddress;
         OrderStatus orderStatus = OrderStatus();
         orderStatus.id = OrderStatus.received;
         order.orderStatus = orderStatus;
+        order.deliveryAddress = deliveryAddress;
+        order.sconto = (-veroSconto);
+        order.discountCode = coupon?.code ?? '';
 
         logger.info("Fin qui tutto ok");
 

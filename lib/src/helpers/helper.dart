@@ -509,29 +509,8 @@ class Helper {
           );
         },
       );
-      //Navigator.of(context).pushNamed('Check');
+     
     }
   }
 
-/*   static Future<void> callFinalizeOrder(
-      CartProvider cartProv, OrdersProvider ordProv, BuildContext context, String method) async{
-    try {
-      await finalizeOrder(cartProv, ordProv, context, method);
-    } catch (e) {
-      logger.error('Errore nel pagamento');
-    }
-  } */
-
-  //
-  // static imgFromCamera(User user) async {
-  //   PickedFile? image = await ImagePicker().getImage(source: ImageSource.camera, imageQuality: 50);
-  //   user.imagePath = image!.path;
-  //   return user;
-  // }
-  //
-  // static imgFromGallery(User user) async {
-  //   PickedFile? image = await ImagePicker().getImage(source: ImageSource.gallery, imageQuality: 50);
-  //   user.imagePath = image!.path;
-  //   return user;
-  // }
 }

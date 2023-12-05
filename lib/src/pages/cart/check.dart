@@ -1047,6 +1047,7 @@ class _CheckState extends ConsumerState<Check> {
   }
 
   scegliIndirizzo(BuildContext context, AddressesProvider addrProv) {
+    final cartProv = ref.watch(cartProvider);
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -1113,7 +1114,7 @@ class _CheckState extends ConsumerState<Check> {
                           title: Text(indirizzo.address!),
                           onTap: () {
                             // Cambia indirizzo
-
+                            cartProv.deliveryAddress = indirizzo;
                             setState(() {
                               my_address = indirizzo.address!;
                               indirizzo.phone != null
@@ -1197,16 +1198,10 @@ Future<void> finalizeOrder(
       logger.info(
           'ID DELIVERY: ${cartProv.deliveryAddress!.id}, ADDR: ${cartProv.deliveryAddress!.address}, DESC: ${cartProv.deliveryAddress!.description}');
 
-      // TODO: FIX aggiunta ordini recenti
-
       for (int i = 0; i < orders.length; i++) {
         acquistiRecentiProv
             .saveAcquistiRecenti(orders[i].foodOrders[i].product!);
       }
-
-      // Creo chat con negozio
-
-      logger.info(cartProv.carts[0].product!.restaurant!.id);
 
       Chat? chat = await chatProv
           .getChatWithUser(cartProv.carts[0].product!.restaurant!.id);

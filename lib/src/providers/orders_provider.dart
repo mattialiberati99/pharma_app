@@ -15,20 +15,21 @@ class OrdersProvider with ChangeNotifier {
   OrdersProvider() {
     Future.delayed(Duration.zero, () async {
       orders = await orderRepo.getOrders();
+      print('LUNGHEZZA ORDERS PROVIDER: ${orders.length}');
       totalCount = await orderRepo.getOrdersCount();
       notifyListeners();
     });
   }
 
-  get ordersInCorso => orders.where(
-      (element) => element.orderStatus!.id! < OrderStatus.delivered);
+  get ordersInCorso => orders
+      .where((element) => element.orderStatus!.id! < OrderStatus.delivered);
 
-  get ordersCompletati => orders.where((element) =>
-      element.orderStatus!.id! >= OrderStatus.delivered);
+  get ordersCompletati => orders
+      .where((element) => element.orderStatus!.id! >= OrderStatus.delivered);
 
   order(id) => orders.firstWhereOrNull((element) => element.id == id);
 
-  Future<void> reloadOrders() async{
+  Future<void> reloadOrders() async {
     orders = await orderRepo.getOrders();
     totalCount = await orderRepo.getOrdersCount();
     notifyListeners();

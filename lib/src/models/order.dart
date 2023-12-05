@@ -67,7 +67,7 @@ class Order {
       sconto = jsonMap['sconto'] != null ? jsonMap['sconto'].toDouble() : 0.0;
       consegna = DateTime.tryParse(jsonMap['delivery_time'] ?? "");
       oraRitiro = DateTime.tryParse(jsonMap['ora_ritiro'] ?? "");
-      restaurantId = jsonMap['restaurant_id'] ?? 0;
+      restaurantId = jsonMap['restaurant_id'] ?? 7;
       print('restaurantId: $restaurantId');
     } catch (e, stack) {
       logger.error(e);
@@ -101,7 +101,7 @@ class Order {
     map["note"] = note;
     map["sconto"] = 0.0;
     map["coupon"] = discountCode;
-    map["restaurant_id"] = foodOrders[0].product!.restaurant!.id;
+    map["restaurant_id"] = foodOrders[0].product!.restaurant!.id ?? '7';
     return map;
   }
 

@@ -26,22 +26,6 @@ class Aestetic extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                /*for (var i = 0; i < cartProv.carts.length; i++) {
-                            try {
-                              ordine.food = cartProv.carts[i].product!;
-                              ordine.price =
-                                  cartProv.carts[i].product!.discountPrice!;
-                              ordine.quantity = cartProv.carts[i].quantity!;
-                              ordine.dateTime = DateTime.now();
-                            } finally {
-                              ord.foodOrders.add(ordine);
-                            }
-                          }
-                          ord.active = true;
-                       
-                          orderProv.add();*/
-                //     finalizeOrder(cartProv, orderProv, context);
-
                 Navigator.of(context).pushReplacementNamed('Home');
               },
             ),
