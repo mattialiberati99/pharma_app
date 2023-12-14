@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:csc_picker/dropdown_with_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +63,9 @@ class _CheckState extends ConsumerState<Check> {
   bool c3 = false;
 
   String mese = '';
+
+  List<String> logQueue = [];
+
   @override
   initState() {
     super.initState();
@@ -261,7 +266,7 @@ class _CheckState extends ConsumerState<Check> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          '${(cartProv.veroTotale).toStringAsFixed(2)}€',
+                          '${(cartProv.total).toStringAsFixed(2)}€',
                           style: const TextStyle(
                               color: Color.fromARGB(255, 9, 15, 71),
                               fontSize: 20,
@@ -911,7 +916,7 @@ class _CheckState extends ConsumerState<Check> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            OrdinePagato(Check.data, Check.time),
+                            OrdinePagato(date: Check.data, time: Check.time),
                       ),
                     );
                   }
@@ -1179,6 +1184,12 @@ class _CheckState extends ConsumerState<Check> {
       },
     );
   }
+
+  // all to log queue
+  showResult(String text) {
+    logQueue.add(text);
+    setState(() {});
+  }
 }
 
 Future<void> finalizeOrder(
@@ -1221,7 +1232,8 @@ Future<void> finalizeOrder(
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => OrdinePagato(Check.data, Check.time),
+          builder: (context) =>
+              OrdinePagato(date: Check.data, time: Check.time),
         ),
       );
 /*     showDialog(

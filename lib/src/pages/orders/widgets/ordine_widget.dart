@@ -10,8 +10,8 @@ import '../../../models/order.dart';
 class OrdineTab extends ConsumerWidget {
   final FarmacoOrder farmacoOrder;
   final Order order;
-  const OrdineTab(this.farmacoOrder, this.order);
-
+  const OrdineTab(this.farmacoOrder, this.order, {super.key});
+ 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
@@ -47,14 +47,14 @@ class OrdineTab extends ConsumerWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 40),
-                Row(
+                const SizedBox(height: 40),
+                Wrap(
                   children: [
                     Text(
                       'Ordine n° ${order.id}',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 50,
                     ),
                     Text(

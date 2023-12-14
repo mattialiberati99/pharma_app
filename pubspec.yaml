@@ -84,7 +84,7 @@ dependencies:
 
   awesome_dialog: ^3.1.0
   sizer: ^2.0.15
-  webview_flutter: ^2.0.9
+  webview_flutter: ^4.4.2
 
   # Chat
   detectable_text_field: ^2.0.4
@@ -99,9 +99,6 @@ dependencies:
   flutter_timezone: ^1.0.8
   rxdart: ^0.27.7
   sign_in_with_apple: ^5.0.0
-#
-#dependency_overrides:
-#  map_location_picker: ^1.0.2
 
 dev_dependencies:
   flutter_test:

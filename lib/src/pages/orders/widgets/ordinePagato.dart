@@ -14,19 +14,24 @@ import 'package:sizer/sizer.dart';
 import '../../../providers/user_provider.dart';
 
 class OrdinePagato extends ConsumerStatefulWidget {
-  DateTime date;
-  TimeOfDay time;
+  DateTime? date;
+  TimeOfDay? time;
 
-  OrdinePagato(this.date, this.time);
+  OrdinePagato({this.date, this.time, super.key});
 
   String formattedDate() {
     final dateFormat = DateFormat('dd/MM/yyyy');
-    return dateFormat.format(date);
+    return dateFormat.format(date ?? DateTime.now());
   }
 
   String formattedTime() {
     final timeFormat = DateFormat('HH:mm');
-    return timeFormat.format(DateTime(2023, 1, 1, time.hour, time.minute));
+    return timeFormat.format(DateTime(
+        2023,
+        1,
+        1,
+        time?.hour ?? DateTime.now().hour,
+        time?.minute ?? DateTime.now().minute));
   }
 
   @override
@@ -218,7 +223,7 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                           Row(
                             children: [
                               Text(
-                                '${cartProv.veroTotale.toStringAsFixed(2)}€',
+                                '${cartProv.total.toStringAsFixed(2)}€',
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 9, 15, 71),
                                   fontSize: 14,
@@ -307,7 +312,7 @@ class _OrdinePagatoState extends ConsumerState<OrdinePagato> {
                               fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          '${cartProv.veroTotale.toStringAsFixed(2)}€',
+                          '${cartProv.total.toStringAsFixed(2)}€',
                           style: const TextStyle(
                               color: Color.fromARGB(255, 9, 15, 71),
                               fontSize: 20,

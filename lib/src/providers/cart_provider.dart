@@ -50,10 +50,12 @@ class CartProvider with ChangeNotifier {
     double formattedTotal = double.parse(total.toStringAsFixed(2));
     return formattedTotal;
   }
-
+/* 
   double get veroTotale {
-    return double.parse((total + veroSconto).toStringAsFixed(2));
-  }
+    return total;
+    //return double.parse((sconto - total).toStringAsFixed(2));
+    //return double.parse((total + veroSconto).toStringAsFixed(2));
+  } */
 
   int get count {
     int counter = 0;
@@ -175,6 +177,65 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<Order>?> addOrderPayPal() async {
+    logger.info("adding order");
+    Map<String, List<FarmacoOrder>> cartSplitPerShop = {};
+    List<Order> orders = [];
+    for (Cart cart in carts) {
+      try {
+        if (cartSplitPerShop[cart.product!.restaurant!.id!] != null) {
+          print("added");
+          cartSplitPerShop[cart.product!.restaurant!.id!]!
+              .add(cart.foodOrder());
+        } else {
+          print("created");
+          cartSplitPerShop[cart.product!.restaurant!.id!] = [cart.foodOrder()];
+        }
+      } catch (e) {
+        print(e);
+        print("Error Created");
+        cartSplitPerShop[cart.product!.restaurant!.id!] = [cart.foodOrder()];
+      }
+    }
+
+    try {
+      for (MapEntry entry in cartSplitPerShop.entries) {
+        Order order = Order();
+        order.foodOrders = entry.value;
+        order.consegna = DateTime.now().add(Duration(
+            days: entry.value.first.product!.restaurant!.giorni_consegna!));
+        order.importo = total.toStringAsFixed(2);
+        OrderStatus orderStatus = OrderStatus();
+        orderStatus.id = OrderStatus.received;
+        order.orderStatus = orderStatus;
+        order.deliveryAddress = deliveryAddress;
+        order.sconto = (-veroSconto);
+        order.discountCode = coupon?.code ?? '';
+
+        print("Fin qui tutto ok");
+        Order? newOrder = await orderRepo.addOrder(order, 'PayPal');
+
+        if (newOrder != null) {
+          coupon = null;
+          paymentMethod = null;
+          loading = false;
+          notifyListeners();
+          orders.insert(0, newOrder);
+          
+          notifyListeners();
+        } else {
+          loading = false;
+          notifyListeners();
+        }
+      }
+    } catch (e, stack) {
+      print(e);
+      print(stack);
+      return null;
+    }
+    return orders;
+  }
+
   Future<List<Order>?> addOrderContanti() async {
     logger.info("adding order");
     Map<String, List<FarmacoOrder>> cartSplitPerShop = {};
@@ -202,7 +263,7 @@ class CartProvider with ChangeNotifier {
         order.foodOrders = entry.value;
         order.consegna = DateTime.now().add(Duration(
             days: entry.value.first.product!.restaurant!.giorni_consegna!));
-        order.importo = veroTotale.toStringAsFixed(2);
+        order.importo = total.toStringAsFixed(2);
         OrderStatus orderStatus = OrderStatus();
         orderStatus.id = OrderStatus.received;
         order.orderStatus = orderStatus;
@@ -261,7 +322,7 @@ class CartProvider with ChangeNotifier {
         order.foodOrders = entry.value;
         order.consegna = DateTime.now().add(Duration(
             days: entry.value.first.product!.restaurant!.giorni_consegna!));
-        order.importo = veroTotale.toStringAsFixed(2);
+        order.importo = total.toStringAsFixed(2);
         OrderStatus orderStatus = OrderStatus();
         orderStatus.id = OrderStatus.received;
         order.orderStatus = orderStatus;
@@ -369,6 +430,8 @@ class CartProvider with ChangeNotifier {
         orders = await addOrder();
       } else if (method == 'Contanti') {
         orders = await addOrderContanti();
+      } else if (method == 'PayPal') {
+        orders = await addOrderPayPal();
       }
 
       if (orders != null && orders.isNotEmpty) {

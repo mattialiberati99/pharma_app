@@ -103,7 +103,7 @@ class RouteGenerator {
       case 'GestisciCarte':
         return MaterialPageRoute(builder: (_) => const CarteWidget());
       case 'PayPal':
-        return MaterialPageRoute(builder: (_) => const PayPalPaymentWidget());
+        return MaterialPageRoute(builder: (_) => const PaypalScreen());
       case 'NewCard':
         return MaterialPageRoute(
             builder: (_) => Material(

@@ -89,6 +89,10 @@ class Cart {
     return result;
   }
 
+  double getSconto() {
+    return getSconto() - getFarmacoPrice();
+  }
+
   bool isSame(Cart cart) {
     bool _same = true;
     _same &= this.product == cart.product;

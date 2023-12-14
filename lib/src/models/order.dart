@@ -79,7 +79,7 @@ class Order {
       dateTime = DateTime(0);
       payment = Payment.fromJSON({});
       deliveryAddress = Address.fromJSON({});
-      sconto = 0.0;
+      sconto = sconto;
       foodOrders = [];
       print(CustomTrace(StackTrace.current, message: e.toString()));
     }
@@ -99,25 +99,10 @@ class Order {
     map['delivery_time'] = consegna.toString();
     map["importo"] = importo;
     map["note"] = note;
-    map["sconto"] = 0.0;
+    map["sconto"] = sconto;
     map["coupon"] = discountCode;
     map["restaurant_id"] = foodOrders[0].product!.restaurant!.id ?? '7';
     return map;
-  }
-
-  String toPaypalMap() {
-    String params = "";
-    params += "user_id=${user?.id}";
-    params += "&order_status_id=${orderStatus?.id}";
-    params += "&delivery_fee=$deliveryFee";
-    /*  if (!deliveryAddress!.isUnknown()) {
-      params += "&delivery_address_id= ${deliveryAddress?.id}";
-    } */
-    params += "&importo=$importo";
-    params += "&orario=$oraRitiro";
-    params += "&note=$note";
-    params += "&sconto=$sconto";
-    return params;
   }
 
   Map cancelMap() {

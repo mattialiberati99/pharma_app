@@ -2,7 +2,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart' as Auth;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -155,7 +154,7 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  signInWithFacebook(BuildContext context) async {
+/*   signInWithFacebook(BuildContext context) async {
     try {
       final LoginResult facebookLoginResult = await FacebookAuth.instance
           .login(permissions: (['email', 'public_profile']));
@@ -180,7 +179,7 @@ class UserProvider with ChangeNotifier {
           (SnackBar(content: Text("Failed to sign in with Facebook: ${e}"))));
       print(e.toString());
     }
-  }
+  } */
 
   signInWithApple(BuildContext context) async {
     // 1. perform the sign-in request
