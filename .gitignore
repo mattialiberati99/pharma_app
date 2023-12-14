@@ -11,3 +11,4 @@
 .pub-cache/
 .pub/
 /build/
+/.vscode/
