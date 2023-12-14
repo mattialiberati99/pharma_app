@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:detectable_text_field/detectable_text_field.dart';
-import 'package:detectable_text_field/detector/sample_regular_expressions.dart';
 
 // Project imports:
 import '../../../helpers/app_config.dart';
@@ -62,14 +60,7 @@ class _ChatMessageListItemState extends State<ChatMessageListItem> {
             //new Text(this.message.user.name, style: TextStyles.normalBlack.merge(TextStyle(fontWeight: FontWeight.w600))),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: DetectableText(
-                detectionRegExp: hashTagAtSignUrlRegExp,
-                onTap: (value) {
-                  ChatHelper.tagTap(context, value);
-                },
-                text: widget.message.text!,
-                detectedStyle: TextStyle(color: AppColors.primary),
-                basicStyle: TextStyle(color: Colors.grey),
+              child: Text(widget.message.text!,
                 overflow: TextOverflow.fade,
                 maxLines: null,
               ),
@@ -108,14 +99,7 @@ class _ChatMessageListItemState extends State<ChatMessageListItem> {
 
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: DetectableText(
-                detectionRegExp: hashTagAtSignUrlRegExp,
-                onTap: (value) {
-                  ChatHelper.tagTap(context, value);
-                },
-                text: widget.message.text!,
-                detectedStyle: TextStyle(color: AppColors.primary),
-                basicStyle: TextStyle(color: Colors.grey),
+              child: Text( widget.message.text!,
                 overflow: TextOverflow.fade,
                 maxLines: null,
               ),

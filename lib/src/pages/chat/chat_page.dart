@@ -7,12 +7,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:detectable_text_field/detector/sample_regular_expressions.dart';
-import 'package:detectable_text_field/widgets/detectable_text_field.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:keyboard_height_plugin/keyboard_height_plugin.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
@@ -20,7 +17,6 @@ import '../../../generated/l10n.dart';
 import '../../elements/CircularLoadingWidget.dart';
 import 'chat_helper.dart';
 import 'widgets/ChatAppBar.dart';
-import '../../dialogs/CustomDialog.dart';
 import '../../helpers/app_config.dart';
 import '../../helpers/formatDateView.dart';
 import '../../models/chat.dart';
@@ -217,12 +213,9 @@ class _ChatState extends ConsumerState<ChatPage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25),
                                 ),
-                                child: DetectableTextField(
-                                  detectionRegExp: hashTagAtSignUrlRegExp,
+                                child: TextField(
                                   focusNode: focusNode,
                                   controller: _textEditingController,
-                                  decoratedStyle: ExtraTextStyles.normalBlack,
-                                  basicStyle: ExtraTextStyles.normalBlack,
                                   textAlignVertical: TextAlignVertical.center,
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 5,
