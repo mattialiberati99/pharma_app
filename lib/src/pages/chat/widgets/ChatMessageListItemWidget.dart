@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import '../../../helpers/app_config.dart';
-import '../chat_helper.dart';
 import '../../../models/message.dart';
 import 'MessageImageWidget.dart';
 
 class ChatMessageListItem extends StatefulWidget {
   final Message message;
 
-  ChatMessageListItem({required this.message});
+  const ChatMessageListItem({super.key, required this.message});
 
   @override
   _ChatMessageListItemState createState() => _ChatMessageListItemState();
@@ -27,7 +26,7 @@ class _ChatMessageListItemState extends State<ChatMessageListItem> {
 
   @override
   Widget build(BuildContext context) {
-    return this.widget.message.from_user
+    return widget.message.from_user
         ? getSentMessageLayout(context)
         : getReceivedMessageLayout(context);
   }
@@ -58,10 +57,10 @@ class _ChatMessageListItemState extends State<ChatMessageListItem> {
             //new Text(this.message.user.name, style: TextStyles.normalBlack.merge(TextStyle(fontWeight: FontWeight.w600))),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: TextEditingController(text: widget.message.text),
-                style: const TextStyle(color: AppColors.primary),
-                readOnly: true,
+              child: Text(
+                widget.message.text!,
+                style: const TextStyle(color: Colors.grey),
+                overflow: TextOverflow.fade,
                 maxLines: null,
               ),
             ),
@@ -97,13 +96,15 @@ class _ChatMessageListItemState extends State<ChatMessageListItem> {
           children: <Widget>[
             //new Text(this.message.user.name, style: TextStyles.normalBlack.merge(TextStyle(fontWeight: FontWeight.w600))),
 
-            /*        Padding(
+            Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Text( widget.message.text!,
+              child: Text(
+                widget.message.text!,
+                style: const TextStyle(color: Colors.grey),
                 overflow: TextOverflow.fade,
                 maxLines: null,
               ),
-            ), */
+            ),
 
             const SizedBox(
               height: 6,

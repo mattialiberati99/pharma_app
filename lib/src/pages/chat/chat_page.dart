@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-
+import 'package:flutter_svg/svg.dart';
+import 'package:keyboard_height_plugin/keyboard_height_plugin.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
@@ -18,6 +18,7 @@ import '../../../generated/l10n.dart';
 import '../../elements/CircularLoadingWidget.dart';
 import 'chat_helper.dart';
 import 'widgets/ChatAppBar.dart';
+import '../../dialogs/CustomDialog.dart';
 import '../../helpers/app_config.dart';
 import '../../helpers/formatDateView.dart';
 import '../../models/chat.dart';
@@ -30,7 +31,7 @@ import 'widgets/MessageList.dart';
 enum EnumChatTheme { LIGHT, DARK }
 
 class ChatPage extends ConsumerStatefulWidget {
-  ChatPage({
+  const ChatPage({
     Key? key,
     required this.routeArgument,
   }) : super(key: key);
@@ -118,7 +119,7 @@ class _ChatState extends ConsumerState<ChatPage> {
         backgroundColor: Colors.white,
         actions: [
           IconButton(
-            icon: Icon(Icons.phone),
+            icon: const Icon(Icons.phone),
             onPressed: () {
               launch('tel://${chat!.shop!.mobile}');
             },
@@ -170,9 +171,12 @@ class _ChatState extends ConsumerState<ChatPage> {
                   ? LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Theme.of(context).backgroundColor, Colors.black],
+                      colors: [
+                        Theme.of(context).colorScheme.background,
+                        Colors.black
+                      ],
                     )
-                  : LinearGradient(colors: [Colors.white, Colors.white]),
+                  : const LinearGradient(colors: [Colors.white, Colors.white]),
             ),
             child: Column(
               children: <Widget>[
@@ -206,7 +210,7 @@ class _ChatState extends ConsumerState<ChatPage> {
                       children: [
                         Row(
                           children: [
-                            Container(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: Card(
                                 margin: const EdgeInsets.only(
@@ -214,7 +218,6 @@ class _ChatState extends ConsumerState<ChatPage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25),
                                 ),
-                                child: TextField(
                                 child: TextField(
                                   focusNode: focusNode,
                                   controller: _textEditingController,
@@ -234,7 +237,7 @@ class _ChatState extends ConsumerState<ChatPage> {
                                           ChatHelper.showUploadMediaDialog(
                                               chatProv, chat!.id!, context),
                                       child: Container(
-                                        margin: EdgeInsets.all(5),
+                                        margin: const EdgeInsets.all(5),
                                         decoration: const BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: AppColors.primary),
@@ -250,7 +253,7 @@ class _ChatState extends ConsumerState<ChatPage> {
                                         if (_textEditingController.text.isEmpty)
                                           Padding(
                                             padding: const EdgeInsets.all(4.0),
-                                            child: Container(
+                                            child: SizedBox(
                                               height: 50,
                                               width: 50,
                                               /*decoration: BoxDecoration(
@@ -284,7 +287,7 @@ class _ChatState extends ConsumerState<ChatPage> {
                                             radius: 25,
                                             backgroundColor: AppColors.primary,
                                             child: IconButton(
-                                              icon: Icon(
+                                              icon: const Icon(
                                                 Icons.send,
                                                 color: Colors.white,
                                               ),
@@ -341,7 +344,7 @@ class _ChatState extends ConsumerState<ChatPage> {
 
                 ,
                 if (showEmoji)
-                  Container(
+                  SizedBox(
                     height: 200,
                     //width: 300,
                     child: EmojiPicker(
