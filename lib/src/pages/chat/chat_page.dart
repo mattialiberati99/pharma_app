@@ -7,12 +7,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:detectable_text_field/detector/sample_regular_expressions.dart';
-import 'package:detectable_text_field/widgets/detectable_text_field.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:keyboard_height_plugin/keyboard_height_plugin.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
@@ -20,7 +17,6 @@ import '../../../generated/l10n.dart';
 import '../../elements/CircularLoadingWidget.dart';
 import 'chat_helper.dart';
 import 'widgets/ChatAppBar.dart';
-import '../../dialogs/CustomDialog.dart';
 import '../../helpers/app_config.dart';
 import '../../helpers/formatDateView.dart';
 import '../../models/chat.dart';
@@ -89,7 +85,7 @@ class _ChatState extends ConsumerState<ChatPage> {
   Widget build(BuildContext context) {
     if (chat == null) return CircularLoadingWidget(height: 500);
     return Scaffold(
-      backgroundColor: Color.fromRGBO(244, 246, 245, 1),
+      backgroundColor: const Color.fromRGBO(244, 246, 245, 1),
       resizeToAvoidBottomInset: true,
       appBar: ChatAppBar(
         titleWidget: InkWell(
@@ -107,7 +103,7 @@ class _ChatState extends ConsumerState<ChatPage> {
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 4, top: 4),
+                  padding: const EdgeInsets.only(left: 4, top: 4),
                   child: AutoSizeText(
                     chat!.shop!.name!,
                     style: ExtraTextStyles.bigBlack,
@@ -212,17 +208,15 @@ class _ChatState extends ConsumerState<ChatPage> {
                             Container(
                               width: MediaQuery.of(context).size.width,
                               child: Card(
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                     left: 2, right: 2, bottom: 8),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25),
                                 ),
-                                child: DetectableTextField(
-                                  detectionRegExp: hashTagAtSignUrlRegExp,
+                                child: TextField(
                                   focusNode: focusNode,
                                   controller: _textEditingController,
-                                  decoratedStyle: ExtraTextStyles.normalBlack,
-                                  basicStyle: ExtraTextStyles.normalBlack,
+                                  style: ExtraTextStyles.normalBlack,
                                   textAlignVertical: TextAlignVertical.center,
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 5,

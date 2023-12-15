@@ -1,6 +1,5 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharma_app/src/components/async_value_widget.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
@@ -9,22 +8,19 @@ import 'package:pharma_app/src/providers/cart_provider.dart';
 import 'package:pharma_app/src/providers/categories_provider.dart';
 import 'package:pharma_app/src/providers/favorites_provider.dart';
 import 'package:pharma_app/src/providers/food_provider.dart';
-import 'package:pharma_app/src/repository/addresses_repository.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
 
-import '../../../main.dart';
 import '../../components/shadow_box.dart';
 import '../../helpers/app_config.dart';
 import '../../models/farmaco.dart';
 import '../../models/food_favorite.dart';
 import '../../providers/user_provider.dart';
 import '../../repository/favorite_repository.dart';
-import '../PermissionDeniedScreen.dart';
 
 class Categorie extends ConsumerStatefulWidget {
   final AppCategory nomeCategoria;
-  Categorie(this.nomeCategoria);
+  const Categorie(this.nomeCategoria, {super.key});
 
   @override
   ConsumerState<Categorie> createState() => _CategorieState();
@@ -52,98 +48,93 @@ class _CategorieState extends ConsumerState<Categorie> {
     final fav = ref.watch(favoritesProvider);
     final scelti = ref.watch(farmaOfCategoryProvider(widget.nomeCategoria.id!));
 
-    return Scaffold(
-      body: Container(
-        margin: EdgeInsets.only(top: 20),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(Icons.arrow_back_ios)),
-                Text(
-                  widget.nomeCategoria.name!,
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
-                ),
-                currentUser.value.apiToken == null
-                    ? const SizedBox()
-                    : GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushReplacementNamed('Cart');
-                        },
-                        child: cart.carts.isNotEmpty
-                            ? const Image(
-                                image: AssetImage(
-                                    'assets/immagini_pharma/Icon_shop_noti.png'))
-                            : const Image(
-                                image: AssetImage(
-                                    'assets/immagini_pharma/Icon_shop.png')),
-                      )
-              ],
-            ),
-            SizedBox(
-              height: 2.2.h,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Row(
-                children: [
-                  AsyncValueWidget(
-                    value: scelti,
-                    data: (farma) => Text(
-                      '${farma.length} prodotti trovati',
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Color.fromARGB(255, 153, 153, 153)),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 2.2.h,
-            ),
-            AsyncValueWidget(
-              loading: const CircularProgressIndicator(),
-              value: ref.watch(farmaOfCategoryProvider(widget.nomeCategoria
-                  .id!)), //categor.categories.values.toList(), data: data)
-              data: (farmaciX) {
-                //final farmaciOf =
-                //       await  categor.getFarmacosOfCategory(widget.nomeCategoria.id!);
-
-                return Expanded(
-                  child: Container(
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 0.6,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20),
-                          itemCount: farmaciX.length,
-                          itemBuilder: (context, index) {
-                            final scount = ((farmaciX[index].price! -
-                                        farmaciX[index].discountPrice!) /
-                                    farmaciX[index].price!) *
-                                100.toDouble();
-                            farmaciX[index].category = widget.nomeCategoria;
-
-                            return FarmacoCategoria(
-                              scount: scount,
-                              farmaco: farmaciX[index],
-                            );
-                          })),
-                );
-              },
-            )
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Colors.black),
+          title: Text(
+            widget.nomeCategoria.name!,
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w700),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () =>
+                    Navigator.of(context).pushReplacementNamed('Cart'),
+                icon: cart.carts.isNotEmpty
+                    ? Image.asset('assets/immagini_pharma/Icon_shop_noti.png')
+                    : Image.asset('assets/immagini_pharma/Icon_shop.png')),
           ],
+        ),
+        body: Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Row(
+                  children: [
+                    AsyncValueWidget(
+                      value: scelti,
+                      data: (farma) => Text(
+                        '${farma.length} prodotti trovati',
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromARGB(255, 153, 153, 153)),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 2.2.h,
+              ),
+              AsyncValueWidget(
+                loading: const CircularProgressIndicator(),
+                value: ref.watch(farmaOfCategoryProvider(widget.nomeCategoria
+                    .id!)), //categor.categories.values.toList(), data: data)
+                data: (farmaciX) {
+                  //final farmaciOf =
+                  //       await  categor.getFarmacosOfCategory(widget.nomeCategoria.id!);
+
+                  return Expanded(
+                    child: Container(
+                        margin: const EdgeInsets.only(left: 20, right: 20),
+                        child: GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 0.6,
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 20),
+                            itemCount: farmaciX.length,
+                            itemBuilder: (context, index) {
+                              final scount = ((farmaciX[index].price! -
+                                          farmaciX[index].discountPrice!) /
+                                      farmaciX[index].price!) *
+                                  100.toDouble();
+                              farmaciX[index].category = widget.nomeCategoria;
+
+                              return FarmacoCategoria(
+                                scount: scount,
+                                farmaco: farmaciX[index],
+                              );
+                            })),
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -171,7 +162,7 @@ class FarmacoCategoria extends ConsumerWidget {
         Navigator.of(context).pushNamed('Product', arguments: farmaco);
       },
       child: Container(
-        margin: EdgeInsets.only(bottom: 20),
+        margin: const EdgeInsets.only(bottom: 20),
         child: Stack(
           alignment: AlignmentDirectional.bottomStart,
           children: [
@@ -250,8 +241,8 @@ class FarmacoCategoria extends ConsumerWidget {
             ),
             if (currentUser.value.apiToken != null)
               Positioned(
-                left: 140,
-                top: 20,
+                left: 35.w,
+                top: 1.5.h,
                 child: GestureDetector(
                   onTap: () async {
                     if (isFavorite != null) {
@@ -287,9 +278,11 @@ class FarmacoCategoria extends ConsumerWidget {
                     Transform.rotate(
                       angle: -math.pi / 4,
                       child: Container(
-                        margin: const EdgeInsets.only(top: 15, left: 0),
-                        child: Text(
+                        margin: const EdgeInsets.only(
+                            top: 15, right: 10, bottom: 10),
+                        child: AutoSizeText(
                           "${scount.toInt()}% OFF",
+                          maxLines: 1,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,

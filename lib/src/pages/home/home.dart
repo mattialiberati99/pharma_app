@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -5,26 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:pharma_app/local_notifications.dart';
-import 'package:pharma_app/src/app_assets.dart';
 import 'package:pharma_app/src/components/drawer/app_drawer.dart';
-import 'package:pharma_app/src/components/section_vertical.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/components/bottomNavigation.dart';
-import 'package:pharma_app/src/pages/home/widgets/home_banner.dart';
-import 'package:pharma_app/src/pages/home/widgets/home_cuisine_filter.dart';
 import 'package:pharma_app/src/providers/categories_provider.dart';
 import 'package:pharma_app/src/providers/home_cuisines_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../components/main_app_bar.dart';
-import '../../components/search_bar/home_search_bar.dart';
 import '../../components/section_horizontal.dart';
 import '../../helpers/app_config.dart';
-import '../../models/cuisine.dart';
 import '../../providers/notification_provider.dart';
-import '../../providers/selected_page_name_provider.dart';
 import '../../providers/user_provider.dart';
 import '../PermissionDeniedScreen.dart';
 import '../categorie+/categorie.dart';
@@ -99,16 +92,16 @@ class _HomeState extends ConsumerState<Home> {
       animateChildDecoration: true,
       drawer: const AppDrawer(),
       controller: _advancedDrawerController,
-      child: Scaffold(
-        bottomNavigationBar: BottomNavigation(sel: SelectedBottom.home),
-        appBar: MainAppBar(
-          controller: searchController,
-          advancedDrawerController: _advancedDrawerController,
-          nome: currentUser.value.name ?? 'Ospite',
-          indirizzo: locationText,
-        ),
-        body: SafeArea(
-          child: ListView(
+      child: SafeArea(
+        child: Scaffold(
+          bottomNavigationBar: BottomNavigation(sel: SelectedBottom.home),
+          appBar: MainAppBar(
+            controller: searchController,
+            advancedDrawerController: _advancedDrawerController,
+            nome: currentUser.value.name ?? 'Ospite',
+            indirizzo: locationText,
+          ),
+          body: ListView(
             children: [
               const SizedBox(
                 height: 40,
@@ -174,7 +167,7 @@ class _HomeState extends ConsumerState<Home> {
                       Container(
                         margin: const EdgeInsets.only(left: 30, top: 20),
                         width: context.mqw * 0.9,
-                        height: 100,
+                        height: 15.h,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: categorie.categories.values.length,
@@ -191,49 +184,58 @@ class _HomeState extends ConsumerState<Home> {
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   border: Border.all(color: AppColors.gray4),
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(50)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(50)),
                                 ),
-                                width: 64,
-                                height: 98,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.all(5),
-                                      width: 48,
-                                      height: 48,
-                                      decoration: const BoxDecoration(
-                                          // color: AppAssets.colori[index],
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(100))),
-                                      child: categorie.categories.values
-                                                  .elementAt(index)
-                                                  .image
-                                                  ?.icon !=
-                                              null
-                                          ? CachedNetworkImage(
-                                              imageUrl: categorie
-                                                  .categories.values
-                                                  .elementAt(index)
-                                                  .image!
-                                                  .icon!,
-                                            )
-                                          : SizedBox(),
-                                      /* Image(
-                                        image: AssetImage(
-                                            AppAssets.immagini[index]),
-                                      ), */
-                                    ),
-                                    Container(
-                                      child: Text(
+                                width: 23.w,
+                                height: 15.h,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(6),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(5),
+                                        width: 40,
+                                        height: 40,
+                                        decoration: const BoxDecoration(
+                                            // color: AppAssets.colori[index],
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(100))),
+                                        child: categorie.categories.values
+                                                    .elementAt(index)
+                                                    .image
+                                                    ?.icon !=
+                                                null
+                                            ? FittedBox(
+                                                child: CachedNetworkImage(
+                                                  fit: BoxFit.cover,
+                                                  imageUrl: categorie
+                                                      .categories.values
+                                                      .elementAt(index)
+                                                      .image!
+                                                      .icon!,
+                                                ),
+                                              )
+                                            : const SizedBox(),
+                                        /* Image(
+                                          image: AssetImage(
+                                              AppAssets.immagini[index]),
+                                        ), */
+                                      ),
+                                      const SizedBox(height: 8),
+                                      AutoSizeText(
+                                        minFontSize: 9,
+                                        maxFontSize: 12,
                                         categorie.categories.values
                                             .elementAt(index)
                                             .name!,
-                                        style: TextStyle(fontSize: 10),
+                                        style: const TextStyle(
+                                            fontSize: 10, color: Colors.black),
                                         textAlign: TextAlign.center,
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             );

@@ -7,6 +7,7 @@ import 'package:pharma_app/src/components/button_menu.dart';
 import 'package:pharma_app/src/components/search_bar/home_search_bar.dart';
 import 'package:pharma_app/src/providers/notification_provider.dart';
 import 'package:pharma_app/src/providers/user_provider.dart';
+import 'package:sizer/sizer.dart';
 
 import '../app_assets.dart';
 import '../helpers/app_config.dart';
@@ -44,7 +45,7 @@ class MainAppBar extends ConsumerWidget implements PreferredSizeWidget {
       child: Scaffold(
         backgroundColor: AppColors.primary,
         body: Container(
-          height: 237,
+          height: 26.h,
           margin: const EdgeInsets.only(top: 25),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -99,8 +100,8 @@ class MainAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 0.5.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,

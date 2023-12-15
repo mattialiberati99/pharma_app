@@ -1,12 +1,8 @@
-import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:pharma_app/local_notifications.dart';
+import 'package:pharma_app/src/helpers/app_config.dart';
 import 'package:sizer/sizer.dart';
 import 'package:talker/talker.dart';
-import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +10,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pharma_app/route_generator.dart';
 import 'package:pharma_app/src/app_theme.dart';
 import 'package:pharma_app/src/components/AppButton.dart';
@@ -30,6 +25,9 @@ final navigatorKey = GlobalKey<NavigatorState>();
 final logger = Talker();
 
 void main() async {
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(statusBarColor: AppColors.primary),
+  );
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   timeago.setLocaleMessages('it', timeago.ItMessages());

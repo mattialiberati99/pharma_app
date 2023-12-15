@@ -87,7 +87,6 @@ dependencies:
   webview_flutter: ^4.4.2
 
   # Chat
-  detectable_text_field: ^2.0.4
   emoji_picker_flutter: ^1.5.4
   cross_file: ^0.3.3+4
   image_picker: ^0.8.7+4

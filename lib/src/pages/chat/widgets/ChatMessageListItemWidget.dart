@@ -1,10 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:detectable_text_field/detectable_text_field.dart';
-import 'package:detectable_text_field/detector/sample_regular_expressions.dart';
-
 // Project imports:
 import '../../../helpers/app_config.dart';
 import '../chat_helper.dart';
@@ -62,15 +58,10 @@ class _ChatMessageListItemState extends State<ChatMessageListItem> {
             //new Text(this.message.user.name, style: TextStyles.normalBlack.merge(TextStyle(fontWeight: FontWeight.w600))),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: DetectableText(
-                detectionRegExp: hashTagAtSignUrlRegExp,
-                onTap: (value) {
-                  ChatHelper.tagTap(context, value);
-                },
-                text: widget.message.text!,
-                detectedStyle: TextStyle(color: AppColors.primary),
-                basicStyle: TextStyle(color: Colors.grey),
-                overflow: TextOverflow.fade,
+              child: TextField(
+                controller: TextEditingController(text: widget.message.text),
+                style: const TextStyle(color: AppColors.primary),
+                readOnly: true,
                 maxLines: null,
               ),
             ),
@@ -106,9 +97,9 @@ class _ChatMessageListItemState extends State<ChatMessageListItem> {
           children: <Widget>[
             //new Text(this.message.user.name, style: TextStyles.normalBlack.merge(TextStyle(fontWeight: FontWeight.w600))),
 
-            Padding(
+            /*        Padding(
               padding: const EdgeInsets.all(10.0),
-              child: DetectableText(
+              child: DetectaleText(
                 detectionRegExp: hashTagAtSignUrlRegExp,
                 onTap: (value) {
                   ChatHelper.tagTap(context, value);
@@ -119,7 +110,7 @@ class _ChatMessageListItemState extends State<ChatMessageListItem> {
                 overflow: TextOverflow.fade,
                 maxLines: null,
               ),
-            ),
+            ), */
 
             const SizedBox(
               height: 6,
