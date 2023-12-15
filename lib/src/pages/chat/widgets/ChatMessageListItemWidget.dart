@@ -99,14 +99,7 @@ class _ChatMessageListItemState extends State<ChatMessageListItem> {
 
             /*        Padding(
               padding: const EdgeInsets.all(10.0),
-              child: DetectaleText(
-                detectionRegExp: hashTagAtSignUrlRegExp,
-                onTap: (value) {
-                  ChatHelper.tagTap(context, value);
-                },
-                text: widget.message.text!,
-                detectedStyle: TextStyle(color: AppColors.primary),
-                basicStyle: TextStyle(color: Colors.grey),
+              child: Text( widget.message.text!,
                 overflow: TextOverflow.fade,
                 maxLines: null,
               ),

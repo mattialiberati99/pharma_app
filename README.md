@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # pharma_app
 
 ## Tutto a Casa - Marketplace App
@@ -41,7 +40,3 @@
    
 - [RPS](https://pub.dev/packages/rps)
 - [flutter_native_splash](https://pub.dev/packages/flutter_native_splash)
-
-=======
-# ph
->>>>>>> 5c97ad239d588aa29ebd8f447d6630ef52767fc4

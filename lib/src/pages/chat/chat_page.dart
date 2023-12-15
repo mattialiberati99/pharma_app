@@ -10,6 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
 import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
@@ -213,6 +214,7 @@ class _ChatState extends ConsumerState<ChatPage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25),
                                 ),
+                                child: TextField(
                                 child: TextField(
                                   focusNode: focusNode,
                                   controller: _textEditingController,
