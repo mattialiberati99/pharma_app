@@ -55,5 +55,11 @@
 		<string>Mostrare la posizione dell'utente e la distanza dai negozi più vicini</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>Mostrare la posizione dell'utente e la distanza dai negozi più vicini</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Questa app richiede l'accesso alla libreria.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Questa app richiede l'accesso alla fotocamera.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>Questa app richiede l'accesso alla localizzazione.</string>
 	</dict>
 </plist>
