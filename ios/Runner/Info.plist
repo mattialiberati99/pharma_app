@@ -61,5 +61,18 @@
 		<string>Questa app richiede l'accesso alla fotocamera.</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>Questa app richiede l'accesso alla localizzazione.</string>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.googleusercontent.apps.809740045092-6dc0iuac2lu52os33nt72831rit6t7o9</string>
+				</array>
+			</dict>
+		</array>
+		<key>CFBundleVersion</key>
+		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>GIDClientID</key>
+		<string>809740045092-6dc0iuac2lu52os33nt72831rit6t7o9.apps.googleusercontent.com</string>
 	</dict>
 </plist>
