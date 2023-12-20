@@ -27,15 +27,15 @@ final userProvider = ChangeNotifierProvider<UserProvider>((ref) {
 });
 
 class UserProvider with ChangeNotifier {
-  static final String afterLoginPage = 'Home';
-  static final String afterRegisterPage = 'VerifyOtp';
+  static const String afterLoginPage = 'Home';
+  static const String afterRegisterPage = 'VerifyOtp';
 
   GlobalKey<FormState>? signupFormKey;
   GlobalKey<FormState>? forgetPasswordFormKey;
 
   late FirebaseMessaging _firebaseMessaging;
   final Auth.FirebaseAuth _auth = Auth.FirebaseAuth.instance;
-  late String token;
+  String? token;
 
   UserProvider() {
     signupFormKey = GlobalKey<FormState>();
@@ -130,8 +130,8 @@ class UserProvider with ChangeNotifier {
   loginGoogle(BuildContext context) async {
     try {
       Auth.UserCredential userCredential;
-      final GoogleSignIn _googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
           await googleUser!.authentication;
       final Auth.OAuthCredential googleAuthCredential =
@@ -149,7 +149,7 @@ class UserProvider with ChangeNotifier {
     } catch (e, stack) {
       print(stack);
       ScaffoldMessenger.of(context).showSnackBar(
-          (SnackBar(content: Text("Failed to sign in with Google: ${e}"))));
+          (SnackBar(content: Text("Failed to sign in with Google: $e"))));
       print(e.toString());
     }
   }
@@ -215,7 +215,7 @@ class UserProvider with ChangeNotifier {
         break;
 
       case Apple.AuthorizationStatus.cancelled:
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Aborted By User"),
         ));
         break;
@@ -246,7 +246,7 @@ class UserProvider with ChangeNotifier {
       }
     }).catchError((e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(S.current.this_account_not_exist + "- $e"),
+        content: Text("${S.current.this_account_not_exist}- $e"),
       ));
     });
   }
@@ -285,7 +285,7 @@ class UserProvider with ChangeNotifier {
     //prefs.clear();
     if (currentUser.value.auth == null && prefs.containsKey('user_token')) {
       print(prefs.get('user_token'));
-      String token = await prefs.get('user_token') as String;
+      String token = prefs.get('user_token') as String;
       currentUser.value = await userRepo.loginAsUserToken(token);
       if (currentUser.value.id != null) {
         currentUser.value.auth = true;
