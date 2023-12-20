@@ -8,11 +8,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 
-import '../../../generated/l10n.dart';
-import '../../components/social_login_row.dart';
 import '../../helpers/app_config.dart';
 import '../../helpers/validators.dart';
-import '../../models/user.dart';
 import '../../providers/user_provider.dart';
 
 class Login extends ConsumerStatefulWidget {
@@ -71,8 +68,8 @@ class _LoginState extends ConsumerState<Login> {
                     child: Image(
                       width: 8.w,
                       height: 5.h,
-                      image:
-                          AssetImage('assets/immagini_pharma/logo_small.png'),
+                      image: const AssetImage(
+                          'assets/immagini_pharma/logo_small.png'),
                     ),
                   ),
                   SizedBox(
@@ -80,7 +77,7 @@ class _LoginState extends ConsumerState<Login> {
                   ),
                   Text(
                     'Accedi',
-                    style: context.textTheme.subtitle1,
+                    style: context.textTheme.titleMedium,
                   ),
                   SizedBox(
                     height: 6.h,
@@ -89,11 +86,11 @@ class _LoginState extends ConsumerState<Login> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 5, bottom: 3),
+                        margin: const EdgeInsets.only(left: 5, bottom: 3),
                         child: Text(
                           'Email',
                           style: TextStyle(
-                              color: Color.fromARGB(255, 167, 166, 165),
+                              color: const Color.fromARGB(255, 167, 166, 165),
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w600),
                           textAlign: TextAlign.start,
@@ -131,6 +128,7 @@ class _LoginState extends ConsumerState<Login> {
                                 em = false;
                               });
                             }
+                            return null;
                           },
                           //prefixIcon: Icon(Icons.email,color: Colors.white,),
                           textInputAction: TextInputAction.next,
@@ -145,7 +143,7 @@ class _LoginState extends ConsumerState<Login> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 5, bottom: 3),
+                        margin: const EdgeInsets.only(left: 5, bottom: 3),
                         child: const Text(
                           'Password',
                           style: TextStyle(
@@ -168,17 +166,18 @@ class _LoginState extends ConsumerState<Login> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                             filled: true,
-                            fillColor: Color.fromARGB(255, 239, 242, 241),
+                            fillColor: const Color.fromARGB(255, 239, 242, 241),
                             suffixIcon: Padding(
-                                padding: EdgeInsets.all(2),
+                                padding: const EdgeInsets.only(right: 5),
                                 child: hidePassword
                                     ? GestureDetector(
-                                        child: const Image(
-                                          color: Color.fromARGB(
+                                        child: Image(
+                                          color: const Color.fromARGB(
                                               255, 167, 166, 165),
-                                          width: 22,
-                                          height: 22,
-                                          image: AssetImage(
+                                          width: 0.1.w,
+                                          height: 0.1.h,
+                                          fit: BoxFit.contain,
+                                          image: const AssetImage(
                                               'assets/immagini_pharma/eye.png'),
                                         ),
                                         onTap: () {
@@ -188,12 +187,13 @@ class _LoginState extends ConsumerState<Login> {
                                         },
                                       )
                                     : GestureDetector(
-                                        child: const Image(
-                                          color: Color.fromARGB(
+                                        child: Image(
+                                          color: const Color.fromARGB(
                                               255, 167, 166, 165),
-                                          width: 22,
-                                          height: 22,
-                                          image: AssetImage(
+                                          width: 0.1.w,
+                                          height: 0.1.h,
+                                          fit: BoxFit.contain,
+                                          image: const AssetImage(
                                               'assets/immagini_pharma/eye_op.png'),
                                         ),
                                         onTap: () {
@@ -222,6 +222,7 @@ class _LoginState extends ConsumerState<Login> {
                                 ps = false;
                               });
                             }
+                            return null;
                           },
                           obscureText: hidePassword,
 
@@ -238,9 +239,9 @@ class _LoginState extends ConsumerState<Login> {
                               Navigator.of(context).pushNamed('ForgetPassword'),
                           child: Text(
                             'Password dimenticata?',
-                            style: context.textTheme.subtitle2?.copyWith(
+                            style: context.textTheme.titleSmall?.copyWith(
                                 fontSize: 14,
-                                color: Color.fromARGB(255, 47, 161, 148)),
+                                color: const Color.fromARGB(255, 47, 161, 148)),
                           ))
                     ],
                   ),
@@ -250,7 +251,7 @@ class _LoginState extends ConsumerState<Login> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
+                      SizedBox(
                           width: 50.w,
                           height: 5.h,
                           child: ElevatedButton(
@@ -357,7 +358,7 @@ class _LoginState extends ConsumerState<Login> {
                             ),
                           ),
                           icon: Container(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(12),
@@ -378,7 +379,7 @@ class _LoginState extends ConsumerState<Login> {
                     children: [
                       Text(
                         'Non hai un account?',
-                        style: context.textTheme.subtitle2
+                        style: context.textTheme.titleSmall
                             ?.copyWith(fontSize: 14, color: AppColors.gray4),
                       ),
                       TextButton(
@@ -386,9 +387,9 @@ class _LoginState extends ConsumerState<Login> {
                               .pushReplacementNamed('SignUp', arguments: false),
                           child: Text(
                             'Iscriviti',
-                            style: context.textTheme.subtitle2?.copyWith(
+                            style: context.textTheme.titleSmall?.copyWith(
                                 fontSize: 14,
-                                color: Color.fromARGB(255, 47, 161, 148)),
+                                color: const Color.fromARGB(255, 47, 161, 148)),
                           ))
                     ],
                   ),

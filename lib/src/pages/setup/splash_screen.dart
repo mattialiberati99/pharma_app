@@ -1,16 +1,10 @@
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:location/location.dart';
 
 import '../../../generated/l10n.dart';
 import '../../../main.dart';
-import '../../components/AppButton.dart';
-import '../../dialogs/ConfirmDialog.dart';
-import '../../helpers/custom_trace.dart';
-import '../../models/setting.dart';
 import '../../providers/settings_provider.dart';
 import '../../providers/user_provider.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -22,6 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../repository/settings_repository.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   ConsumerState<SplashScreen> createState() {
     return SplashScreenState();
@@ -40,22 +36,22 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
       currentUser.addListener(() {
         if (mounted) {
           setState(() {
-            logger.info('=> SPLASH currentUser.addListener');
-            progress += 50;
-          });
-          if (progress >= 100) {
-            loadData();
-          }
-        }
-      });
-      setting.addListener(() {
-        if (setting.value.appName != null) {
-          setState(() {
-            logger.info("SPLASH setting.addListener");
+            print("USER");
             progress += 50;
           });
         }
         if (progress >= 100) {
+          loadData();
+        }
+      });
+      setting.addListener(() {
+        if (mounted && setting.value.appName != null) {
+          setState(() {
+            print("SETTING");
+            progress += 50;
+          });
+        }
+        if (mounted && progress >= 100) {
           loadData();
         }
       });
@@ -71,17 +67,17 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
 
   void locationPermission() async {
     var location = Location();
-    var _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
+    var serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
         return;
       }
     }
-    var _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    var permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
@@ -100,12 +96,10 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   Future<void> initDynamicLinks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     dynamicLinks.onLink.listen((PendingDynamicLinkData dynamicLinkData) {
-      final Uri? deepLink = dynamicLinkData.link;
+      final Uri deepLink = dynamicLinkData.link;
 
-      if (deepLink != null) {
-        _latestLink = deepLink.path;
-        prefs.setString('link', _latestLink);
-      }
+      _latestLink = deepLink.path;
+      prefs.setString('link', _latestLink);
     }, onError: (e) async {
       logger.error('onLinkError');
       logger.error(e.message);

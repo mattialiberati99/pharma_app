@@ -185,7 +185,7 @@ class UserProvider with ChangeNotifier {
     // 1. perform the sign-in request
     final Apple.AuthorizationResult result =
         await Apple.TheAppleSignIn.performRequests([
-      const Apple.AppleIdRequest(
+      Apple.AppleIdRequest(
           requestedScopes: [Apple.Scope.email, Apple.Scope.fullName])
     ]);
 
@@ -203,7 +203,7 @@ class UserProvider with ChangeNotifier {
         final authResult = await _auth.signInWithCredential(credential);
 
         currentUser.value.email = authResult.user!.email!;
-        currentUser.value.name = authResult.user!.displayName!;
+        currentUser.value.name = authResult.user!.displayName ?? "TAC user";
         String token = authResult.user!.uid;
         socialLogin(token, context);
         break;

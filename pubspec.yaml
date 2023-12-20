@@ -61,7 +61,6 @@ dependencies:
   package_info: ^2.0.2
   timeago: ^3.3.0
   talker: ^3.1.1
-  flutter_facebook_auth: ^5.0.11
   keyboard_height_plugin: ^0.0.4
 
   location: ^4.4.0

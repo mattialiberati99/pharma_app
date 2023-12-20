@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>742346627788-ittp5lj3pvnsuiml0m6nt7u6pkikgia5.apps.googleusercontent.com</string>
+	<string>809740045092-6dc0iuac2lu52os33nt72831rit6t7o9.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.742346627788-ittp5lj3pvnsuiml0m6nt7u6pkikgia5</string>
+	<string>com.googleusercontent.apps.809740045092-6dc0iuac2lu52os33nt72831rit6t7o9</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>809740045092-8o1o2ccj14q3626v466oog9m13cnvalt.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBzZw9Aaw8jeCawM5qlUbIsMaSt17VOPEI</string>
+	<string>AIzaSyBTSK33iL2bLh3rBHx5GjZROBgcYqR2fEU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>742346627788</string>
+	<string>809740045092</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>it.resmedia.pharma</string>
 	<key>PROJECT_ID</key>
-	<string>tac-dev-24fa7</string>
+	<string>pharma-app-4b56f</string>
 	<key>STORAGE_BUCKET</key>
-	<string>tac-dev-24fa7.appspot.com</string>
+	<string>pharma-app-4b56f.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:742346627788:ios:68ea52f91db8070238c069</string>
+	<string>1:809740045092:ios:9e5df499ff356af89281b1</string>
 </dict>
 </plist>

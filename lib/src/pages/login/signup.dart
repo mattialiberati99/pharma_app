@@ -1,24 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'package:pharma_app/src/components/primary_nosized_button.dart';
 import 'package:pharma_app/src/helpers/extensions.dart';
 import 'package:pharma_app/src/pages/login/widgets/CustomTextFormField.dart';
-import 'package:pharma_app/src/pages/login/widgets/button_border_icon.dart';
 import 'package:pharma_app/src/providers/user_provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../components/divider_label.dart';
-import '../../components/social_login_row.dart';
 import '../../helpers/app_config.dart';
 import '../../helpers/validators.dart';
-
-import '../../providers/selected_page_name_provider.dart';
-import '../../repository/user_repository.dart';
 
 class Signup extends ConsumerStatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -67,8 +58,8 @@ class _SignupState extends ConsumerState<Signup> {
                     ),
                     SizedBox(
                       child: Image(
-                        image:
-                            AssetImage('assets/immagini_pharma/logo_small.png'),
+                        image: const AssetImage(
+                            'assets/immagini_pharma/logo_small.png'),
                         width: 8.w,
                         height: 5.h,
                       ),
@@ -246,30 +237,29 @@ class _SignupState extends ConsumerState<Signup> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(height: 1.h),
-                        if (Platform.isIOS)
-                          SizedBox(
-                            width: 50.w,
-                            height: 5.h,
-                            child: ElevatedButton.icon(
-                              onPressed: () =>
-                                  userProv.signInWithApple(context),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18),
-                                ),
+                        //if (Platform.isIOS)
+                        SizedBox(
+                          width: 50.w,
+                          height: 5.h,
+                          child: ElevatedButton.icon(
+                            onPressed: () => userProv.signInWithApple(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
                               ),
-                              icon: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: SvgPicture.asset(
-                                  'assets/ico/logo_apple_white.svg',
-                                  height: 30,
-                                  width: 30,
-                                ),
-                              ),
-                              label: const Text('Iscriviti con Apple'),
                             ),
+                            icon: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: SvgPicture.asset(
+                                'assets/ico/logo_apple_white.svg',
+                                height: 3.h,
+                                width: 3.w,
+                              ),
+                            ),
+                            label: const Text('Iscriviti con Apple'),
                           ),
+                        ),
                         SizedBox(height: 1.h),
                         SizedBox(
                           width: 50.w,
@@ -283,7 +273,7 @@ class _SignupState extends ConsumerState<Signup> {
                               ),
                             ),
                             icon: Container(
-                              padding: EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
