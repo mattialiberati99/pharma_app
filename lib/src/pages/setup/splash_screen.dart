@@ -36,22 +36,22 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
       currentUser.addListener(() {
         if (mounted) {
           setState(() {
-            print("USER");
+            logger.info('=> SPLASH currentUser.addListener');
+            progress += 50;
+          });
+          if (progress >= 100) {
+            loadData();
+          }
+        }
+      });
+      setting.addListener(() {
+        if (setting.value.appName != null) {
+          setState(() {
+            logger.info("SPLASH setting.addListener");
             progress += 50;
           });
         }
         if (progress >= 100) {
-          loadData();
-        }
-      });
-      setting.addListener(() {
-        if (mounted && setting.value.appName != null) {
-          setState(() {
-            print("SETTING");
-            progress += 50;
-          });
-        }
-        if (mounted && progress >= 100) {
           loadData();
         }
       });
@@ -117,6 +117,7 @@ class SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   void loadData() async {
+    logger.info('inizio loadata');
     try {
       String loc = Localizations.localeOf(context).languageCode;
       logger.info(loc);

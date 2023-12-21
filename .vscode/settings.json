@@ -1,5 +1,5 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "dart.flutterSdkPath": "/Users/ctechdev/.puro/envs/puro_env_3_7_12/flutter",
-    "dart.sdkPath": "/Users/ctechdev/.puro/envs/puro_env_3_7_12/flutter/bin/cache/dart-sdk"
+    "dart.flutterSdkPath": "C:\\Users\\samue\\.puro\\envs\\my_env\\flutter",
+    "dart.sdkPath": "C:\\Users\\samue\\.puro\\envs\\my_env\\flutter\\bin\\cache\\dart-sdk"
 }

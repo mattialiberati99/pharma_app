@@ -287,9 +287,11 @@ class _HomeState extends ConsumerState<Home> {
         locationText = "$cityName, $regionName, $countryName";
       });
     } catch (e) {
-      setState(() {
-        locationText = "Impossibile ottenere posizione";
-      });
+      if (mounted) {
+        setState(() {
+          locationText = "Impossibile ottenere posizione";
+        });
+      }
     }
   }
 }
